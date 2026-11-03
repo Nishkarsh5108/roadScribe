@@ -378,20 +378,24 @@ def build_capsule(
     for _ in range(cfg.max_refits + 1):
         choice, _ = mckp(costs, gains, allowed, cap) if M else (np.zeros(0, dtype=int), 0.0)
         if choice is None:
+            # Even BRIEF for every must-mention unit does not fit: use the cheapest
+            # feasible selection and raise the budget to exactly what it costs.
             need = int(sum(min(costs[m, 1], costs[m, 2]) for m in mm_idx))
-            B_eff = fixed + c_rest + need
+            choice, _ = mckp(costs, gains, allowed, need)
+            assert choice is not None
+            text = assemble(choice)
+            B_eff = max(B_eff, tok.count(text))
             increased = True
             msg = f"budget {B} infeasible for {len(mm_idx)} must-mention units; raised to {B_eff}"
-            log.warning(msg)
+            log.info(msg)
             notes.append(msg)
-            cap = need
-            choice, _ = mckp(costs, gains, allowed, cap)
-            assert choice is not None
+            break
         text = assemble(choice)
         n_tok = tok.count(text)
         if n_tok <= B_eff:
             break
-        cap -= n_tok - B_eff  # the joined text cost more than the parts; tighten and retry
+        # the joined text cost more than the parts (e.g. a longer REST line): tighten and retry
+        cap -= n_tok - B_eff
         notes.append(f"refit: capsule had {n_tok} > {B_eff} tokens")
     else:  # pragma: no cover - only reachable with a pathological tokenizer
         raise RuntimeError("could not fit the capsule into the budget")
