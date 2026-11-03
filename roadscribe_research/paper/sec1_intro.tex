@@ -1,0 +1,73 @@
+% =====================================================================
+% Section 1 -- Introduction
+% Usage: \input{sec1_intro} inside an acmart document (see main.tex).
+% =====================================================================
+\providecommand{\TBD}[1][]{\textcolor{red}{[TBD#1]}}
+
+\section{Introduction}
+\label{sec:intro}
+
+Every smartphone that rides in a car carries an accelerometer, a gyroscope and a GNSS receiver.
+Two decades of mobile sensing have used them to monitor roads: early systems detected potholes and braking from phones and dedicated in-vehicle units~\cite{mohan2008nericell,eriksson2008pothole}, and a large body of later work classifies surface types or regresses a roughness index from vehicle vibration~\cite{menegazzo2021pvs}.
+The output of these systems is a label or a number per window or per road segment.
+The people who drive the roads ask something different.
+A commuter wants to know which part of the route was rough and whether to drive it differently.
+A passenger prone to car sickness wants to know which stretches and which driving made the ride unpleasant.
+A fleet manager wants to know where the vans take shocks, and whether the map is wrong about a surface.
+These are questions about a specific trip, in language, and their answers combine facts that a single number cannot hold.
+
+\paragraph{Why a scalar roughness score is the wrong output.}
+The International Roughness Index (IRI) is defined on a measured road profile, through a reference quarter-car model driven at a fixed speed~\cite{sayers1986iri}.
+A phone in a holder observes something else: the response of an unknown vehicle, through an unknown mount, at whatever speed the driver chose.
+Regressing IRI, or any single roughness score, from such data runs into four problems.
+\begin{enumerate}
+\item \emph{It confounds the road with the drive.} Vibration grows with speed, so a regressor can score well by learning speed. On the PVS dataset~\cite{menegazzo2021pvs}, speed alone separates the three surface types with an AUC of 0.977 \TBD[: re-run audit], and an earlier ``kinetic normalization'' of our own encoded speed almost perfectly (Spearman 0.995 with speed) \TBD[: re-run audit].
+\item \emph{It collapses distinct facts.} How the ride \emph{felt} depends on speed; how the \emph{road} is should not. A stretch with one violent speed bump and a stretch of steady cobblestone can share a mean vibration level, yet ISO~2631-1 treats the first as shock-dominated and requires different measures for it~\cite{iso2631}.
+\item \emph{It has no place, cause or confidence.} A number does not say where along the street the roughness was, whether a jolt came from the road or from pulling away, or how sure the system is.
+\item \emph{It cannot say what is missing.} When the GNSS fix drops out, the gyroscope is absent or the map contradicts the signal, a score is silently wrong; a sentence can say so.
+\end{enumerate}
+
+\paragraph{Why not a language model on the raw signal, or a template?}
+Large language models (LLMs) can describe and reason about inertial data~\cite{xu2024penetrative,li2025sensorllm,imran2024llasa,yoon2024bymyeyes}, and deployed driver-coaching systems already turn phone telematics into text~\cite{braun2018saferdrive,baig2022drivingbeacon,thompson2026localising}.
+Neither line of work is sufficient here.
+Sensor--LLM systems interpret activity windows; they do not segment a trip along the road network, and no claim they make is checked against the measurements.
+The coaching systems keep content selection in rules and let a language model at most paraphrase~\cite{thompson2026localising}; they do not cover vibration or road surface, and they do not evaluate the factuality of the generated text.
+A carefully engineered template narrator is faithful by construction and is a strong baseline~\cite{vandeemter2005templates}, but it can only produce what its designers enumerated.
+A trip capsule in our system can take on the order of $10^4$ joint states per road unit before any question, audience or history enters (Section~\ref{sec:related}).
+
+\paragraph{Our position.}
+We do not claim that a small language model (SLM) beats a template narrator at summarizing a fixed schema; on that task a template wins on fidelity and cost.
+Our thesis is narrower and testable: \emph{a grounded on-device SLM extends a deterministic narrator to outputs that cannot be enumerated at design time---questions users actually ask, audiences no template was written for, evidence states nobody anticipated---and the fidelity it costs can be measured and bounded.}
+RoadScribe therefore keeps the template narrator inside the system as a fallback, never lets the language model supply a value, and measures what the model adds over the template.
+
+\paragraph{RoadScribe.}
+RoadScribe turns a trip recorded by a phone into a short narrative and answers follow-up questions about it (Figure~\ref{fig:arch}).
+Layer~1 estimates the phone's orientation in the vehicle, computes ISO~2631-1-weighted cabin vibration, separates how the ride felt from how the road is, and detects impulsive events with their maneuver context.
+Layer~2 matches the trip to OpenStreetMap~\cite{haklay2008osm} and partitions it into \emph{homogeneous road narrative units} (HRNUs) with a change-point detector whose penalty drops at map transitions.
+Layer~3 compiles the units into a typed claim ledger and a token-budgeted capsule, and generates text with an on-device SLM under a plan--ground--realize protocol: the model plans over ledger identifiers, deterministic code fills in every value, and a verifier checks each sentence, falling back to the template narrator when it fails.
+
+\paragraph{Contributions.}
+The paper makes three novel technical contributions.
+\begin{itemize}
+\item \textbf{C1 --- Sensing: map-anchored, uncertainty-annotated ride facts from a phone.}
+  A Layer~1 pipeline estimates the mount orientation per handling episode with a gated, rotation-equivariant gravity estimate and a closed-form Procrustes heading fit against GNSS; applies the ISO~2631-1 weightings exactly in the frequency domain; reports felt and speed-decoupled road vibration separately with the standard's shock-evaluation rule; and labels impulsive events with a maneuver gate grounded in measured evidence.
+  On PVS the heading estimate recovers a rigid mount to within about $2^\circ$ from trip to trip and exposes a $14^\circ$ mounting offset in one vehicle (Section~\ref{sec:l1eval}).
+\item \textbf{C2 --- Segmentation: Map-Informed PELT with a corrected pruning rule.}
+  We formulate trip segmentation as penalized change-point detection whose penalty is lowered near OpenStreetMap transitions.
+  The classical PELT pruning test~\cite{killick2012pelt} assumes a constant penalty; we prove a three-line lemma giving the correct test, $G(t)+C(\mathbf y_{t+1:s})\ge G(s)$, for location-dependent penalties, and extend it to a minimum segment length.
+  In 300 random series with map-dependent penalties, the textbook rule returned a sub-optimal partition in 136, while the corrected rule matched exhaustive optimal partitioning in all 300 (Section~\ref{sec:layer2}).
+\item \textbf{C3 --- Generation: Plan--Ground--Realize with a verifier and template fallback.}
+  The SLM chooses and orders content by emitting a plan constrained by a grammar generated from the capsule's ledger, so it can reference only units and facts that exist; grounding is deterministic; a claim verifier checks every sentence against the ledger, including events, hedges and fields marked missing; and a sentence that fails twice is replaced by the template realization of the same plan item.
+  The language model therefore controls selection, ordering, aggregation and phrasing, but not values (Section~\ref{sec:layer3}).
+\end{itemize}
+In support of these, we contribute a benchmark whose metrics separate language errors from sensing errors (claim precision against the ledger and against ground truth, kinetic--semantic fidelity, anomaly grounding), and a preregistered within-subject study with 28 drivers plus a two-week field deployment that measure usefulness, trust, workload, situation awareness and error detection against strong template baselines (Section~\ref{sec:eval}).
+The implementation, with tests that reproduce every number we report as verified, is released as open source.
+
+\paragraph{Results in brief.}
+\TBD[: one paragraph with the headline results of E1--E5 and H1--H4 once the benchmark and the study have run. Until then, no result may be stated here.]
+
+The rest of the paper is organized as follows.
+Section~\ref{sec:related} positions RoadScribe against sensor--language models, trajectory--language models and data-to-text driver feedback.
+Section~\ref{sec:system} formalizes the three layers.
+Section~\ref{sec:eval} describes the data, metrics, benchmark and user study.
+Section~\ref{sec:discussion} discusses limitations and ethics.

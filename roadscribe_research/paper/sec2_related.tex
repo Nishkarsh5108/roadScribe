@@ -1,0 +1,89 @@
+% =====================================================================
+% Section 2 -- Related Work
+% Usage: \input{sec2_related} inside an acmart document (see main.tex).
+% =====================================================================
+
+\section{Related Work}
+\label{sec:related}
+
+RoadScribe sits where three lines of work meet without overlapping: language models that read sensor streams (Stream~A), language models that read trajectories (Stream~B), and data-to-text systems that give drivers feedback (Stream~C).
+We review each, then road sensing and template generation, and close with four limitations that no prior system addresses together.
+
+\subsection{Stream A: Language Models over Sensor Data}
+
+\emph{Penetrative AI} showed that a general LLM, prompted with raw or lightly processed IoT readings, can carry out perception tasks such as activity recognition and heartbeat detection using its world knowledge~\cite{xu2024penetrative}.
+\emph{SensorLLM} aligns an LLM with motion-sensor time series in two stages: it first learns to describe trends in the channels from automatically generated text, then is tuned for human activity recognition, matching or exceeding dedicated models on several datasets~\cite{li2025sensorllm}.
+\emph{LLaSA} couples an IMU encoder with an LLM and releases narrations and question-answer data for reasoning about activities~\cite{imran2024llasa}, and \emph{By My Eyes} renders sensor streams as plots for a multimodal LLM, improving accuracy and cutting token cost relative to textual prompts~\cite{yoon2024bymyeyes}.
+
+These systems establish that language models can interpret inertial data.
+Three properties separate them from our setting.
+Their unit of analysis is an activity window; none partitions a long recording along a spatial network or anchors statements to places.
+Their outputs are labels or free text whose numbers and events are not checked against the measurements at the level of individual claims; evaluation uses classification accuracy, text similarity or judged plausibility.
+And the language model reads the signal directly, so any value it states may have been invented.
+RoadScribe inverts the last point: signal processing produces every value, and the language model only selects and phrases ledger facts.
+
+\subsection{Stream B: Language Models over Trajectories}
+
+A second line connects language models to movement data.
+\emph{Traj-LLM} adapts a pre-trained LLM, with parameter-efficient fine-tuning and a lane-aware module, to predict the future trajectories of traffic agents~\cite{lan2024trajllm}; here the language model is a sequence learner, and its output is a trajectory, not text.
+Benchmarks such as \emph{TrajPrism} pair urban GPS trajectories with language for instruction-conditioned generation, retrieval and trajectory captioning, and report a large gap between geometry-only models and language-grounded tasks~\cite{li2026trajprism}.
+Earlier, symbolic generators produced route descriptions from map paths~\cite{dale2005route}.
+
+Trajectory--language work describes \emph{where} a vehicle went.
+It does not observe \emph{what the road did to the vehicle}: GNSS traces carry no vibration, so these systems cannot say that a street was rough, that a jolt came from a speed bump or from pulling away, or that the map's surface tag is wrong.
+RoadScribe uses the trajectory only as a spatial scaffold, through map matching, and takes its content from inertial sensing.
+
+\subsection{Stream C: Data-to-Text Feedback for Drivers}
+
+Data-to-text generation has a long record of turning sensor data into prose, from intensive-care summaries~\cite{portet2009babytalk} to weather forecasts~\cite{reiter2005sumtime}; the classic pipeline separates signal analysis, data interpretation, document planning and realization~\cite{gatt2018survey}.
+For drivers, \emph{SaferDrive} turned insurance telematics into weekly rule-based feedback on speeding and harsh events~\cite{braun2018saferdrive}.
+\emph{DrivingBeacon} extended this with phone use and geographic context and evaluated it in a four-week A/B test with eight drivers~\cite{baig2022drivingbeacon}.
+Most recently, Thompson et al. compared two localized systems~\cite{thompson2026localising}: a UK system for post-trip reflection with road and place context, deployed with 30 drivers for 12 weeks, and a Nigerian system for safety education.
+In both, structured components decide what may be said and a cloud LLM may only adapt how it is said; the authors state that they do not independently evaluate the factuality of the generated text, and there is no controlled comparison between the template and the LLM variants.
+
+This stream is the closest to RoadScribe, and we adopt its central principle: content selection must be controlled.
+It differs from our setting in content (driving behaviour rather than road and ride), in where the model runs (cloud rather than device), and in evaluation (engagement and behaviour change rather than claim-level fidelity).
+
+\subsection{Road Sensing and Template Generation}
+
+Nericell~\cite{mohan2008nericell} and Pothole Patrol~\cite{eriksson2008pothole} established phone and in-vehicle accelerometer road monitoring, including virtual reorientation of a phone to the vehicle frame.
+Many later studies classify surface type or regress roughness from inertial data~\cite{menegazzo2021pvs}.
+Their outputs are labels or indices.
+We reuse their sensing insights but treat measurement uncertainty, maneuver confounds and speed explicitly (Section~\ref{sec:layer1}), and we evaluate against speed-only baselines because surface type and speed are confounded in driving data.
+
+On the language side, van Deemter et al. argued that the opposition between template and ``real'' generation is false: a template system can be linguistically rich~\cite{vandeemter2005templates}.
+We take that argument seriously.
+Our template baseline is a full pipeline with content selection, aggregation, referring expressions and a fallback for every missing field, and it is also RoadScribe's fallback.
+The question is where templates stop scaling.
+Per HRNU, a capsule combines a felt class (6 values), a road class (6), a shock flag (2), an event pattern (about 4), map--signal agreement (2), a confidence band (3) and a missing-channel pattern ($2^3$): about 13{,}800 joint states before an audience, a question or a trip history is added.
+Most need no special wording; the ones that do are interactions, such as a stretch that felt very rough mostly because of speed on a surface that rides like cobblestone but is mapped as asphalt.
+Our benchmark measures this coverage gap instead of asserting it (Section~\ref{sec:bench}).
+
+Faithfulness is a known weakness of neural generation~\cite{ji2023hallucination}.
+We evaluate it with atomic claims~\cite{min2023factscore,wiseman2017challenges}, express uncertainty with calibrated hedges~\cite{kent1964wep,mielke2022linguistic}, and constrain the plan with grammar-based decoding~\cite{geng2023grammar,ggerganov_llamacpp}, which removes the output-format failures reported for on-device SLMs in shipped apps~\cite{oliveira2026lessismore}.
+
+\subsection{Four Limitations of the State of the Art}
+\label{sec:limitations}
+
+Taken together, prior work leaves four gaps that RoadScribe is designed to close.
+
+\paragraph{L1: No claim-level grounding.}
+Sensor--language models state values they read or infer from the signal, and the coaching systems do not evaluate the factuality of their text~\cite{thompson2026localising}.
+No system checks each number, event, place and severity word against the measurements.
+\emph{RoadScribe} keeps every value in a typed ledger, lets the model reference only ledger identifiers, and verifies each sentence against the ledger before release (Section~\ref{sec:layer3}).
+Its metrics then separate language errors from sensing errors by scoring claims against both the ledger and ground truth (Section~\ref{sec:metrics}).
+
+\paragraph{L2: No road-anchored segmentation of ride content.}
+Sensor--language models reason over activity windows, trajectory--language models over paths without vibration, and road-monitoring systems over fixed windows or map segments.
+None partitions a trip into units that are homogeneous in ride content \emph{and} aligned with the road network.
+\emph{RoadScribe} segments in the distance domain with a penalty that drops at map transitions, with a pruning rule that is provably exact for such penalties (Section~\ref{sec:layer2}).
+
+\paragraph{L3: Uncertainty and missing evidence never reach the text.}
+Existing systems report what they detect but not how sure they are or what they could not observe.
+A jolt during stop-and-go traffic, a 48-second GNSS gap or a map tag that contradicts the signal all disappear into fluent text.
+\emph{RoadScribe} carries event confidence, map-match confidence and \textsc{missing} facts with reasons into the ledger, maps confidence to hedges by a fixed policy, and counts any value stated for a missing field as a hallucination (Sections~\ref{sec:layer3} and~\ref{sec:metrics}).
+
+\paragraph{L4: No controlled comparison with templates, and no on-device evaluation.}
+The coaching systems compare neither their LLM variants with their template variants nor run the model on the phone; sensor--language work uses large models off-device.
+Whether a language model adds anything a template cannot, and at what fidelity, latency and energy cost on a phone, is unmeasured.
+\emph{RoadScribe} runs a quantized SLM on device, keeps the template narrator as both baseline and fallback, and evaluates six narrators, including template-plus-variation and template-plus-paraphrase controls, on tasks designed to expose where templates run out (Section~\ref{sec:eval}).

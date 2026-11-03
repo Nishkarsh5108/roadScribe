@@ -1,0 +1,53 @@
+% =====================================================================
+% Section 5 -- Discussion, limitations, ethics, conclusion
+% Usage: \input{sec5_discussion} inside an acmart document (see main.tex).
+% =====================================================================
+\providecommand{\TBD}[1][]{\textcolor{red}{[TBD#1]}}
+
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{When is a template enough?}
+\TBD[: interpret E1--E5 and H1--H4. State plainly where T matched S-PGR (expected: fixed-schema summaries) and where it did not, with the fidelity cost of each gain. If the fallback rate exceeds 30\% on the sealed sets, report it as the main limitation.]
+
+\paragraph{What the guardrails do and do not guarantee.}
+Plan--ground--realize removes two failure classes by construction: the plan cannot reference a unit or fact that does not exist, and in the placeholder variant the model cannot state a number.
+It does not make text correct by construction.
+The verifier catches what its extractor can parse; on the template lexicon it rejected 98.9\% of controlled errors (Section~\ref{sec:verifier}), and its misses (small numeric drifts within tolerance, mentions that can be matched to a different event) show where free text can slip through.
+On free text, the guarantee is only as good as the claim extractor, which is why we validate it against human annotation and report hallucinated-missing claims separately.
+
+\paragraph{Sensing errors are not language errors.}
+A narrative can be faithful to the ledger and still wrong about the road.
+Scoring every claim against both the ledger and ground truth, and attributing each ground-truth event to perception, selection or verbalization, keeps the two apart.
+Without that split, an improvement in the language layer could hide a regression in sensing, or the reverse.
+
+\subsection{Limitations}
+\label{sec:limits}
+
+\begin{itemize}
+\item \emph{PVS is not phone data.} Its fixed modules validate the signal processing and the segmentation, but not phone handling, holder resonance or seat-versus-holder transfer; these rest on our own two-phone corpus, which is smaller and from one region (\TBD{}).
+\item \emph{Cabin, not seat.} ISO~2631-1 comfort is defined at the seat--occupant interface. Our measures describe the cabin structure; the seat-rail reference phone measures the seat's floor input, not the seat surface.
+\item \emph{Bandwidth.} At 100~Hz the weighted band ends near 40~Hz, below the standard's 80~Hz.
+\item \emph{Speed confound.} Surface type and speed are confounded in real driving. Speed decoupling with an estimated elasticity mitigates this, and every Layer~1 classifier is compared with speed-only baselines, but a residual confound cannot be excluded on three PVS routes.
+\item \emph{Map coverage.} The map prior is only as good as OpenStreetMap's surface and traffic-calming tags on the driven roads; where coverage is low, the learned $\lambda$ approaches zero and MI-PELT reduces to PELT.
+\item \emph{Synthetic data.} The synthetic corpus tests Layer~3 under controlled conditions; its narratives come from the template narrator and say nothing about what an SLM adds. Any SLM training on it is limited to the plan format, grounding and hedging, and excludes the E2 test audiences.
+\item \emph{Sample size.} Twenty-eight participants support the four confirmatory hypotheses at the stated power, not fine-grained subgroup analyses; the field phase is descriptive.
+\end{itemize}
+
+\subsection{Ethics and Safety}
+\label{sec:ethics}
+Trip recordings reveal where people live and work~\cite{demontjoye2013unique}.
+RoadScribe processes Layers~1 and~3 on the phone; traces used in research are stored encrypted and released only truncated or aggregated.
+Narratives are delivered only after a trip has ended and the vehicle has been stationary, never while driving.
+A system that narrates road conditions can be repurposed to monitor drivers, for example by insurers or employers; our narrators describe the road and the ride, attribute jolts to driving only to explain them, and are not designed or evaluated for scoring drivers.
+The study \TBD[: ethics approval, consent, data retention].
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+RoadScribe turns phone vibration and map topology into grounded trip narratives.
+Its sensing layer separates how a ride felt from how the road is, under the evaluation rules of ISO~2631-1.
+Its segmentation uses the map without trusting it blindly, with a pruning rule that is exact for map-dependent penalties.
+Its generation layer lets a small language model choose what to say while every value comes from a verified ledger.
+\TBD[: one sentence with the headline benchmark and study results.]
+We release the code, the tests that reproduce every verified number in this paper, and the synthetic benchmark data.

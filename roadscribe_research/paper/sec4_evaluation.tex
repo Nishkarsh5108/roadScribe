@@ -1,11 +1,8 @@
 % =====================================================================
 % Section 4 -- Evaluation
 % Usage: \input{sec4_evaluation} after sec3_system (shares its macros).
-% Bibliography keys used below (add to your .bib):
-%   menegazzo2021pvs, min2023factscore, wiseman2017challenges, kent1964wep,
-%   mielke2022linguistic, williams1949designs, judd2012stimuli, jian2000trust,
-%   christensen_ordinal, wobbrock2011art, braun2006thematic, demontjoye2013unique,
-%   thompson2026localising, vandeemter2005templates
+% Numbers outside \TBD{} are verified; their scripts and tests are named in
+% comments. Everything else stays \TBD{} until the experiment has run.
 % =====================================================================
 \providecommand{\R}{\mathbb{R}}
 \providecommand{\ind}{\mathbf{1}}
@@ -20,7 +17,7 @@ We evaluate RoadScribe on five questions.
 \item[RQ2] Does map-informed segmentation recover road-surface boundaries better than signal-only or map-only segmentation?
 \item[RQ3] How faithful are the generated narratives to the ledger and to ground truth, and how do errors split between sensing and language?
 \item[RQ4] Where does a grounded SLM add coverage over a template narrator, and at what fidelity cost?
-\item[RQ5] How do people judge the narratives for accuracy, usefulness, trust and annoyance, and do they notice errors?
+\item[RQ5] How do people judge the narratives for accuracy, usefulness, trust, workload and situation awareness, and do they notice errors?
 \end{description}
 
 % ---------------------------------------------------------------------
@@ -28,13 +25,14 @@ We evaluate RoadScribe on five questions.
 \label{sec:data}
 
 \paragraph{The PVS dataset.}
+% verification/pvs_facts.py, pvs_align_doublehit.py; tests/test_pvs_dataset.py
 The Passive Vehicular Sensors dataset~\cite{menegazzo2021pvs} contains nine trips that cover three routes (13.8, 11.6 and 10.7~km), each driven once by three vehicle--driver pairs.
 In total there are 180.1~min and 108.6~km of driving.
 IMU modules at the dashboard, above the suspension and below the suspension log at 100~Hz on each side of the vehicle, GNSS logs at 1~Hz, and an environment camera records each trip.
 Labels mark the surface type (asphalt, cobblestone, dirt; 54 transitions) and speed bumps (60 traversals of 20 physical bumps).
 We use the left-side logger: the dashboard unit serves as the phone proxy, and the suspension units serve as reference sensors that a phone does not have.
 The left and right loggers are not synchronized.
-Cross-correlating their yaw rates shows offsets of up to 0.54~s that drift within a trip, so we do not average the two sides.
+Cross-correlating their yaw rates shows offsets of up to 0.54~s that drift within a trip, so we never average the two sides; averaging $x(t)$ with $x(t-\Delta)$ is a comb filter whose first null at $\Delta=0.54$~s falls at 0.93~Hz, on body bounce.
 PVS uses fixed modules, which exercise neither phone handling nor holder dynamics.
 
 \paragraph{Phone corpus.}
@@ -43,6 +41,14 @@ One phone was in a dashboard holder and recorded video; the other was fixed to t
 Both logged at \TBD{}~Hz and were synchronized by tap events and yaw-rate cross-correlation (residual offset \TBD{}~ms).
 The corpus includes \TBD{} repetitions of one route by one driver and \TBD{} drives with deliberate phone handling.
 Two annotators marked speed breakers, potholes, rough patches, surface changes and rail crossings from video without seeing any narrative (Cohen's $\kappa=\TBD{}$ on \TBD{}\% double-coded).
+
+\paragraph{Synthetic capsule corpus.}
+% roadscribe/synth; data/processed/manifest.json
+To test Layer~3 independently of sensing, a sampler generates trips as a Markov chain over asphalt, cobblestone and unpaved surfaces, with felt classes 0--5 balanced across trips, physically consistent $a_v$, $a_{w,z}$, $\tilde a_{w,z}$, MTVV and shock flags, Poisson events whose labels, confidences and maneuvers follow the evidence of Section~\ref{sec:l1eval}, and degraded or contradictory evidence in 22\% of trips.
+Each trip is compiled with the real ledger and KST code.
+The released corpus holds 5{,}000 capsules with plans and template narratives (every one verified), 1{,}500 preference pairs that differ by one controlled error, and 300 driver questions with verified answers or abstentions.
+Its narratives come from the template narrator, so they are used to validate the verifier (Section~\ref{sec:verifier}), to build preference pairs, and at most to teach the plan format; they cannot show what an SLM adds over templates.
+Two of its four audiences are E2 test personas; records carry a flag, and no record with a test persona enters any prompt, exemplar or training set used for E2.
 
 \paragraph{Splits.}
 All learned components, thresholds and prompts are fit with routes held out.
@@ -56,13 +62,14 @@ Evaluation questions, test personas and capsules from test drives never appear i
 \begin{table}[t]
 \caption{Narrators compared. All share Layers 1--2 and the ledger.}
 \label{tab:conditions}
-\begin{tabular}{lp{0.62\linewidth}}
+\small
+\begin{tabular}{@{}lp{0.78\linewidth}@{}}
 \toprule
 Code & Description \\
 \midrule
-T & Template NLG pipeline: rule-based content selection, aggregation, referring expressions, ISO-class lexical choice, history comparison, a fallback for every missing field (\TBD{} rules). \\
+T & Template pipeline: rule-based content selection, aggregation, referring expressions, ISO-class lexical choice, history comparison, a fallback for every missing field (\TBD{} rules). \\
 T+V & T with sampled lexical and ordering variation (controls for variety alone). \\
-T$\rightarrow$P & T followed by SLM paraphrase, as in deployed driver-feedback systems~\cite{thompson2026localising}. \\
+T$\rightarrow$P & T followed by SLM paraphrase, as in deployed driver feedback~\cite{thompson2026localising}. \\
 S-free & SLM given the capsule, free generation, no plan or verifier. \\
 S-PGR & Plan--ground--realize with verification and template fallback, on device (ours). \\
 C-PGR & S-PGR protocol with a cloud model (\TBD{}), as an upper reference. \\
@@ -76,55 +83,63 @@ C-PGR & S-PGR protocol with a cloud model (\TBD{}), as an upper reference. \\
 
 \paragraph{Claims.}
 A narrative $N$ is decomposed into atomic claims $\mathcal X(N)$ of type severity, numeric, event, anchor, comparison or hedge, in the spirit of~\cite{min2023factscore,wiseman2017challenges}.
-The same LLM-based extractor is applied to every narrator.
-On \TBD{} claims stratified by narrator it agreed with two annotators at $\kappa=\TBD{}$.
-A claim is supported by reference $R$ when its value, unit, place and direction agree with $R$ within type-specific tolerances.
+Free text is decomposed by an LLM-based extractor with a fixed prompt; on \TBD{} claims stratified by narrator it agreed with two annotators at $\kappa=\TBD{}$.
+The same extractor is applied to every narrator, so that template outputs, whose claims are known exactly, are not scored by a different and more favourable procedure.
+A rule-based extractor for the template lexicon, which also serves as the run-time verifier for template outputs, checks the LLM extractor on T and T+V.
+A claim is supported by reference $R$ when its value, place and direction agree with $R$ under the rules of Section~\ref{sec:layer3}.
 We use two references: the ledger $L$, which isolates the language layer, and ground truth $G$, which measures the system end to end:
 \begin{equation}
 P_R(N)=\frac{1}{|\mathcal X(N)|}\sum_{c\in\mathcal X(N)}\mathrm{supp}_R(c),\qquad R\in\{L,G\}.
 \end{equation}
-We report claims about facts marked \textsc{missing} separately; their rate should be zero.
+We report claims about facts marked \textsc{missing} separately, as the hallucinated-missing rate; it should be zero.
 
 \paragraph{Kinetic--semantic fidelity.}
+% roadscribe/eval/metrics.py: rho_ksf, band_consistency, overstatement_index
 Let $\mathcal S$ be the severity claims of a narrator pooled over the corpus.
 Each claim $c\in\mathcal S$ pairs a measured intensity $x_c$ ($a_v$ for how the ride felt, $\tilde a_{w,z}$ for the road) with an expressed class $\hat k_c\in\{0,\dots,5\}$ from a fixed lexicon of ISO comfort descriptors.
 With $R_c$ and $Q_c$ the mid-ranks of $x_c$ and $\hat k_c$,
 \begin{equation}
-\rho_{\mathrm{KSF}}=\frac{\sum_{c}(R_c-\bar R)(Q_c-\bar Q)}{\sqrt{\sum_{c}(R_c-\bar R)^2\sum_{c}(Q_c-\bar Q)^2}} .
+\rho_{\mathrm{KSF}}=\frac{\sum_{c}(R_c-\bar R)(Q_c-\bar Q)}{\sqrt{\sum_{c}(R_c-\bar R)^2\sum_{c}(Q_c-\bar Q)^2}} ,
 \end{equation}
-Because $\rho_{\mathrm{KSF}}$ ignores monotone distortion, we also report band consistency and an overstatement index,
-\begin{equation}
-\mathrm{BC}=\frac1{|\mathcal S|}\sum_{c\in\mathcal S}\ind\bigl[x_c\in\mathcal B(\hat k_c)\bigr],\qquad
-\mathrm{OI}=\frac1{|\mathcal S|}\sum_{c\in\mathcal S}\bigl(\hat k_c-k^\star(x_c)\bigr),\qquad
-k^\star(x)=\sum_{j=1}^5\ind[x\ge\theta_j],
-\end{equation}
-where $\mathcal B(k)$ is the (overlapping) ISO band of class $k$ and $\boldsymbol\theta$ are the cut-points of Section~\ref{sec:layer1}.
+i.e.\ Spearman's correlation; Kendall's $\tau_b$ is reported as a check.
+Because $\rho_{\mathrm{KSF}}$ ignores monotone distortion (a narrator that calls every unit one class too rough still scores 1), we also report band consistency and an overstatement index,
+\begin{gather}
+\mathrm{BC}=\frac1{|\mathcal S|}\sum_{c\in\mathcal S}\ind\bigl[x_c\in\mathcal B(\hat k_c)\bigr],\\
+\mathrm{OI}=\frac1{|\mathcal S|}\sum_{c\in\mathcal S}\bigl(\hat k_c-k^\star(x_c)\bigr),
+\end{gather}
+where $\mathcal B(k)$ is the overlapping ISO band of class $k$ and $k^\star$ the cut-point class of Section~\ref{sec:layer1}.
+BC catches absolute miscalibration and OI gives its direction; we do not combine the three numbers.
 
 \paragraph{Anomaly grounding.}
-Narrated event mentions $\hat{\mathcal E}$ are expanded by count; vague quantifiers expand to the lower bound of a fixed lexicon.
-Each mention has a type and a resolved along-track interval $I(\hat e)$, and each reference event $e\in\mathcal E^R$ has a type and a position $s(e)$.
+% roadscribe/eval/metrics.py: anomaly_grounding
+Narrated event mentions $\hat{\mathcal E}$ are expanded by count; vague quantifiers expand to the lower bound of a fixed lexicon (``a few''~$\to2$, ``several''~$\to3$).
+Each mention has a type and a resolved along-track interval $I(\hat e)$, and each reference event $e\in\mathcal E^R$ has a type, a position $s(e)$ and a weight $\mathrm{MTVV}_e$.
 A mention and a reference event may match when their types agree and $\mathrm{dist}(s(e),I(\hat e))\le\delta_s$.
-With $M^\star$ a maximum bipartite matching,
-\begin{equation}
+Let $M^\star$ be a maximum bipartite matching; among maximum matchings we take one of maximum matched weight, which augmenting from the heaviest reference events finds because the matchable reference sets form a transversal matroid. Then
+\begin{gather}
 \mathrm{AGP}_R=\frac{|M^\star|}{|\hat{\mathcal E}|},\qquad
-\mathrm{AGR}_R=\frac{|M^\star|}{|\mathcal E^R|},\qquad
+\mathrm{AGR}_R=\frac{|M^\star|}{|\mathcal E^R|},\\
 \mathrm{wAGR}_R=\frac{\sum_{e\in M^\star}\mathrm{MTVV}_e}{\sum_{e\in\mathcal E^R}\mathrm{MTVV}_e}.
-\end{equation}
-For $R=L$, recall is computed over the must-mention events.
+\end{gather}
+For $R=L$, precision uses all ledger events and recall the must-mention events.
 For $R=G$, the references are the labelled bumps (PVS) and the annotated events (phone corpus).
 We use $\delta_s=25$~m, which covers label timing uncertainty and map-match error, and report 10 and 50~m in the supplement.
-Crossing the two references attributes every error to perception (missed or false detection), selection (omitted) or verbalization (unsupported).
+For each ground-truth event we ask whether Layer~1 detected it, whether the capsule kept it and whether the narrative mentioned it; for each narrated event, whether it is in the ledger and whether that ledger event is true.
+This attributes every error to perception (missed or false detection), selection (omitted) or verbalization (unsupported).
 
 \paragraph{Calibration of hedges.}
-For event claims with hedge $h\in\{\text{assertive},\text{likely},\text{possibly}\}$, let $P_G(h)$ be their precision against ground truth and $p_h$ the probability participants associate with the hedge, elicited in a short survey (cf.~\cite{kent1964wep,mielke2022linguistic}). Then
+For event claims with hedge $h$ (assertive, likely or possibly), let $P_G(h)$ be their precision against ground truth and $p_h$ the probability participants associate with the hedge, elicited in a short survey (cf.~\cite{kent1964wep,mielke2022linguistic}). Then
 \begin{equation}
-\mathrm{ECE}_{\mathrm{ling}}=\sum_h\frac{n_h}{n}\,\bigl|P_G(h)-p_h\bigr| .
+\mathrm{ECE}_{\mathrm{ling}}=\sum_h\frac{n_h}{n}\,\bigl|P_G(h)-p_h\bigr| ,
 \end{equation}
+and we report whether $P_G(\text{assertive})\ge P_G(\text{likely})\ge P_G(\text{possibly})$.
 
 \paragraph{Novelty--change alignment.}
-For consecutive drives $(d,d')$ of one route by one driver, let $\Delta_{\mathrm{kin}}$ be the mean absolute change of $\log a_v$ over 100~m bins plus the event-set Jaccard distance.
-Let $\Delta_{\mathrm{claim}}$ be the Jaccard distance between canonicalized claim sets.
-Then $\mathrm{NCA}=\mathrm{Spearman}(\Delta_{\mathrm{kin}},\Delta_{\mathrm{claim}})$ over pairs.
+For consecutive drives $(d,d')$ of one route by one driver, let $\Delta_{\mathrm{kin}}$ be the mean absolute change of $\log a_v$ over 100~m bins plus the event-set Jaccard distance under spatial tolerance, and $\Delta_{\mathrm{claim}}$ the Jaccard distance between claim sets canonicalized to (type, 100~m bin, value class).
+Then
+\begin{equation}
+\mathrm{NCA}=\mathrm{Spearman}(\Delta_{\mathrm{kin}},\Delta_{\mathrm{claim}})\ \text{over pairs}.
+\end{equation}
 Lexical variation independent of content, $\mathrm{LV}=1-\mathrm{BLEU}$ between narratives with numbers and names masked, is reported alongside; variety that does not track change raises LV but not NCA.
 
 \paragraph{Question answering and cost.}
@@ -136,19 +151,22 @@ System cost comprises time to first token, decode rate, end-to-end latency (p50/
 \label{sec:l1eval}
 
 \paragraph{Orientation.}
+% verification/verify_orientation.py; tests/test_orientation.py
 On PVS, the heading estimate of Eq.~\eqref{eq:yaw} recovered the known mount: $87.9^\circ$--$92.5^\circ$ for two vehicles (nominal $90^\circ$).
 For the third vehicle it gave $103.1^\circ$--$105.5^\circ$ consistently across its three routes, indicating a mounting offset of about $14^\circ$.
-Under 20 random three-dimensional rotations of the input per trip, the estimate rotated with the data to within $0.63^\circ$.
-On the phone corpus, handling detection and re-estimation achieve \TBD{}.
+With a componentwise median for gravity, 20 random three-dimensional rotations of the input per trip changed the estimate by up to $0.63^\circ$ beyond the applied rotation; the geometric median removes this error by construction (below $10^{-3}$\,$^\circ$ on synthetic trips with known mounts, where the mount itself is recovered to within $0.5^\circ$).
+On synthetic trips with a $58^\circ$ handling rotation, the episode split is found within 1~s and both mounts are recovered to within $0.5^\circ$; on the phone corpus, handling detection and re-estimation achieve \TBD{}.
 
 \paragraph{Do maneuvers inflate vertical vibration?}
+% verification/pvs_maneuver_bands.py
 Table~\ref{tab:maneuver} compares two-second windows on asphalt (no speed bump within $\pm2$~s, 5--20~m\,s$^{-1}$) across maneuver states, controlling for speed and trip.
 Braking lowered dashboard vertical vibration and turning had no detectable effect.
 Acceleration added high-band energy at the dashboard that the below-suspension sensor did not see, consistent with powertrain vibration.
 This is why the gate of Eq.~\eqref{eq:gate} targets acceleration and stop-and-go events and never vetoes on braking.
-A wheelbase-lag cue (front then rear axle) did not separate road events: the lag between the two largest impacts did not scale with $1/v$ (Spearman $|\rho|\le0.12$, $n=60$), so it is not used.
+A wheelbase-lag cue (front then rear axle) did not separate road events: the lag between the two largest impacts did not scale with $1/v$ (Spearman $\rho$ between $-0.12$ and $0.00$, $p\ge0.36$, $n=60$), so it is not used.
+At bumps, drivers slowed to median speeds of 3.6--5.1~m\,s$^{-1}$.
 
-\begin{table}[t]
+\begin{table*}[t]
 \caption{Difference in log RMS vertical acceleration relative to cruising (PVS, asphalt, 2-s windows; OLS with log speed and trip effects, trip-clustered standard errors). Cruise $n=225$.}
 \label{tab:maneuver}
 \begin{tabular}{lcccc}
@@ -161,7 +179,14 @@ Turn (92) & $+0.07$ & $-0.04$ & $+0.06$ & $-0.10^{***}$\\
 \bottomrule
 \multicolumn{5}{l}{\footnotesize $^{*}p<.05$, $^{**}p<.01$, $^{***}p<.001$. Speed elasticity $\hat\gamma$: 0.32, 0.36, 0.62 (columns 1--3).}
 \end{tabular}
-\end{table}
+\end{table*}
+
+\paragraph{Pruning under map-dependent penalties.}
+% verification/verify_math.py (b); tests/test_mipelt.py
+We generated 300 series of length $n=120$ in two dimensions with four mean shifts drawn at random, a base penalty $\beta=12$, and ten random ``map transitions'' where $\beta=2$.
+The textbook PELT rule returned a sub-optimal partition in 136 of the 300 series, while the rule of Lemma~\ref{lem:prune} matched exhaustive optimal partitioning in all 300.
+With a constant penalty the two rules coincide, as expected.
+With minimum segment lengths of 2, 5 and 9, the retention rule of Section~\ref{sec:layer2} matched exhaustive search in every series tested.
 
 \paragraph{Events and segmentation.}
 Bump detection on held-out routes reaches recall \TBD{} at \TBD{} false alarms per km.
@@ -170,6 +195,44 @@ The gate changes false alarms by \TBD{} at fixed recall.
 Against the 54 surface transitions, MI-PELT reaches boundary F1 \TBD{} at 25~m, compared with \TBD{} for constant-penalty PELT, \TBD{} for map-only boundaries and \TBD{} for PELT on speed alone.
 OpenStreetMap carries a surface tag on \TBD{}\% of the matched length and a \texttt{traffic\_calming} node at \TBD{} of the 20 bumps.
 Results on PVS cover three route clusters and are descriptive; inferential comparisons use the phone corpus.
+
+% ---------------------------------------------------------------------
+\subsection{Verifier Validation}
+\label{sec:verifier}
+
+% roadscribe/synth/perturb.py; tests/test_claims.py, tests/test_synth.py
+Before trusting the verifier as a guardrail, we measured how often it catches errors it should catch.
+On 1{,}000 synthetic trips (Section~\ref{sec:data}) we realized each template narrative, then applied each of eight controlled errors where applicable and re-realized the frames with the same seed, so that the corrupted text differs from the original only at the error.
+Table~\ref{tab:verifier} reports the results.
+The verifier rejected none of the 1{,}000 correct narratives and 98.9\% of the 5{,}751 corrupted ones; 96.0\% were rejected for the intended reason.
+The misses are informative.
+A drift of a small value can stay within the absolute tolerance ($0.05~\mathrm{m\,s^{-2}}$).
+A dropped must-mention event goes unnoticed when another mention of the same type, stated without a position, can be matched to it.
+A misattribution to braking passes when the unit also holds a braking event of the same type.
+These numbers bound the verifier on the template lexicon only; on free SLM text its sensitivity depends on the extractor and is measured against human annotation (\TBD{}).
+
+\begin{table}[t]
+\caption{Verifier sensitivity on controlled errors in template narratives (1{,}000 synthetic trips). $n$: trips where the error could be introduced; rejected for any reason, and for the intended one.}
+\label{tab:verifier}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Error & $n$ & Rejected & Intended\\
+\midrule
+Number drifted by 25--60\% & 673 & 99.1\% & 99.1\%\\
+Street names swapped & 411 & 100.0\% & 100.0\%\\
+Defect invented & 550 & 100.0\% & 100.0\%\\
+Must-mention event dropped & 902 & 96.7\% & 96.7\%\\
+Unhedged low-confidence event & 913 & 100.0\% & 96.2\%\\
+Value given for a missing field & 354 & 100.0\% & 87.3\%\\
+Event attributed to braking & 960 & 97.2\% & 88.1\%\\
+Felt class shifted by $\ge2$ & 988 & 100.0\% & 100.0\%\\
+\midrule
+All & 5{,}751 & 98.9\% & 96.0\%\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 % ---------------------------------------------------------------------
 \subsection{Narrative Benchmark}
@@ -197,28 +260,48 @@ Thresholds that would count against our hypotheses were fixed before the sealed 
 \label{sec:study}
 
 \paragraph{Design.}
-Twenty-eight licensed drivers each judged narratives from four narrators (T, T+V, T$\rightarrow$P, S-PGR) in a within-subject design.
-Narrator order followed a Williams design~\cite{williams1949designs} with sequences (T, T+V, S-PGR, T$\rightarrow$P), (T+V, T$\rightarrow$P, T, S-PGR), (T$\rightarrow$P, S-PGR, T+V, T) and (S-PGR, T, T$\rightarrow$P, T+V), each used by seven participants, which balances first-order carryover.
-Every participant saw eight video excerpts of 2--3~min, two per narrator.
-A second Latin square rotated excerpts across narrators, so each excerpt appeared with each narrator equally often and excerpts could be modelled as random effects~\cite{judd2012stimuli}.
-In two of each participant's eight narratives one fact was altered (a count, a place or a severity), balanced across narrators, to measure whether errors were noticed.
-Participants were debriefed about the altered narratives.
-
-\paragraph{Participants and ethics.}
-\TBD[: recruitment, inclusion criteria (licensed, $\ge$1 year of regular driving), demographics, compensation, ethics approval number]. Location traces are identifying~\cite{demontjoye2013unique}; they were stored encrypted and are released only truncated by 500~m at each end. No narrative was presented while a participant was driving.
-
-\paragraph{Procedure.}
-After consent and a practice trial, participants completed four blocks, one per narrator.
-For each excerpt they watched the video, read the narrative and answered the items of Table~\ref{tab:items}.
-They then answered whether anything seemed wrong, and if so, what.
-Each block ended with the trust checklist of Jian et al.~\cite{jian2000trust}.
-In a question-answering task, participants typed three questions about each of two further excerpts and rated the answers, which came from T with an intent classifier or from S-PGR, counterbalanced.
-The session closed with a ranking of the narrators and a semi-structured interview, analysed thematically~\cite{braun2006thematic}.
+% verification/verify_math.py (c), (d); tests/test_study_design.py
+Twenty-eight licensed drivers each judge narratives from four narrators (T, T+V, T$\rightarrow$P, S-PGR) in a within-subject design.
+Narrator order follows a Williams design~\cite{williams1949designs}, which balances first-order carryover (Table~\ref{tab:williams}): each ordered pair of narrators occurs exactly once, every position holds every narrator once, and each of the four sequences is used by seven participants.
+Three narrators would need six sequences, which 28 does not divide.
+Every participant sees eight video excerpts of 2--3~min, two per narrator.
+A second Latin square rotates excerpts across narrators, so each excerpt appears with each narrator equally often and excerpts can be modelled as random effects~\cite{judd2012stimuli}.
+In two of each participant's eight narratives one fact is altered (a count, a place or a severity), balanced across narrators, to measure whether fluent text makes errors harder to notice; accuracy ratings are analysed on unaltered trials only.
 
 \begin{table}[t]
-\caption{Per-narrative items (7-point scale, 1 = strongly disagree, 7 = strongly agree).}
+\caption{Williams $4\times4$ sequences for narrator order; each is used by 7 of the 28 participants.}
+\label{tab:williams}
+\small
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Sequence & 1st & 2nd & 3rd & 4th\\
+\midrule
+A & T & T+V & S-PGR & T$\rightarrow$P\\
+B & T+V & T$\rightarrow$P & T & S-PGR\\
+C & T$\rightarrow$P & S-PGR & T+V & T\\
+D & S-PGR & T & T$\rightarrow$P & T+V\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Participants and ethics.}
+\TBD[: recruitment, inclusion criteria (licensed, $\ge$1 year of regular driving, not involved in the project), demographics, vehicle type and phone-in-car habits, compensation, ethics approval number].
+Location traces are identifying~\cite{demontjoye2013unique}; they are stored encrypted and released only truncated by 500~m at each end, or as aggregates.
+No narrative is presented while a participant is driving.
+
+\paragraph{Measures.}
+After each excerpt, participants rate the items of Table~\ref{tab:items} on 7-point scales and say whether anything in the narrative seemed wrong, and if so what.
+After each block of two excerpts, they complete the 12-item trust checklist of Jian et al.~\cite{jian2000trust} and the raw (unweighted) NASA-TLX~\cite{hart1988tlx,hart2006tlx}, with its six 0--100 subscales referring to the task of reading and checking the summaries.
+Situation awareness of the route is probed with SAGAT~\cite{endsley1995measurement}, adapted to replayed video: during each excerpt the video freezes and blanks at two preregistered points, and participants answer three queries within 30~s.
+The queries cover perception (\emph{Was there a jolt in the last 10 seconds?}), comprehension (\emph{Did the last jolt come from the road or from the driving?}) and projection (\emph{Is the next 200~m rougher, smoother or about the same?}).
+Answers are scored against the video annotation and the ledger.
+Because the queries belong to the excerpt and excerpts rotate across narrators, every narrator is probed with the same queries.
+
+\begin{table}[t]
+\caption{Per-narrative items (7-point scale, 1 = strongly disagree, 7 = strongly agree). Accuracy is the mean of ACC1 and ACC2.}
 \label{tab:items}
-\begin{tabular}{lp{0.78\linewidth}}
+\small
+\begin{tabular}{@{}lp{0.80\linewidth}@{}}
 \toprule
 Code & Item \\
 \midrule
@@ -235,33 +318,48 @@ FIT & This summary was written for someone like me. \\
 \end{tabular}
 \end{table}
 
+\paragraph{Procedure (about 90 minutes with a break).}
+\begin{enumerate}
+\item Consent, demographics, driving experience and a one-line self-description used for the FIT item; a practice excerpt with its own narrative and SAGAT freeze, excluded from analysis (10~min).
+\item Four blocks, one per narrator in Williams order. For each of the block's two excerpts, participants read the narrative as a briefing for the route, watch the excerpt with its two SAGAT freezes, then rate the items and answer the error question. Each block ends with the trust checklist and the NASA-TLX (about 55~min, with a 5-min break after the second block).
+\item Question answering: for each of two further excerpts, participants type three questions and rate the answers for helpfulness and apparent correctness; answers come from T with an intent classifier or from S-PGR, one system per excerpt, counterbalanced (10~min).
+\item Ranking of the four narrators and a semi-structured interview, analysed with reflexive thematic analysis~\cite{braun2006thematic} (10~min). Participants are then debriefed about the altered narratives.
+\end{enumerate}
+Reading the narrative before the excerpt reflects the intended use, a summary that informs the next drive of a route, and is what lets SAGAT projection queries measure whether the narrative built an accurate expectation; accuracy and error questions are still answered after viewing.
+
 \paragraph{Hypotheses.}
-Four hypotheses were fixed before data collection.
-H1: claim precision of S-PGR is non-inferior to T, $P_L(\text{S-PGR})-P_L(\text{T})>-0.02$.
-H2: S-PGR answers the sealed questions correctly more often than T with an intent classifier.
+Four confirmatory hypotheses are fixed in the preregistration before data collection.
+H1: claim precision of S-PGR is non-inferior to T, $P_L(\text{S-PGR})-P_L(\text{T})>-0.02$ (offline benchmark).
+H2: S-PGR answers the sealed questions correctly more often than T with an intent classifier (offline benchmark).
 H3: S-PGR is rated more useful (USE) than T+V.
-H4: perceived accuracy, the mean of ACC1 and ACC2, of S-PGR is non-inferior to T within 0.5 scale points.
-All other comparisons are exploratory.
+H4: perceived accuracy of S-PGR is non-inferior to T within 0.5 scale points.
+NASA-TLX, SAGAT accuracy, trust, error detection, the remaining items, rankings and habituation are preregistered as exploratory and are reported as such.
 
 \paragraph{Analysis.}
-Ratings were analysed with cumulative link mixed models~\cite{christensen_ordinal},
+Ratings are analysed with cumulative link mixed models~\cite{christensen_ordinal},
 \begin{equation}
-\operatorname{logit}P(Y_{ij}\le k)=\theta_k-\bigl(\beta_{\mathrm{cond}(ij)}+\beta_{\mathrm{period}(ij)}+u_i+w_j\bigr),\qquad u_i\sim\mathcal N(0,\sigma_u^2),\ w_j\sim\mathcal N(0,\sigma_w^2),
+\begin{aligned}
+\operatorname{logit}P(Y_{ij}\le k)=\theta_k-\bigl(&\beta_{\mathrm{cond}(ij)}+\beta_{\mathrm{period}(ij)}+u_i+w_j\bigr),\\
+&u_i\sim\mathcal N(0,\sigma_u^2),\ w_j\sim\mathcal N(0,\sigma_w^2),
+\end{aligned}
 \end{equation}
 for participant $i$ and excerpt $j$, with Holm correction across H2 and H3 and a first-order carryover term as a check.
-We also ran aligned-rank-transform ANOVA~\cite{wobbrock2011art} and Wilcoxon signed-rank tests on participant means as robustness checks.
-H4 was tested on participant means of unaltered trials and holds if the lower bound of the 90\% confidence interval of the paired difference exceeds $-0.5$.
-H1 used a cluster bootstrap over drives.
-H2 and error detection used logistic mixed models with random intercepts for question or participant and for excerpt.
+Aligned-rank-transform ANOVA~\cite{wobbrock2011art} and Wilcoxon signed-rank tests on participant means serve as robustness checks.
+H4 is tested on participant means of unaltered trials and holds if the lower bound of the 90\% confidence interval of the paired difference exceeds $-0.5$.
+H1 uses a cluster bootstrap over drives (10{,}000 resamples), and H2 a logistic mixed model with random intercepts for question and excerpt.
+Error detection uses a logistic mixed model on altered trials with random intercepts for participant and excerpt.
+The raw TLX score (mean of the six subscales, one per block) is analysed with a linear mixed model with narrator and period as fixed effects and a participant intercept.
+SAGAT correctness is analysed per query with a logistic mixed model with narrator and SA level as fixed effects and random intercepts for participant, excerpt and query.
+Claim-support coding and severity coding are double-coded on a subset, with Cohen's $\kappa$ and Krippendorff's $\alpha$ targets of at least 0.8.
 
 \paragraph{Power.}
-With 28 participants, a paired comparison has 80\% power for standardized effects $d_z\ge0.55$ at $\alpha=.05$ ($d_z\ge0.65$ at the Holm-adjusted $\alpha=.05/3$).
-The non-inferiority test of H4 has 82.5\% power when the margin equals half the standard deviation of paired differences.
-The pilot ($n=\TBD{}$) estimated that standard deviation at \TBD{} scale points.
+With 28 participants, a paired comparison has 80\% power for standardized effects $d_z\ge0.55$ at $\alpha=.05$ ($d_z\ge0.65$ at the Holm-adjusted $\alpha=.05/3$); detecting $d_z=0.5$ would need about 34 participants.
+The non-inferiority test of H4 has 82.5\% power when the margin equals half the standard deviation of paired differences, i.e.\ when that standard deviation is at most one scale point; at 1.25 points, 40 participants would be needed.
+A pilot ($n=\TBD{}$) estimates that standard deviation before $N$ is fixed (\TBD{}).
 
 \paragraph{Field deployment.}
-\TBD{} participants used RoadScribe on their own phones for 14 days.
-Narrators alternated by day between T+V and S-PGR on a randomized balanced schedule.
-Narratives were delivered only after the vehicle had been stationary for two minutes.
-We logged opens, time to open, dwell time and questions asked, and collected three daily ratings (USE, ANNOY, NOVEL).
+\TBD{} participants use RoadScribe on their own phones for 14 days.
+Narrators alternate by day between T+V and S-PGR on a randomized balanced schedule.
+Narratives are delivered only after the trip has ended and the vehicle has been stationary for at least two minutes.
+We log opens, time to open, dwell time and questions asked, and collect three daily ratings (USE, ANNOY, NOVEL).
 We model habituation as the narrator-by-day interaction in a mixed model with random slopes; with this sample size the analysis is descriptive.
