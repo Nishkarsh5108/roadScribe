@@ -1,0 +1,99 @@
+%% RoadScribe -- manuscript
+%%
+%% Build:   latexmk -pdf main.tex      (or: pdflatex, bibtex, pdflatex, pdflatex)
+%%
+%% Pick ONE document class line:
+%%   Single-column draft (default) ... \documentclass[manuscript,screen,review,anonymous]{acmart}
+%%   MobiSys / two-column ............ \documentclass[sigconf,screen,review,anonymous]{acmart}
+%%   IMWUT (PACM journal) ............ \documentclass[acmsmall,screen,review,anonymous]{acmart}
+%% For the camera-ready version, drop "review,anonymous" and fill in the rights block below.
+\documentclass[manuscript,screen,review,anonymous]{acmart}
+
+\usepackage{algorithm}
+% Lets TeX stretch inter-word space a little more before overfilling a line
+% (two-column layouts with long technical terms).
+\setlength{\emergencystretch}{1.5em}
+\usepackage{algpseudocode}
+
+% ------------------------------------------------------------------ macros
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\ind}{\mathbf{1}}
+% Red marker for every number that is not yet measured. The draft must not
+% leave this state with any \TBD remaining.
+\newcommand{\TBD}[1][]{\textcolor{red}{[TBD#1]}}
+
+% ------------------------------------------------------------------ rights block (fill in when accepted)
+\setcopyright{none}
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+% Neutral running header for the draft; replace with the venue lines below.
+\acmConference[Draft]{RoadScribe manuscript draft}{November 2026}{}
+\acmYear{2026}
+\acmDOI{}
+\acmISBN{}
+% IMWUT example:
+% \acmJournal{IMWUT}\acmVolume{10}\acmNumber{1}\acmArticle{1}\acmYear{2027}\acmMonth{3}
+% MobiSys example:
+% \acmConference[MobiSys '27]{The 25th Annual International Conference on Mobile Systems, Applications and Services}{June 2027}{TBD}
+
+\begin{document}
+
+\title[RoadScribe]{RoadScribe: Grounded Trip Narratives from Phone Vibration and Map Topology with an On-Device Language Model}
+
+\author{Anonymous Author(s)}
+\affiliation{%
+  \institution{Anonymous Institution}
+  \country{Anonymous}}
+
+\begin{abstract}
+Phones in cars measure how roads shake the vehicle, but road-monitoring systems reduce this to a label or a roughness index per segment, and language models that read sensor data state values that nobody checks.
+RoadScribe turns a trip recorded by a phone into a short, map-anchored narrative and answers follow-up questions, with every number, place and event traceable to a measured fact.
+Layer~1 estimates the phone's mount per handling episode with a gated, rotation-equivariant gravity estimate and a closed-form Procrustes heading fit, applies the ISO~2631-1 weightings exactly, separates how the ride felt from how the road is, and labels impulsive events with an evidence-based maneuver gate.
+Layer~2 segments the trip with Map-Informed PELT, whose penalty drops at OpenStreetMap transitions; we prove the pruning rule that keeps it exact under such penalties, where the textbook rule returned sub-optimal partitions in 136 of 300 random series.
+Layer~3 compiles a typed claim ledger and a token-budgeted capsule, lets an on-device small language model plan over ledger identifiers under a grammar, fills in every value deterministically, and verifies each sentence, falling back to a template narrator when verification fails; on controlled errors in template narratives the verifier rejected 98.9\%.
+On the PVS dataset the heading estimate recovered a rigid mount to within about $2^\circ$ across trips and exposed a $14^\circ$ mounting offset in one vehicle.
+We evaluate six narrators on a benchmark whose metrics separate language errors from sensing errors, and in a preregistered within-subject study with 28 drivers.
+\TBD[: headline benchmark and study results.]
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+ <concept>
+  <concept_id>10003120.10003138.10003141</concept_id>
+  <concept_desc>Human-centered computing~Ubiquitous and mobile computing systems and tools</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10010147.10010178.10010179.10010182</concept_id>
+  <concept_desc>Computing methodologies~Natural language generation</concept_desc>
+  <concept_significance>500</concept_significance>
+ </concept>
+ <concept>
+  <concept_id>10010405.10010481.10010485</concept_id>
+  <concept_desc>Applied computing~Transportation</concept_desc>
+  <concept_significance>300</concept_significance>
+ </concept>
+</ccs2012>
+\end{CCSXML}
+\ccsdesc[500]{Human-centered computing~Ubiquitous and mobile computing systems and tools}
+\ccsdesc[500]{Computing methodologies~Natural language generation}
+\ccsdesc[300]{Applied computing~Transportation}
+
+\keywords{mobile sensing, road surface, whole-body vibration, ISO 2631-1, change-point detection, data-to-text, grounded generation, small language models, on-device AI}
+
+\maketitle
+
+\input{sec1_intro}
+\input{sec2_related}
+\input{sec3_system}
+\input{sec4_evaluation}
+\input{sec5_discussion}
+
+\begin{acks}
+\TBD[: funding and acknowledgements; omitted for review.]
+\end{acks}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

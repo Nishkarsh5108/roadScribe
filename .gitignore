@@ -48,3 +48,15 @@ data/*
 # OS
 .DS_Store
 Thumbs.db
+
+# LaTeX build artifacts (build the paper with latexmk -pdf main.tex)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.out
+*.synctex.gz
+*.toc
+roadscribe_research/paper/*.log
+roadscribe_research/paper/*.pdf
