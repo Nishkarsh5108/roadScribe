@@ -1,0 +1,296 @@
+% =====================================================================
+% Section 3 -- The RoadScribe system
+% Usage: \input{sec3_system} inside an acmart document.
+% Preamble requirements (acmart already loads amsmath, amsthm, booktabs, xcolor):
+%   \usepackage{algorithm}
+%   \usepackage{algpseudocode}
+% Bibliography keys used below (add to your .bib):
+%   iso2631, iso8855, iso8608, iso13473, newson2009hmm, killick2012pelt,
+%   haynes2017crops, kaiser1990tkeo, mohan2008nericell, eriksson2008pothole,
+%   menegazzo2021pvs, ggerganov_llamacpp
+% =====================================================================
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\ind}{\mathbf{1}}
+\providecommand{\TBD}[1][]{\textcolor{red}{[TBD#1]}}
+
+\section{The RoadScribe System}
+\label{sec:system}
+
+RoadScribe turns a trip recorded by a commodity smartphone into a short narrative and answers follow-up questions about it.
+The pipeline has three layers (Figure~\ref{fig:arch}).
+Layer~1 converts inertial and GNSS samples into vehicle-frame ride measures and candidate events.
+Layer~2 anchors these measures to the road network and partitions the trip into homogeneous road narrative units (HRNUs).
+Layer~3 compiles the units into a token-budgeted capsule and a machine-checkable claim ledger, and generates text with an on-device small language model (SLM) under a plan--ground--realize protocol.
+
+Four principles shape the design.
+(P1)~Every number, place name and event in the output can be traced to a ledger fact.
+(P2)~The language model decides what to say and how to say it, but never supplies a value; values come from the ledger.
+(P3)~Uncertainty estimated in Layers~1--2 reaches the text as calibrated hedges.
+(P4)~When verification fails, a deterministic realizer takes over, so the SLM can add coverage but cannot remove faithfulness.
+
+\begin{figure}[t]
+  \centering
+  \fbox{\parbox{0.95\linewidth}{\centering\vspace{2em}Architecture figure placeholder: IMU+GNSS $\rightarrow$ Layer 1 (orientation, ISO weighting, events) $\rightarrow$ Layer 2 (map matching, MI-PELT, HRNUs) $\rightarrow$ Layer 3 (ledger, KST capsule, plan--ground--realize, verifier, template fallback) $\rightarrow$ narrative / answers\vspace{2em}}}
+  \caption{RoadScribe architecture.}
+  \label{fig:arch}
+\end{figure}
+
+% ---------------------------------------------------------------------
+\subsection{Layer 1: Kinetic Signal Processing}
+\label{sec:layer1}
+
+\paragraph{Notation.}
+The IMU delivers specific force $\mathbf f^b[n]\in\R^3$ and angular rate $\boldsymbol\omega^b[n]\in\R^3$ in the phone body frame $b$ at rate $f_s$ ($T_s=1/f_s$).
+GNSS delivers speed $v_k$ at times $t_k$ (1~Hz).
+The vehicle frame $v$ follows ISO~8855~\cite{iso8855} ($x$ forward, $y$ left, $z$ up).
+We estimate $\mathbf R_{vb}\in SO(3)$ and the gravity-free acceleration
+\begin{equation}
+  \mathbf a^v[n]=\mathbf R_{vb}\,\mathbf f^b[n]-g\,\mathbf e_z .
+  \label{eq:av}
+\end{equation}
+Speed is interpolated to IMU time with a monotone cubic (PCHIP), giving $v(t)$ and $a^G_{\mathrm{lon}}(t)=\dot v(t)$.
+
+\paragraph{Mount episodes.}
+A phone in a holder is static relative to the vehicle except when handled.
+We mark candidate handling where the gyroscope reports rotation that the vehicle does not perform, $\lVert\bar{\boldsymbol\omega}^b[n]\rVert-|\dot\psi^G(t_n)|>\Omega_h$, with $\dot\psi^G$ the GNSS course rate.
+A candidate becomes an episode boundary when the quasi-static gravity directions on its two sides differ by more than $\theta_h$.
+Orientation is estimated per episode $e$.
+
+\paragraph{Gravity and tilt.}
+Let $\bar{\mathbf f}^b$ and $\bar{\boldsymbol\omega}^b$ be low-passed at 0.5~Hz. The quasi-static set of episode $e$ is
+\begin{equation}
+\mathcal Q_e=\bigl\{n:\ \bigl|\lVert\bar{\mathbf f}^b[n]\rVert-g\bigr|<\epsilon_g,\ \lVert\bar{\boldsymbol\omega}^b[n]\rVert<\epsilon_\omega,\ |a^G_{\mathrm{lon}}(t_n)|<\epsilon_a,\ v(t_n)>v_{\min}\bigr\},
+\end{equation}
+and the up direction is $\mathbf u_e=\hat{\mathbf g}_e/\lVert\hat{\mathbf g}_e\rVert$ with $\hat{\mathbf g}_e$ the geometric median of $\{\bar{\mathbf f}^b[n]:n\in\mathcal Q_e\}$, which is robust to outliers and equivariant to rotation.
+Gating matters: an ungated low-pass estimate absorbs sustained acceleration and tilts by $\arctan(a/g)$, i.e.\ $17^\circ$ at $3~\mathrm{m\,s^{-2}}$.
+With $\mathbf k=\mathbf u_e\times\mathbf e_z/\lVert\mathbf u_e\times\mathbf e_z\rVert$ and $\theta=\operatorname{atan2}(\lVert\mathbf u_e\times\mathbf e_z\rVert,\mathbf u_e^\top\mathbf e_z)$, Rodrigues' formula gives the leveling rotation
+\begin{equation}
+\mathbf R_1=\mathbf I+\sin\theta\,[\mathbf k]_\times+(1-\cos\theta)\,[\mathbf k]_\times^2 .
+\end{equation}
+The route-average road grade biases this tilt (a 5\% grade is $2.9^\circ$).
+The resulting error is at most 0.13\% on the vertical channel, but up to $0.5~\mathrm{m\,s^{-2}}$ on the longitudinal channel.
+We therefore take longitudinal maneuver thresholds from GNSS rather than from the IMU.
+
+\paragraph{Heading.}
+After leveling, the horizontal axes differ from the vehicle axes by an unknown yaw $\psi$.
+The leveled yaw rate $\omega^\ell_z=(\mathbf R_1\bar{\boldsymbol\omega}^b)_z$ does not depend on $\psi$.
+This yields two GNSS-referenced targets at every fix: the longitudinal acceleration $a^G_{\mathrm{lon},k}$ and the centripetal acceleration $a^G_{\mathrm{lat},k}=v_k\,\omega^\ell_z(t_k)$.
+With the leveled horizontal specific force $\mathbf h_k\in\R^2$ and $\mathbf r_k=(a^G_{\mathrm{lon},k},a^G_{\mathrm{lat},k})^\top$,
+\begin{equation}
+\hat\psi=\arg\min_{\psi}\sum_k\bigl\lVert\mathbf R_2(\psi)\mathbf h_k-\mathbf r_k\bigr\rVert^2
+=\operatorname{atan2}\bigl(M_{21}-M_{12},\ M_{11}+M_{22}\bigr),\qquad \mathbf M=\sum_k\mathbf h_k\mathbf r_k^\top,
+\label{eq:yaw}
+\end{equation}
+where $\mathbf R_2(\psi)=\bigl[\begin{smallmatrix}\cos\psi&\sin\psi\\-\sin\psi&\cos\psi\end{smallmatrix}\bigr]$.
+The closed form follows from maximizing $\operatorname{tr}(\mathbf R_2\mathbf M)$.
+Only fixes with $v_k>3~\mathrm{m\,s^{-1}}$ are used.
+Finally $\mathbf R_{vb}=\mathbf R_z(\hat\psi)\mathbf R_1$, and a bootstrap over fixes provides the orientation confidence passed to Layer~3.
+
+\paragraph{Speed decoupling.}
+Vibration grows with speed.
+For a road whose elevation PSD follows ISO~8608~\cite{iso8608}, $G_d(n)=G_d(n_0)(n/n_0)^{-w}$, the temporal input PSD at speed $v$ scales as $v^{w-1}f^{-w}$.
+For a fixed vehicle response the RMS response therefore scales as $v^{(w-1)/2}$.
+Rather than assume $w$, we estimate the elasticity with the window-level model $\log a_{w,i}=\alpha_{j(i)}+\gamma\log v_i+\varepsilon_i$, where $j$ indexes homogeneous segments, and report
+\begin{equation}
+\tilde a_w=a_w\,(v_{\mathrm{ref}}/\bar v)^{\hat\gamma},\qquad \bar v\ge v_{\min},\ v_{\mathrm{ref}}=10~\mathrm{m\,s^{-1}}.
+\end{equation}
+The raw $a_w$ describes how the ride felt and $\tilde a_w$ describes the road; narratives keep the two apart.
+
+\paragraph{Frequency weighting.}
+ISO~2631-1~\cite{iso2631} weights seated whole-body vibration with $W_k$ (vertical) and $W_d$ (horizontal).
+Each is a product of band-limiting filters, an acceleration--velocity transition and, for $W_k$, an upward step ($p=j2\pi f$, $\omega_i=2\pi f_i$, $Q_1=1/\sqrt2$):
+\begin{align}
+H_h(p)&=\frac{p^2}{p^2+\omega_1p/Q_1+\omega_1^2}, &
+H_l(p)&=\frac{\omega_2^2}{p^2+\omega_2p/Q_1+\omega_2^2}, \nonumber\\
+H_t(p)&=\frac{(\omega_4^2/\omega_3)(p+\omega_3)}{p^2+\omega_4p/Q_4+\omega_4^2}, &
+H_s(p)&=\frac{p^2+\omega_5p/Q_5+\omega_5^2}{p^2+\omega_6p/Q_6+\omega_6^2},
+\end{align}
+with $W=H_hH_lH_tH_s$ and the parameters of Table~\ref{tab:iso}.
+Narratives are produced after the trip, so we apply $W$ in the frequency domain, $a_w=\mathcal F^{-1}\{\mathcal F\{a\}\,W(j2\pi f)\}$ with 10~s of zero padding.
+This reproduces the analog magnitude and phase exactly below $f_s/2$.
+For streaming use, a bilinear transform per second-order section, pre-warped at each section's corner frequency, is an alternative.
+At $f_s=100$~Hz its magnitude error is at most 0.72~dB ($W_k$) and 1.22~dB ($W_d$) up to 20~Hz, but it reaches 7--8~dB at 40~Hz and underestimates impulsive peaks by 3.8\%.
+At $f_s=400$~Hz the error stays within 0.23~dB up to 40~Hz.
+The 100~Hz band limit $H_l$ cannot be realized for $f_s\le200$~Hz; omitting it changes $W$ by less than 0.11~dB below 40~Hz.
+At $f_s=100$~Hz our analysis band ends near 40~Hz, below the 80~Hz upper limit of the standard.
+
+\begin{table}[t]
+\caption{ISO 2631-1 frequency-weighting parameters (Annex A). Frequencies in Hz.}
+\label{tab:iso}
+\begin{tabular}{lccccccccc}
+\toprule
+ & $f_1$ & $f_2$ & $f_3$ & $f_4$ & $Q_4$ & $f_5$ & $Q_5$ & $f_6$ & $Q_6$\\
+\midrule
+$W_k$ & 0.4 & 100 & 12.5 & 12.5 & 0.63 & 2.37 & 0.91 & 3.35 & 0.91\\
+$W_d$ & 0.4 & 100 & 2.0 & 2.0 & 0.63 & -- & -- & -- & --\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Vibration measures.}
+For each HRNU of duration $T$ and axis $j$ we compute
+\begin{gather}
+a_{w,j}=\Bigl(\tfrac1T\textstyle\int_0^Ta_{w,j}^2\,dt\Bigr)^{1/2},\qquad
+a_v=\bigl(a_{w,x}^2+a_{w,y}^2+a_{w,z}^2\bigr)^{1/2},\\
+\mathrm{MTVV}_j=\max_{t_0}\Bigl(\tfrac1\tau\textstyle\int_{t_0-\tau}^{t_0}a_{w,j}^2\,dt\Bigr)^{1/2}\ (\tau=1~\mathrm{s}),\qquad
+\mathrm{VDV}_j=\Bigl(\textstyle\int_0^Ta_{w,j}^4\,dt\Bigr)^{1/4},\qquad
+\mathrm{CF}_j=\frac{\max_t|a_{w,j}(t)|}{a_{w,j}}.
+\end{gather}
+Following the standard's evaluation rule, $a_w$ is always reported.
+MTVV and VDV are added, and the unit is flagged as shock-dominated, when
+\begin{equation}
+S_j=\ind\bigl[\mathrm{CF}_j>9\ \lor\ \mathrm{MTVV}_j/a_{w,j}>1.5\ \lor\ \mathrm{VDV}_j/(a_{w,j}T^{1/4})>1.75\bigr].
+\end{equation}
+For a zero-mean stationary signal $\mathrm{VDV}/(a_wT^{1/4})=\kappa^{1/4}$, where $\kappa$ is the kurtosis.
+The VDV criterion is therefore the condition $\kappa>9.38$; Gaussian vibration gives a ratio of 1.32.
+Comfort descriptors follow the informative comfort scale of the standard (Annex~C).
+Its bands overlap, so a single label uses geometric-mean cut-points $\boldsymbol\theta=(0.315,0.561,0.894,1.414,2.236)~\mathrm{m\,s^{-2}}$.
+ISO~2631-1 defines comfort at the seat--occupant interface, whereas a phone in a holder measures the cabin structure.
+We therefore call these quantities \emph{weighted cabin acceleration} and validate them against a phone fixed at the seat rail (Section~\ref{sec:data}).
+Below about 1~Hz, $a_{w,x}$ and $a_{w,y}$ mostly reflect braking and cornering, and we report them as driving rather than road measures.
+
+\paragraph{Modal band ratios.}
+From the Welch PSD of $a^v_z$ (Hann, 5.12~s segments, 50\% overlap) we compute energies in a body band $[0.8,2.5]$~Hz, a wheel-hop band centred on the vehicle's wheel-hop peak $\hat f_{wh}\in[6,20]$~Hz, and a high band $[16,40]$~Hz.
+From these we form $R_{wb}=\log(E_{\mathrm{wheel}}/E_{\mathrm{body}})$ and $R_{hb}=\log(E_{\mathrm{high}}/E_{\mathrm{body}})$.
+Through $\lambda=v/f$ these bands correspond to wavelengths from about 0.25~m to 12.5~m at 10~m\,s$^{-1}$, i.e.\ unevenness and megatexture, not pavement macrotexture (0.5--50~mm~\cite{iso13473}).
+They describe how the vehicle's modes are excited, and we use them within a vehicle and for segmentation.
+
+\paragraph{Impulsive events and maneuver context.}
+We band-pass the vertical channel, $\tilde z=\mathrm{BP}_{[4,25]\,\mathrm{Hz}}(a^v_z)$, and apply the Teager--Kaiser energy operator~\cite{kaiser1990tkeo},
+\begin{equation}
+\Psi[n]=\tilde z[n]^2-\tilde z[n-1]\,\tilde z[n+1],\qquad E[n]=\bigl(h_{50\,\mathrm{ms}}*\max(\Psi,0)\bigr)[n].
+\end{equation}
+For $\tilde z=A\cos(\Omega n+\phi)$, $\Psi=A^2\sin^2\Omega$, so the operator responds to both amplitude and frequency.
+Candidates are maximal runs where $E$ exceeds $\theta[n]=\operatorname{med}_W(E)+\kappa\cdot1.4826\operatorname{MAD}_W(E)$ over a 10~s centred window.
+The adaptive threshold follows the background, which is much higher on cobblestone than on asphalt.
+Runs closer than 0.3~s are merged, and runs longer than $D_{\max}=0.5~\mathrm{s}+3~\mathrm{m}/\bar v$ are passed to segmentation as rough stretches.
+The maneuver state $m_e$ is one of \textsc{brake}, \textsc{accel}, \textsc{turn}, \textsc{swerve}, \textsc{stop-go} or \textsc{cruise}.
+Longitudinal states come from GNSS ($a^G_{\mathrm{lon}}$) and lateral ones from the yaw rate ($v\,\omega^v_z$); \textsc{stop-go} requires $v<2~\mathrm{m\,s^{-1}}$ and a longitudinal jerk $|j_x|>J_{sg}$.
+With $\rho_e=E_{[8,25]}(e)/E_{[0.5,4]}(e)$ the band-energy ratio of $a^v_z$ in the event window, each candidate is labelled
+\begin{equation}
+\ell(e)=
+\begin{cases}
+\text{\textsc{artifact}} & m_e\in\{\text{\textsc{stop-go}},\text{\textsc{accel}}\}\ \land\ \max_{n\in e}|j_x[n]|>J_x\ \land\ \rho_e<\rho_0,\\
+\text{\textsc{defect}} & \lnot\,\text{\textsc{artifact}}\ \land\ \rho_e\ge\rho_0\ \land\ d_e\le D_{\max},\\
+\text{\textsc{ambiguous}} & \text{otherwise}.
+\end{cases}
+\label{eq:gate}
+\end{equation}
+Braking and turning never veto a defect.
+In our data they do not increase vertical vibration (Section~\ref{sec:l1eval}), and drivers slow down \emph{before} speed bumps, so a braking veto would remove true events.
+Acceleration is gated because it is the only maneuver that adds a dashboard-only high-band component.
+A swerve without a vertical candidate within $\pm2$~s yields a separate low-confidence \emph{avoidance} event.
+A logistic model trained on held-out routes maps the event features to $p_{\mathrm{defect}}$.
+
+% ---------------------------------------------------------------------
+\subsection{Layer 2: Spatial Grounding and Segmentation}
+\label{sec:layer2}
+
+\paragraph{Map matching.}
+We match GNSS fixes to OpenStreetMap with a hidden Markov model~\cite{newson2009hmm}.
+The states are candidate projections $x_{k,i}$ within 50~m of fix $z_k$, the emissions are $\mathcal N(\lVert z_k-x_{k,i}\rVert_{gc};0,\sigma_z^2)$, and the transitions are $\beta^{-1}\exp(-|\lVert z_k-z_{k+1}\rVert_{gc}-\lVert x_{k,i}-x_{k+1,j}\rVert_{\mathrm{route}}|/\beta)$, decoded with Viterbi.
+Forward--backward marginals give a per-fix match confidence.
+The matched arc length $s(t)$ replaces $\int v\,dt$.
+Each matched way contributes its \texttt{surface}, \texttt{smoothness}, \texttt{highway} and \texttt{name} tags, and nodes such as \texttt{traffic\_calming} and level crossings become candidate anchors.
+
+\paragraph{Map-informed change-point detection.}
+We resample Layer-1 features on a 5~m along-track grid, $\mathbf y_j=[\log\tilde a_{w,z},\log a_{w,z},R_{wb},R_{hb},\text{event rate},\log a_{w,y}]_j$, robust-standardized per trip.
+Speed is excluded so that boundaries do not follow speed changes.
+Segmentation solves
+\begin{equation}
+\min_{m,\,\tau_{1:m}}\ \sum_{i=1}^{m+1}C\bigl(\mathbf y_{\tau_{i-1}+1:\tau_i}\bigr)+\sum_{i=1}^{m}\beta(\tau_i),\qquad
+C(\mathbf y_{a:b})=\sum_{j=a}^{b}\lVert\mathbf y_j-\bar{\mathbf y}_{a:b}\rVert^2_{\mathbf D^{-1}},
+\label{eq:pelt}
+\end{equation}
+with a penalty that falls near OpenStreetMap transitions $b\in\mathcal B$ (surface-tag changes, road-class changes, junctions):
+\begin{equation}
+\beta(\tau)=\beta_0\bigl(1-\lambda\,\pi(\tau)\bigr),\qquad
+\pi(\tau)=\max_{b\in\mathcal B}w_b\exp\!\Bigl(-\frac{(s_\tau-s_b)^2}{2\sigma_b^2}\Bigr),\qquad \lambda\in[0,1).
+\end{equation}
+Setting $\lambda=0$ recovers PELT~\cite{killick2012pelt}.
+Let $F(0)=0$, $G(t)=F(t)+\beta(t)\ind[t>0]$ and $F(s)=\min_{t\in\mathcal R_s}\{G(t)+C(\mathbf y_{t+1:s})\}$.
+
+\begin{lemma}[Pruning under location-dependent penalties]
+\label{lem:prune}
+Suppose $C(\mathbf y_{t+1:s})+C(\mathbf y_{s+1:T})\le C(\mathbf y_{t+1:T})$ for all $t<s<T$.
+If $G(t)+C(\mathbf y_{t+1:s})\ge G(s)$, then $t$ is not the optimal last change point for any $T>s$ and can be removed from $\mathcal R$.
+\end{lemma}
+\begin{proof}
+For $T>s$, $G(t)+C(\mathbf y_{t+1:T})\ge G(t)+C(\mathbf y_{t+1:s})+C(\mathbf y_{s+1:T})\ge G(s)+C(\mathbf y_{s+1:T})$.
+\end{proof}
+
+The usual condition $F(t)+C(\mathbf y_{t+1:s})\ge F(s)$ coincides with Lemma~\ref{lem:prune} only for a constant penalty.
+With a lower penalty at map transitions it discards valid candidates.
+In 300 random series it returned a sub-optimal partition every time, whereas the rule of Lemma~\ref{lem:prune} matched exhaustive optimal partitioning in all 300.
+We choose $\beta_0=c\,d\ln n$ and $(c,\lambda)$ by leave-one-route-out validation, and report the penalty path~\cite{haynes2017crops}.
+
+\paragraph{Arbitration and HRNUs.}
+A change point within 25~m of a relevant map transition is snapped to it: the map fixes the location and the signal decides existence.
+A map transition without a change point is kept only if a two-sample Hotelling test on $\mathbf y$ across it rejects at $\alpha=0.01$; otherwise every way split in the map would start a new unit.
+Units shorter than 50~m are merged into their closer neighbour.
+Each boundary is typed as map+signal, signal-only or map-only.
+Each unit carries a map--signal disagreement score $1-P(\text{surface}=\text{OSM tag}\mid\mathbf y)$ when the map has a surface tag.
+The resulting HRNUs, with their measures, events, anchors and confidences, are the input to Layer~3.
+
+% ---------------------------------------------------------------------
+\subsection{Layer 3: Kinetic--Spatial Tokenization and Grounded Generation}
+\label{sec:layer3}
+
+\paragraph{Claim ledger.}
+Layer~3 first converts HRNUs and events into a ledger $\mathcal L$ of typed facts with identifiers, values, tolerances and confidences.
+The types are severity, numeric, event, anchor, comparison, missing and metadata.
+A \textsc{missing} fact records that a value is unavailable and why, e.g.\ a 48~s GNSS gap.
+The ledger is the reference for both the run-time verifier and the evaluation.
+
+\paragraph{Kinetic--Spatial Tokenizer.}
+Algorithm~\ref{alg:kst} compiles the ledger into a capsule that fits a token budget $B$.
+Each unit has a salience $\sigma_m$ and three serializations (omit, brief, full) with token costs $c_{m,\ell}$ measured with the target tokenizer.
+Selection solves a multiple-choice knapsack exactly by dynamic programming:
+\begin{equation}
+V_m(b)=\max_{\ell\in\Lambda_m}\bigl\{V_{m-1}(b-c_{m,\ell})+\sigma_m\eta_\ell\bigr\},\qquad V_0(b)=0,
+\label{eq:knap}
+\end{equation}
+where $\Lambda_m$ excludes \textsc{omit} for units in the must-mention set $\mathcal M$ and $\eta_{\textsc{omit}}=0$.
+The cost is $O(3MB)$ for $M$ units.
+
+\begin{algorithm}[t]
+\caption{Kinetic--Spatial Tokenizer (KST)}
+\label{alg:kst}
+\begin{algorithmic}[1]
+\Require HRNUs $\mathcal U=(u_1,\dots,u_M)$ in route order; events $\mathcal E$; anchors $\mathcal A$; optional history $\mathcal H$; audience $\pi$; budget $B$; tokenizer $\mathrm{tok}$
+\Ensure capsule $\kappa$ with $|\mathrm{tok}(\kappa)|\le B$; ledger $\mathcal L$
+\State $\mathcal L\gets\textsc{MetaFacts}(\text{channels},\text{map coverage},\pi)$
+\For{$m=1,\dots,M$}
+  \State $k_m\gets\textsc{IsoClass}(a_{v,m})$;\quad $\tilde k_m\gets\textsc{IsoClass}(\tilde a_{w,m})$ \Comment{felt vs.\ road}
+  \State $\mathcal E_m\gets\{e\in\mathcal E: s(e)\in[s^0_m,s^1_m)\}$
+  \State $\alpha_m\gets$ nearest anchor in $\mathcal A$ within $r_{\max}$ of $u_m$, or $\varnothing$
+  \State $\sigma_m\gets w_1k_m+w_2\sum_{e\in\mathcal E_m}p_e\,\mathrm{sev}(e)+w_3\,\Delta_{\mathcal H}(u_m)+w_4\,\delta^{\mathrm{map}}_m$
+  \State $\mathcal L\gets\mathcal L\cup\textsc{Facts}(u_m,k_m,\tilde k_m,\mathcal E_m,\alpha_m)$ \Comment{including \textsc{missing} facts}
+  \For{$\ell\in\{\textsc{omit},\textsc{brief},\textsc{full}\}$}
+    \State $c_{m,\ell}\gets|\mathrm{tok}(\textsc{Ser}_\ell(u_m))|$
+  \EndFor
+\EndFor
+\State $\mathcal M\gets\{m:\exists e\in\mathcal E_m,\ p_e\,\mathrm{sev}(e)\ge\eta^\star\}$ \Comment{must-mention units}
+\State $B'\gets B-|\mathrm{tok}(\textsc{Header})|-c_{\mathrm{rest}}$
+\State $\mathbf x^\star\gets\textsc{McKnapsack}(\{c_{m,\ell}\},\{\sigma_m\eta_\ell\},B',\mathcal M)$ \Comment{Eq.~\eqref{eq:knap}}
+\If{$\mathbf x^\star$ is infeasible}
+  \State merge adjacent units outside $\mathcal M$ and repeat; if still infeasible, increase $B$ and log it
+\EndIf
+\State $\kappa\gets\textsc{Header}\ \|\ \textsc{Ser}_{x^\star_1}(u_1)\ \|\cdots\|\ \textsc{Ser}_{x^\star_M}(u_M)\ \|\ \textsc{Rest}(\{u_m:x^\star_m=\textsc{omit}\})$
+\State \Return $\kappa,\ \mathcal L$
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Plan--ground--realize.}
+Generation runs in four steps.
+\emph{Plan:} the SLM emits a JSON plan listing which units and facts to mention, their order, a rhetorical relation for each (elaboration, contrast, cause, comparison with history) and a hedge.
+Decoding is constrained by a grammar generated per capsule from the ledger identifiers~\cite{ggerganov_llamacpp}, so the plan is always well-formed and cannot reference a unit or event that does not exist.
+\emph{Ground:} deterministic code expands each plan item into a fact frame with values, names and units taken from $\mathcal L$.
+\emph{Realize:} the SLM writes text from the fact frames, either with placeholders for numbers and names that are filled afterwards, or as free text.
+\emph{Verify:} claims extracted from the text (Section~\ref{sec:metrics}) are checked against $\mathcal L$.
+A failing sentence is regenerated at most twice and then replaced by the template realization of the same plan item.
+The SLM therefore controls selection, ordering, aggregation and phrasing, but not values.
+
+\paragraph{Hedging.}
+The plan assigns hedges from fact confidence $p$: assertive for $p\ge0.9$, \emph{likely} for $0.7\le p<0.9$, \emph{possibly} for $0.4\le p<0.7$; facts with $p<0.4$ are mentioned only when asked about.
+The verifier rejects a sentence whose hedge is stronger than its confidence band allows.
