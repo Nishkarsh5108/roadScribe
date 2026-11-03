@@ -30,7 +30,15 @@ RoadScribe is a multimodal mobile sensing framework that bridges continuous, hig
 ## Directory Structure
 
 ```
-roadscribe/
+roadScribe/
+├── roadscribe/                   # Python package (METHODOLOGY §8.2)
+│   ├── config.py                 # frozen dataclasses for every threshold; YAML + config hash
+│   ├── schemas.py                # data contracts: RawTrip, VehicleFrameTrip, Event, HRNU, Fact, Capsule, ...
+│   ├── io/pvs.py                 # PVS loader (one logger + labels), L/R clock offset by yaw xcorr
+│   ├── layer1/                   # gnss, orientation, iso2631, spectral, speed, events
+│   ├── layer2/                   # distance (5 m grid), mipelt, arbitrate (-> HRNUs)
+│   └── layer3/                   # ledger (claim ledger), kst (knapsack capsule)
+├── tests/                        # pytest port of roadscribe_research/verification/
 ├── roadscribe_research/
 │   ├── METHODOLOGY.md            # Full formal specification and implementation plan
 │   ├── paper/
@@ -41,5 +49,46 @@ roadscribe/
 │       └── *.py                  # Verification scripts (filters, PELT, orientation, etc.)
 ├── notebooks/
 │   └── 01_prepare_pvs_data.ipynb # PVS data preparation pipeline
+├── pyproject.toml
 └── .gitignore
+```
+
+Not implemented yet from §8.2: OSM extraction and HMM map matching (`layer2/osm.py`, `mapmatch.py`),
+phone loaders, templates, PGR/SLM, evaluation metrics and synthetic capsules.
+
+## Using the package
+
+```bash
+pip install -e ".[test]"
+```
+
+```python
+from roadscribe import RoadScribeConfig
+from roadscribe.io.pvs import load_pvs_trip
+from roadscribe.layer1.orientation import to_vehicle_frame
+from roadscribe.layer1.iso2631 import weight_vehicle_axes
+from roadscribe.layer1.events import detect_events
+
+cfg = RoadScribeConfig()                      # or RoadScribeConfig.from_yaml("exp.yaml")
+raw = load_pvs_trip("/data/pvs", trip=1)      # left logger, gyro in rad/s
+vft = to_vehicle_frame(raw, cfg.orientation)  # gated gravity + Procrustes yaw
+aw = weight_vehicle_axes(vft.a_v, vft.fs, cfg.iso)
+events = detect_events(vft, cfg.events, cfg.iso, gnss=raw.gnss, aw_z=aw[:, 2]).events
+```
+
+`tests/test_pipeline.py` runs the whole chain (vehicle frame → events → MI-PELT → HRNUs →
+ledger → capsule) on a synthetic trip.
+
+## Tests
+
+```bash
+pytest
+```
+
+Every Appendix A number that does not need raw data is asserted (ISO weights and IIR/FFT errors,
+MI-PELT pruning, comfort cut-points, power and Williams design). Tests that need the PVS dataset are
+skipped unless `ROADSCRIBE_PVS_DIR` points at the folder holding `PVS 1` … `PVS 9`:
+
+```bash
+ROADSCRIBE_PVS_DIR=/path/to/multi_class_kaggle pytest -m pvs
 ```
