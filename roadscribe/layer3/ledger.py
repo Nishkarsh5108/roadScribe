@@ -34,6 +34,9 @@ __all__ = [
     "facts_by_unit",
     "write_jsonl",
     "read_jsonl",
+    "format_fact",
+    "format_ledger",
+    "LedgerView",
 ]
 
 
@@ -175,17 +178,23 @@ def compile_ledger(
         b.num(uid, "duration_s", u.duration_s, cfg.eps_abs_time)
         b.num(uid, "v_mean_mps", u.v_mean, cfg.eps_abs_speed)
         # anchors
+        b.add("ANCHOR", uid, "extent", {"s0": float(u.s0), "s1": float(u.s1)}, tol=cfg.event_tol_m, conf=anchor_conf)
         if u.names:
             for name in u.names:
                 b.add("ANCHOR", uid, "name", name, conf=anchor_conf, note=f"{u.s0:.0f}-{u.s1:.0f} m")
         else:
-            b.missing(uid, "name", "no_osm_name" if u.osm_way_ids else "mapmatch_failed")
+            reason = "no_osm_name" if u.osm_way_ids else "no_map" if trip.map_coverage is None else "mapmatch_failed"
+            b.missing(uid, "name", reason)
         poi = nearest_anchor(u, anchors, anchor_rmax_m)
         if poi is not None:
             b.add("ANCHOR", uid, "near", {"name": poi.name, "s": poi.s, "kind": poi.kind}, conf=anchor_conf)
         surface = u.osm_tags.get("surface") if u.osm_tags else None
         if surface:
             b.add("ANCHOR", uid, "osm_surface", surface, conf=anchor_conf)
+        pred = u.conf.get("surface_pred") if isinstance(u.conf, Mapping) else None
+        if pred:
+            p_pred = u.conf.get("surface_pred_p", 1.0)
+            b.add("SEV", uid, "surface_signal", pred, conf=float(p_pred), note="signal surface classifier")
         if u.map_signal_disagreement is not None:
             b.num(uid, "map_signal_disagreement", u.map_signal_disagreement, cfg.eps_abs_score)
         else:
@@ -259,3 +268,97 @@ def read_jsonl(path: str | Path) -> list[Fact]:
             if line.strip():
                 out.append(Fact(**json.loads(line)))
     return out
+
+
+def _short(v: Any) -> str:
+    if isinstance(v, float):
+        return f"{v:.3g}"
+    if isinstance(v, Mapping):
+        return " ".join(f"{k}={_short(x)}" for k, x in v.items())
+    if isinstance(v, (list, tuple)):
+        return ",".join(_short(x) for x in v)
+    return str(v)
+
+
+def format_fact(f: Fact, compact: bool = False) -> str:
+    """One line per fact, e.g. ``F13 U2 NUM a_v=1.62 tol=0.162``.
+
+    ``compact=True`` is the prompt form: no tolerances, and events as
+    ``F27 U1 EVT E2 bump s=734 p=0.92 brake``.
+    """
+    head = f"{f.fact_id} {f.unit_id or '-'} {f.kind} {f.key}"
+    if f.kind == "MISSING":
+        return f"{head} ({f.note})"
+    if compact and f.kind == "EVT":
+        v = f.value
+        return f"{head} {v['type']} s={v['s']:.0f} p={f.conf:.2f} {v['maneuver']}"
+    if compact and f.key == "extent":
+        return f"{head}={f.value['s0']:.0f}-{f.value['s1']:.0f}m"
+    body = f"{head}={_short(f.value)}"
+    if f.tol is not None and not compact:
+        body += f" tol={f.tol:.3g}"
+    if f.conf < 1.0 and (not compact or f.kind != "ANCHOR"):
+        body += f" conf={f.conf:.2f}"
+    return body
+
+
+def format_ledger(
+    facts: Sequence[Fact], unit_ids: Optional[Iterable[Optional[str]]] = None, compact: bool = False
+) -> str:
+    """Fact index for prompts; ``unit_ids`` restricts it (``None`` = trip-level facts)."""
+    keep = None if unit_ids is None else set(unit_ids)
+    return "\n".join(format_fact(f, compact) for f in facts if keep is None or f.unit_id in keep)
+
+
+class LedgerView:
+    """Read-only index over a ledger, used by the planner, realizer and verifier."""
+
+    def __init__(self, facts: Sequence[Fact]):
+        self.facts = list(facts)
+        self.by_id = {f.fact_id: f for f in self.facts}
+        self.units: list[str] = []
+        self._unit: dict[Optional[str], list[Fact]] = {}
+        for f in self.facts:
+            if f.unit_id is not None and f.unit_id not in self._unit:
+                self.units.append(f.unit_id)
+            self._unit.setdefault(f.unit_id, []).append(f)
+        names: dict[str, list[str]] = {}
+        for f in self.facts:
+            if f.kind == "ANCHOR" and f.key == "name":
+                names.setdefault(f.value, []).append(f.unit_id)
+        self.name_units = names
+
+    def facts_of(self, unit_id: Optional[str]) -> list[Fact]:
+        return self._unit.get(unit_id, [])
+
+    def get(self, unit_id: Optional[str], key: str, kind: Optional[str] = None) -> Optional[Fact]:
+        for f in self.facts_of(unit_id):
+            if f.key == key and (kind is None or f.kind == kind):
+                return f
+        return None
+
+    def all(self, unit_id: Optional[str], key: str, kind: Optional[str] = None) -> list[Fact]:
+        return [f for f in self.facts_of(unit_id) if f.key == key and (kind is None or f.kind == kind)]
+
+    def value(self, unit_id: Optional[str], key: str, default: Any = None) -> Any:
+        f = self.get(unit_id, key)
+        return default if f is None or f.kind == "MISSING" else f.value
+
+    def missing(self, unit_id: Optional[str]) -> dict[str, str]:
+        return {f.key: f.note for f in self.facts_of(unit_id) if f.kind == "MISSING"}
+
+    def events(self, unit_id: Optional[str]) -> list[Fact]:
+        return [f for f in self.facts_of(unit_id) if f.kind == "EVT"]
+
+    def names(self, unit_id: str) -> list[str]:
+        return [f.value for f in self.all(unit_id, "name", "ANCHOR")]
+
+    def extent(self, unit_id: str) -> tuple[float, float]:
+        v = self.value(unit_id, "extent")
+        return (float(v["s0"]), float(v["s1"]))
+
+    def unit_of_event(self, event_id: str) -> Optional[str]:
+        for f in self.facts:
+            if f.kind == "EVT" and f.key == event_id:
+                return f.unit_id
+        return None
