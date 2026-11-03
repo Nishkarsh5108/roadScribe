@@ -31,7 +31,9 @@ wheels/
 .venv
 
 # Data & Models (keep repo clean & lightweight)
-data/
+# raw and intermediate data stay local; the synthetic datasets in data/processed are versioned
+data/*
+!data/processed/
 *.parquet
 *.csv
 *.h5

@@ -1,0 +1,134 @@
+{
+  "version": "0.1.0",
+  "date": "2026-11-03",
+  "seed": 20261103,
+  "config_hash": "33f98a43dbccfb0c",
+  "personas": [
+    "commuter",
+    "sports_car",
+    "car_sick_passenger",
+    "fleet_manager"
+  ],
+  "teacher": "roadscribe.synth.teacher/rule-planner+template-realizer v1",
+  "stats": {
+    "sft": {
+      "n": 5000,
+      "teacher_filter": {
+        "attempted": 5000,
+        "rejected": 0,
+        "acceptance": 1.0
+      },
+      "split": {
+        "train": 4733,
+        "dev": 267
+      },
+      "persona": {
+        "commuter": 1250,
+        "sports_car": 1250,
+        "car_sick_passenger": 1250,
+        "fleet_manager": 1250
+      },
+      "e2_test_persona_records": 2500,
+      "task_mix": {
+        "narrative": 3151,
+        "history": 759,
+        "degraded": 1090
+      },
+      "degradations": {
+        "osm_contradiction": 188,
+        "low_conf_events": 188,
+        "mapmatch_failed": 203,
+        "no_gyro": 206,
+        "speed_low": 200,
+        "gps_gap": 209,
+        "no_map": 206
+      },
+      "regime_max_felt_class": {
+        "0": 836,
+        "1": 836,
+        "2": 832,
+        "3": 832,
+        "4": 832,
+        "5": 832
+      },
+      "felt_class_of_described_units": {
+        "0": 4323,
+        "1": 4655,
+        "2": 4501,
+        "3": 2881,
+        "4": 1547,
+        "5": 842
+      },
+      "budget": {
+        "64": 529,
+        "128": 1712,
+        "256": 1792,
+        "512": 967
+      },
+      "budget_raised": 1100,
+      "narrative_words": {
+        "mean": 157.3,
+        "median": 150.0,
+        "p95": 274,
+        "max": 406
+      },
+      "claims_per_narrative": 34.1
+    },
+    "dpo": {
+      "n": 1500,
+      "perturbation": {
+        "dropped_must_mention": 188,
+        "number_drift": 188,
+        "anchor_swap": 188,
+        "fabricated_defect": 188,
+        "misattributed_braking": 187,
+        "missing_value_supplied": 187,
+        "severity_shift": 187,
+        "unhedged_low_confidence": 187
+      },
+      "persona": {
+        "commuter": 376,
+        "sports_car": 376,
+        "car_sick_passenger": 373,
+        "fleet_manager": 375
+      },
+      "trips_sampled": 1502,
+      "attempts": {
+        "anchor_swap": 484,
+        "dropped_must_mention": 239,
+        "fabricated_defect": 332,
+        "number_drift": 299,
+        "misattributed_braking": 234,
+        "missing_value_supplied": 620,
+        "severity_shift": 189,
+        "unhedged_low_confidence": 212
+      }
+    },
+    "qa": {
+      "n": 300,
+      "answerable": 240,
+      "question_type": {
+        "roughest": 27,
+        "jolt_cause": 27,
+        "smoothest": 27,
+        "speed_cause": 27,
+        "unit_events": 27,
+        "unit_felt": 27,
+        "map_check": 26,
+        "speed_on": 26,
+        "history": 26,
+        "out_of_scope": 15,
+        "name_missing": 15,
+        "history_missing": 15,
+        "road_vs_speed_unknown": 15
+      },
+      "persona": {
+        "commuter": 75,
+        "sports_car": 75,
+        "car_sick_passenger": 75,
+        "fleet_manager": 75
+      },
+      "trips_sampled": 300
+    }
+  }
+}
