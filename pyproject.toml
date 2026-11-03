@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "roadscribe"
+version = "0.1.0"
+description = "Grounded trip narratives from vehicular IMU + GNSS telemetry and road topology"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+yaml = ["pyyaml>=6"]
+test = ["pytest>=7", "pyyaml>=6", "statsmodels>=0.14"]
+
+[tool.setuptools.packages.find]
+include = ["roadscribe*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+markers = [
+    "pvs: needs the PVS dataset (set ROADSCRIBE_PVS_DIR to the folder holding 'PVS 1' ... 'PVS 9')",
+    "slow: takes more than a few seconds",
+]
