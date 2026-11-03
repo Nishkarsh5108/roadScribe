@@ -37,8 +37,11 @@ roadScribe/
 │   ├── io/pvs.py                 # PVS loader (one logger + labels), L/R clock offset by yaw xcorr
 │   ├── layer1/                   # gnss, orientation, iso2631, spectral, speed, events
 │   ├── layer2/                   # distance (5 m grid), mipelt, arbitrate (-> HRNUs)
-│   └── layer3/                   # ledger (claim ledger), kst (knapsack capsule)
-├── tests/                        # pytest port of roadscribe_research/verification/
+│   ├── layer3/                   # ledger, kst, hedging, lexicon, personas, plan_grammar, templates (T / T+V)
+│   ├── eval/claims.py            # closed-vocabulary claim extraction and ledger verification
+│   └── synth/                    # sampler, teacher, perturb (DPO), qa, formats, build (CLI)
+├── data/processed/               # synthetic SFT / DPO / QA datasets + DATASET_CARD.md
+├── tests/                        # pytest port of roadscribe_research/verification/ + synth tests
 ├── roadscribe_research/
 │   ├── METHODOLOGY.md            # Full formal specification and implementation plan
 │   ├── paper/
@@ -54,7 +57,7 @@ roadScribe/
 ```
 
 Not implemented yet from §8.2: OSM extraction and HMM map matching (`layer2/osm.py`, `mapmatch.py`),
-phone loaders, templates, PGR/SLM, evaluation metrics and synthetic capsules.
+phone loaders, the SLM backends and PGR loop, and the evaluation metrics beyond claim verification.
 
 ## Using the package
 
@@ -92,3 +95,14 @@ skipped unless `ROADSCRIBE_PVS_DIR` points at the folder holding `PVS 1` … `PV
 ```bash
 ROADSCRIBE_PVS_DIR=/path/to/multi_class_kaggle pytest -m pvs
 ```
+
+## Synthetic datasets
+
+```bash
+python -m roadscribe.synth.build --out data/processed
+```
+
+builds 5,000 capsule → plan → narrative examples, 1,500 DPO pairs and 300 QA items, all verified
+against their claim ledgers. Read `data/processed/DATASET_CARD.md` before training: the narratives
+come from the template teacher, and two of the four personas are E2 test personas
+(`--exclude-e2-test-personas` leaves them out).
