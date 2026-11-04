@@ -350,8 +350,8 @@ Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `g
    into frames. A narrative that fails is revised by the teacher and checked again; the checks are never
    relaxed to let a narrative through.
 
-**First-pass acceptance:** {n_fp} of {n_all} narratives ({100 * n_fp / max(n_all, 1):.1f} %) passed before any
-revision. After revision all pass. Before the first batch, trial narratives exposed two verifier gaps
+**First-pass acceptance:** {n_fp} of {n_all} outputs, narratives and answers ({100 * n_fp / max(n_all, 1):.1f} %), passed
+before any revision. After revision all pass. Before the first batch, trial narratives exposed two verifier gaps
 (coordinated subjects, and claims in compound sentences). Both were fixed in the verifier, with
 regression tests, before any narrative was counted.
 

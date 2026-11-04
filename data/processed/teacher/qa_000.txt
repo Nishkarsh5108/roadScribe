@@ -1,0 +1,79 @@
+=== syn-q0000
+Q: Where did I hit bumps on this drive?
+A: There were three sharp bumps on Canal Road (3.9–5.8 km), around the 4.6, 4.7 and 4.9 km marks. Earlier, on Mill Road (0.7–1.5 km), there was probably a bump in a turn around the 1.2 km mark.
+
+=== syn-q0001
+Q: What was the speed limit on Orchard Lane?
+A: I can't tell that from this drive: the trip data has no speed limits.
+
+=== syn-q0002
+Q: The map says Ferry Road is a dirt road. Is that right?
+A: Not for the part you drove first: Ferry Road (0.0–1.1 km) rides like asphalt, although the map lists it as dirt. Ferry Road (1.1–3.4 km) also rides like asphalt, although the map lists it as cobblestone. The map looks out of date for both parts.
+
+=== syn-q0003
+Q: Was the jolt on Victoria Road the road or me?
+A: Most likely you: a jolt around the 5.4 km mark on Victoria Road probably came from accelerating hard rather than from the road. The road itself is in good condition there; there was probably a bump around the 6.1 km mark; a sharp bump followed around the 6.4 km mark.
+
+=== syn-q0004
+Q: Was I driving too fast on Bridge Street?
+A: Not really: Bridge Street felt fairly bumpy at about 74 km/h, but the surface itself is in fair condition, which matches how it felt.
+
+=== syn-q0005
+Q: Why was the start of Elm Avenue so rough?
+A: Elm Avenue (0.0–0.9 km) is in poor condition and rides like an unpaved road, although the map lists it as asphalt; at about 21 km/h it felt fairly bumpy, so the surface rather than your speed was the cause. A jolt around the 0.2 km mark may have come from pulling away rather than from the road.
+
+=== syn-q0006
+Q: What condition is the road surface on Abbey Street in?
+A: I can't tell that from this drive: you were moving too slowly on Abbey Street to separate the road from your speed.
+
+=== syn-q0007
+Q: Was Tannery Row rough because of my speed?
+A: Yes, mostly: Tannery Row felt fairly uncomfortable mostly because of your speed: at about 69 km/h you were quick for a surface in good condition. It was also shock-dominated, with two sharp bumps around the 3.2 and 3.4 km marks; a jolt around the 3.8 km mark probably came from stop-and-go driving rather than from the road.
+
+=== syn-q0008
+Q: Did I swerve anywhere on this drive?
+A: I can't tell that from this drive: your phone recorded no gyroscope data, so swerves could not be detected.
+
+=== syn-q0009
+Q: What was the worst part of the drive?
+A: Granary Lane was the roughest stretch: it is in very poor condition and felt very uncomfortable at about 45 km/h. It rides like cobblestones, and the map lists it as sett; there may have been two bumps on it, around the 5.6 and 5.9 km marks. Lantern Lane was nearly as bad: in very poor condition and very uncomfortable at about 28 km/h.
+
+=== syn-q0010
+Q: Which road should I avoid next time?
+A: Granary Lane was the roughest stretch: the surface itself is badly broken up, it felt extremely uncomfortable at about 43 km/h near Town Hall, and it was shock-dominated, with a peak 1-s exposure of 8.6 m/s². Chapel Street (3.0–4.6 km) is almost as bad: badly broken up and extremely rough, and it rides like an unpaved road, although the map lists it as sett. If you have a choice, avoid both.
+
+=== syn-q0011
+Q: Where exactly was the bump on Elm Avenue?
+A: Elm Avenue had two sharp bumps, but a 34-second GPS gap there means I can't place them exactly. Elm Avenue felt uncomfortable mostly because of your speed: at about 58 km/h you were quick for a surface in fair condition.
+
+=== syn-q0012
+Q: What was the name of the road where I hit those two bumps near the end?
+A: I can't tell that from this drive: there was no map data for this trip, so I have no street names.
+
+=== syn-q0013
+Q: Is Church Lane really asphalt?
+A: It doesn't seem so: Church Lane rides like cobblestones, although the map lists it as asphalt. It still felt comfortable at about 41 km/h.
+
+=== syn-q0014
+Q: Was the bump right at the start my fault?
+A: Probably not: there was probably a bump on Church Lane as you braked, and bumps come from the road surface, not from your driving. A 71-second GPS gap there means its exact position is uncertain, and you were moving too slowly there to say how good the surface itself is.
+
+=== syn-q0015
+Q: Was Canal Road worse than usual today?
+A: No: Canal Road was smoother than usual. It is in excellent condition and felt comfortable at about 59 km/h; there was probably a bump right at its end as you braked.
+
+=== syn-q0016
+Q: Was Copper Street rougher than usual?
+A: Yes: Copper Street was rougher than usual. It is in fair condition, rides like an unpaved road and felt fairly bumpy at about 34 km/h. A jolt around the 4.5 km mark probably came from pulling away rather than from the road.
+
+=== syn-q0017
+Q: Is the surface on Quarry Lane getting worse?
+A: Not from what this drive shows: Quarry Lane was smoother than usual. You were moving too slowly there to rate the surface on its own, but it felt fairly bumpy and rides like cobblestones, and the map lists it as sett.
+
+=== syn-q0018
+Q: Why did Kings Road feel bumpy?
+A: Mostly because of your speed: Kings Road felt fairly bumpy at about 69 km/h, but the surface itself is in good condition. It rides like cobblestones, and the map lists it as paving stones; there may have been a bump around the 2.7 km mark as you braked. That is about the same as usual for this route.
+
+=== syn-q0019
+Q: Was North Ring rough because the road is bad or because of my driving?
+A: North Ring felt uncomfortable, but you were moving too slowly there to separate the road from your speed, so I can't say how much of that was the surface. Two jolts there may have come from stop-and-go driving rather than from the road.
