@@ -95,9 +95,11 @@ def _half_prec(num: str) -> float:
     return 0.5 * 10 ** (-d)
 
 
-def _count(w: str) -> int:
+def _count(w: str) -> Optional[int]:
+    """Number a count word stands for; ``None`` for a word outside the lexicon
+    (e.g. "the other *long* stretches"), so the claim fails instead of crashing."""
     w = w.lower()
-    return int(w) if w.isdigit() else COUNT_WORDS[w]
+    return int(w) if w.isdigit() else COUNT_WORDS.get(w)
 
 
 @dataclass

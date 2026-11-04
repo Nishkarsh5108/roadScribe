@@ -96,6 +96,13 @@ def test_must_mention_and_rest(ledger):
     assert "event_count" in bad2.reasons  # U3 holds a mentionable jolt
 
 
+@pytest.mark.parametrize("words", ["seven", "long", "the"])
+def test_rest_count_slot_never_crashes(ledger, words):
+    # a count above six or a word outside the lexicon fails the REST claim; it must not raise
+    rep = check(f"The other {words} stretches were calm, with no bumps or jolts.", ledger, omitted_units=["U4"])
+    assert "rest_count" in rep.reasons
+
+
 def test_precision_aware_numbers(ledger):
     # 4.7 km trip shown with one decimal; 22 minutes is 1320 s
     assert check("Here is your 22-minute, 4.7 km drive.", ledger).passed
