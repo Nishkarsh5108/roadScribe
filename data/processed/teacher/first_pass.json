@@ -5,5 +5,6 @@
   "sft_003.txt": {"first_pass": 16, "n": 16, "note": ""},
   "qa_000.txt": {"first_pass": 20, "n": 20, "note": "4 of 20 answers abstain"},
   "sft_004.txt": {"first_pass": 16, "n": 16, "note": "while writing, a REST count of seven exposed a verifier crash; fixed before ingest, test added"},
-  "sft_005.txt": {"first_pass": 16, "n": 16, "note": ""}
+  "sft_005.txt": {"first_pass": 16, "n": 16, "note": ""},
+  "sft_006.txt": {"first_pass": 16, "n": 16, "note": ""}
 }
