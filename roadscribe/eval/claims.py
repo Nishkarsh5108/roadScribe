@@ -309,7 +309,9 @@ def verify_text(
         else:
             unit = prev_unit
         if unit not in ("TRIP", "REST"):
-            prev_unit = unit
+            # a following sentence without a reference ("It ...") continues with the
+            # stretch named last, as a pronoun would
+            prev_unit = merged[-1][2] if merged else unit
         C.sentence_units.append((a, b, unit))
 
         # ---------------- trip-level and special numbers
