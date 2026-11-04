@@ -1,0 +1,79 @@
+=== syn-q0040
+Q: How was Pottery Lane?
+A: Pottery Lane is in fair condition and felt fairly bumpy at about 61 km/h, and it was shock-dominated, with a peak 1-s exposure of 2.6 m/s². There was a sharp bump around the 7.5 km mark; there were probably two more bumps around the 8.0 and 8.1 km marks.
+
+=== syn-q0041
+Q: What's the name of the road near Level Crossing where I braked over a bump?
+A: I can't tell that from this drive: the stretch from 0.0 to 1.9 km has no street name in the map.
+
+=== syn-q0042
+Q: Was the start of the drive bumpy because of the road?
+A: Partly: Canal Road felt fairly bumpy and rides like cobblestones, but you were moving too slowly there to separate the road from your speed. There was a sharp bump right at the start; there was probably a jolt around the 0.3 km mark; another sharp bump followed around the 0.4 km mark. Harvest Lane (0.4–1.2 km) is in poor condition and felt uncomfortable at about 29 km/h, so there the road itself was the problem.
+
+=== syn-q0043
+Q: Where was the worst part?
+A: Meadow Way was the roughest stretch: it is in poor condition and felt uncomfortable at about 38 km/h near Petrol Station, and it was shock-dominated, with a peak 1-s exposure of 2.6 m/s². There may have been a swerve around the 4.3 km mark, possibly around an obstacle; two sharp bumps followed around the 4.4 and 4.6 km marks.
+
+=== syn-q0044
+Q: Why did the end of the drive feel so rough?
+A: Ridge Road was the roughest stretch: the surface itself is in very poor condition, and it felt very uncomfortable even at about 22 km/h, with a peak 1-s exposure of 4.0 m/s². There was probably a bump around the 4.0 km mark; there may have been a swerve around the 4.2 km mark, possibly around an obstacle.
+
+=== syn-q0045
+Q: Is it my driving or the roads around Bus Depot?
+A: Mostly the roads: Garden Row is in very poor condition and felt very uncomfortable at about 33 km/h near Bus Depot. Victoria Road, also near Bus Depot, is in poor condition and felt uncomfortable at about 27 km/h; there was probably a swerve around the 0.5 km mark, likely around an obstacle; a sharp bump around the 1.1 km mark came as you braked.
+
+=== syn-q0046
+Q: How bad is Church Lane?
+A: Bad, and it gets worse towards the end: Church Lane (3.4–5.8 km) is in very poor condition and felt very uncomfortable at about 44 km/h, and Church Lane (5.8–6.4 km) was the roughest stretch of the drive: badly broken up and extremely uncomfortable at about 41 km/h, and shock-dominated, with a peak 1-s exposure of 9.3 m/s². It rides like an unpaved road, and the map lists it as dirt.
+
+=== syn-q0047
+Q: Is the surface on Ridge Road really that bad, or was it just my driving?
+A: I can't tell that from this drive: at about 15 km/h on Ridge Road you were too slow for me to separate the road from your speed.
+
+=== syn-q0048
+Q: Was the road near City Library in good shape?
+A: Yes: the stretch from 3.6 to 5.5 km, which could not be matched to a street name, is in excellent condition and felt comfortable at about 67 km/h near City Library, apart from two sharp bumps around the 4.4 and 5.1 km marks.
+
+=== syn-q0049
+Q: Did I have to swerve around anything?
+A: I can't tell that from this drive: your phone recorded no gyroscope data, so I could not check for swerves.
+
+=== syn-q0050
+Q: What were all those jolts in the second half?
+A: There was no map data for this trip, so I can only give distances. Most of those jolts came from your own driving: on the stretch from 6.5 to 8.0 km there were probably three jolts around the 7.0, 7.3 and 7.6 km marks, and they probably came from stop-and-go driving rather than from the road.
+
+=== syn-q0051
+Q: Is Signal Way paved with paving stones?
+A: It doesn't ride like it: Signal Way rides like asphalt, although the map lists it as paving stones. It is in good condition and felt a little uncomfortable at about 35 km/h.
+
+=== syn-q0052
+Q: Which part of Weavers Way was worse?
+A: The first part: Weavers Way (0.0–1.0 km) is in fair condition and felt fairly bumpy at about 64 km/h near Town Hall, and it rides like an unpaved road, although the map lists it as asphalt. Weavers Way (1.0–2.8 km) was smoother than Weavers Way (0.0–1.0 km), a little uncomfortable at about 48 km/h near Old Mill, though it had more sharp bumps: there was probably a bump around the 1.8 km mark; a sharp bump around the 2.1 km mark came in a turn; another sharp bump followed around the 2.6 km mark.
+
+=== syn-q0053
+Q: Was there roadwork on this route?
+A: I can't tell that from this drive: it records how the road felt, not whether there was roadwork.
+
+=== syn-q0054
+Q: Which road was roughest, and why?
+A: Victoria Road was the roughest stretch: it is in poor condition and felt uncomfortable at about 64 km/h near Old Mill, and it rides like cobblestones, although the map lists it as asphalt. There may have been a bump in a turn around the 2.8 km mark; there may have been two more bumps around the 3.4 and 3.6 km marks as you braked.
+
+=== syn-q0055
+Q: Was Copper Street rougher than usual?
+A: The first part was: Copper Street (1.7–2.5 km) was rougher than usual on this route, in poor condition and uncomfortable at about 46 km/h near Primary School. Copper Street (2.5–2.8 km) is in fair condition and felt fairly bumpy at about 36 km/h near Water Tower; it rides like cobblestones, and the map lists it as cobblestone.
+
+=== syn-q0056
+Q: Is the road near Old Mill getting any better?
+A: Somewhat: Farm Track was smoother than usual on this route, though it was still the roughest stretch: in very poor condition and very uncomfortable at about 32 km/h near Old Mill. Orchard Lane, also near Old Mill, was the same as usual: in very poor condition and very uncomfortable at about 39 km/h.
+
+=== syn-q0057
+Q: Was Ashgrove Road worse than usual?
+A: Yes: Ashgrove Road (0.5–0.7 km) was rougher than usual on this route, in very poor condition and very uncomfortable even at about 22 km/h near Swimming Pool, with a sharp bump around the 0.7 km mark as you braked. Ashgrove Road (0.7–2.5 km) was rougher than usual too: in poor condition and uncomfortable at about 20 km/h.
+
+=== syn-q0058
+Q: Is Hill Road still as bad as it was?
+A: It was smoother than usual today, but Hill Road is still the roughest stretch on this route: badly broken up and extremely uncomfortable at about 39 km/h near Fire Station, and shock-dominated, with a peak 1-s exposure of 9.4 m/s². A sharp bump around the 0.4 km mark came as you braked.
+
+=== syn-q0059
+Q: Why did I swerve on Church Lane?
+A: There were probably two swerves on Church Lane, around the 5.5 and 6.1 km marks, most likely around obstacles in the road; I can't tell what the obstacles were. Church Lane itself is in good condition and felt a little uncomfortable at about 29 km/h.

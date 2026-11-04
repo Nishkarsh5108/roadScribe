@@ -6,7 +6,7 @@ Written by `python -m roadscribe.synth.teacher_io ingest` from the raw teacher f
 | File | Records | Use |
 |---|---|---|
 | `roadscribe_teacher_sft.jsonl` | 140 | capsule → plan → narrative written by a frontier-model teacher |
-| `roadscribe_teacher_qa.jsonl` | 40 | driver question → teacher answer or abstention |
+| `roadscribe_teacher_qa.jsonl` | 60 | driver question → teacher answer or abstention |
 | `roadscribe_teacher_exemplars.jsonl` | 3 | frozen few-shot exemplars for §8.6 Step 0 |
 
 Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `generator.teacher` is
@@ -34,7 +34,7 @@ Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `g
    into frames. A narrative that fails is revised by the teacher and checked again; the checks are never
    relaxed to let a narrative through.
 
-**First-pass acceptance:** 177 of 180 outputs, narratives and answers (98.3 %), passed
+**First-pass acceptance:** 197 of 200 outputs, narratives and answers (98.5 %), passed
 before any revision. After revision all pass. Before the first batch, trial narratives exposed two verifier gaps
 (coordinated subjects, and claims in compound sentences). Both were fixed in the verifier, with
 regression tests, before any narrative was counted.
@@ -43,6 +43,7 @@ regression tests, before any narrative was counted.
 |---|---|---|
 | `qa_000.txt` | 20 / 20 | 4 of 20 answers abstain |
 | `qa_001.txt` | 20 / 20 | 4 of 20 answers abstain |
+| `qa_002.txt` | 20 / 20 | 4 of 20 answers abstain |
 | `sft_000.txt` | 10 / 12 | two event positions rounded more than 50 m from the event |
 | `sft_001.txt` | 15 / 16 | one verifier gap: a pronoun after a sentence naming two stretches (verifier fixed, test added) |
 | `sft_002.txt` | 16 / 16 |  |
@@ -86,5 +87,5 @@ regression tests, before any narrative was counted.
 | Narrative words | mean 203.2, median 203, p95 361, max 436 |
 | Claims per narrative | mean 38.0, median 35, p95 70, max 91 |
 | Event mentions per narrative | mean 5.6, median 5, p95 12, max 16 |
-| QA answerable / abstain | 32 / 8 |
+| QA answerable / abstain | 48 / 12 |
 | Exemplars | `syn-t0004` (commuter, narrative), `syn-t0009` (sports_car, degraded), `syn-t0018` (commuter, history) |

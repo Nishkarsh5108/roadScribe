@@ -9,5 +9,6 @@
   "sft_006.txt": {"first_pass": 16, "n": 16, "note": ""},
   "qa_001.txt": {"first_pass": 20, "n": 20, "note": "4 of 20 answers abstain"},
   "sft_007.txt": {"first_pass": 16, "n": 16, "note": ""},
-  "sft_008.txt": {"first_pass": 16, "n": 16, "note": ""}
+  "sft_008.txt": {"first_pass": 16, "n": 16, "note": ""},
+  "qa_002.txt": {"first_pass": 20, "n": 20, "note": "4 of 20 answers abstain"}
 }
