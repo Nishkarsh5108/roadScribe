@@ -68,7 +68,7 @@ _TRIP_KM = re.compile(r"\b(\d+(?:\.\d+)?) km (?:drive|run|trip)\b")
 _GPS_GAP = re.compile(r"\b(\d+)-second GPS gap\b")
 _ONE_S = re.compile(r"\b1-s\b")
 _DIGIT = re.compile(r"\d+(?:\.\d+)?")
-_REST = re.compile(r"\b(?:other|remaining) (?:(\w+) )?stretch(?:es)?\b", re.IGNORECASE)
+_REST = re.compile(r"\b(?:other|remaining|all) (?:(\w+) )?stretch(?:es)?\b", re.IGNORECASE)
 _REST_NOEV = re.compile(r"\bno bumps or jolts\b")
 _REST_EV = re.compile(rf"\b({_COUNT_ALT}|\d+) lower-priority events?\b", re.IGNORECASE)
 _SPEEDCAUSE = re.compile(r"\bbecause of (?:your |the )?speed\b")
@@ -79,6 +79,7 @@ _HIST = re.compile(r"\b(rougher|smoother) than usual\b|\bthe same as usual\b")
 _OSM = re.compile(r"\bthe map lists it as ([a-z][a-z ]*?)(?=[,.;]|$)")
 _SIGNAL = re.compile(r"\brides like (" + "|".join(re.escape(v) for v in SURFACE_WORDS.values()) + r")\b")
 _NEAR = re.compile(r"\bnear ([A-Z][\w']*(?: [A-Z][\w']*)*)")
+_COORD_GAP = re.compile(r"\s*(?:,|,? and|&)\s*(?:the stretch\s*)?")
 _SENT = re.compile(r"(?<=[.!?])\s+(?=[A-Z\-])")
 
 
@@ -123,10 +124,12 @@ class VerificationReport:
     reasons: list[str]
     event_mentions: int = 0
     matched_events: list[str] = field(default_factory=list)
+    sentence_units: list[tuple[int, int, Optional[str]]] = field(default_factory=list)  # (start, end, unit)
 
     def summary(self) -> dict:
         d = asdict(self)
         d.pop("claims")
+        d.pop("sentence_units", None)
         d["unsupported"] = [
             {"kind": c.kind, "unit": c.unit_id, "key": c.key, "value": c.value, "reason": c.reason,
              "span": list(c.span)}
@@ -143,6 +146,7 @@ class _Ctx:
         self.name_re = phrase_pattern(self.L.name_units) if self.L.name_units else None
         self.claims: list[ExtractedClaim] = []
         self.slots: list[dict] = []
+        self.sentence_units: list[tuple[int, int, Optional[str]]] = []
         self.a_v = {u: self.L.value(u, "a_v") for u in self.L.units}
 
     def add(self, kind, unit, key, value, span, ok: bool, reason: str = "", hedge="assertive"):
@@ -275,6 +279,26 @@ def verify_text(
                 refs[j] = (*refs[j][:3], True)
                 j += 1
         primary = [r for r in refs if not r[3]]
+        # merge a name and the range glued to it ("Name (a-b km)") into one reference
+        merged: list[tuple[int, int, Optional[str], bool]] = []
+        for r_ in primary:
+            if merged and r_[0] - merged[-1][1] <= 2 and r_[2] == merged[-1][2]:
+                merged[-1] = (merged[-1][0], r_[1], r_[2], False)
+            else:
+                merged.append(r_)
+        # coordinated subjects ("A and B felt ...") share the sentence's severity claims
+        coord: list[Optional[str]] = []
+        first_sev = min([m.start() for m in _FELT_RE.finditer(s)] + [m.start() for m in _ROAD_RE.finditer(s)] + [len(s)])
+        if len(merged) >= 2 and merged[1][1] <= first_sev:
+            coord = [merged[0][2]]
+            for prev_r, nxt_r in zip(merged, merged[1:]):
+                gap = s[prev_r[1]:nxt_r[0]]
+                if nxt_r[1] <= first_sev and _COORD_GAP.fullmatch(gap):
+                    coord.append(nxt_r[2])
+                else:
+                    break
+            if len(set(coord)) < 2 or None in coord:
+                coord = []
         rest_m = _REST.search(s)
         if rest_m:
             unit = "REST"
@@ -286,6 +310,7 @@ def verify_text(
             unit = prev_unit
         if unit not in ("TRIP", "REST"):
             prev_unit = unit
+        C.sentence_units.append((a, b, unit))
 
         # ---------------- trip-level and special numbers
         for m in _TRIP_MIN.finditer(s):
@@ -331,27 +356,43 @@ def verify_text(
                     C.add("UNPARSED", "REST", "number", m.group(0), (a + m.start(), a + m.end()), False, "unparsed_number")
             continue
 
-        u = unit if unit not in ("TRIP",) else None
-        resolved = u is not None
+        u0 = unit if unit not in ("TRIP",) else None
+        coord_set = set(coord)
+        u = u0
+
+        def u_at(pos: int):
+            """Stretch a claim at ``pos`` is about: the nearest one named before it in the
+            sentence, else the first one named in the sentence, else the inherited one."""
+            before = [r_ for r_ in merged if r_[0] <= pos]
+            if before:
+                return before[-1][2]
+            return merged[0][2] if merged else u0
 
         def need_unit(kind, key, value, span) -> bool:
-            if not resolved:
+            if u is None:
                 C.add(kind, None, key, value, span, False, "unresolved")
-            return resolved
+            return u is not None
 
         # ---------------- unit-level claims (sentence level)
         for m in _FELT_RE.finditer(s):
+            u = u_at(m.start())
+            sev_units = coord if coord and u in coord_set else [u]
             k = _FELT[m.group(1).lower()]
             if need_unit("SEV", "felt_class", k, (a + m.start(), a + m.end())):
-                C.add("SEV", u, "felt_class", k, (a + m.start(), a + m.end()), _band_ok(C.a_v.get(u), k), "severity_mismatch")
+                for su in sev_units:
+                    C.add("SEV", su, "felt_class", k, (a + m.start(), a + m.end()), _band_ok(C.a_v.get(su), k), "severity_mismatch")
         for m in _ROAD_RE.finditer(s):
+            u = u_at(m.start())
+            sev_units = coord if coord and u in coord_set else [u]
             k = _ROAD[m.group(1).lower()]
             if need_unit("SEV", "road_class", k, (a + m.start(), a + m.end())):
-                if "road_class" in L.missing(u):
-                    C.add("SEV", u, "road_class", k, (a + m.start(), a + m.end()), False, "hallucinated_missing")
-                else:
-                    C.add("SEV", u, "road_class", k, (a + m.start(), a + m.end()), _band_ok(L.value(u, "a_wz_dec"), k), "severity_mismatch")
+                for su in sev_units:
+                    if "road_class" in L.missing(su):
+                        C.add("SEV", su, "road_class", k, (a + m.start(), a + m.end()), False, "hallucinated_missing")
+                    else:
+                        C.add("SEV", su, "road_class", k, (a + m.start(), a + m.end()), _band_ok(L.value(su, "a_wz_dec"), k), "severity_mismatch")
         for m in _SPEEDCAUSE.finditer(s):
+            u = u_at(m.start())
             if need_unit("CMP", "speed_cause", True, (a + m.start(), a + m.end())):
                 if "road_class" in L.missing(u):
                     C.add("CMP", u, "speed_cause", True, (a + m.start(), a + m.end()), False, "hallucinated_missing")
@@ -360,13 +401,16 @@ def verify_text(
                     ok = None not in (fc, rc, v) and fc > rc and v > C.v_ref
                     C.add("CMP", u, "speed_cause", True, (a + m.start(), a + m.end()), ok, "unsupported_cause")
         for m in _REST_NOEV.finditer(s):
+            u = u_at(m.start())
             if need_unit("EVT", "no_events", True, (a + m.start(), a + m.end())):
                 n_ev = sum(1 for f in L.events(u) if f.conf >= MENTION_THRESHOLD and f.value.get("label") != "artifact")
                 C.add("EVT", u, "no_events", True, (a + m.start(), a + m.end()), n_ev == 0, "fabricated_absence")
         for m in _SHOCK.finditer(s):
+            u = u_at(m.start())
             if need_unit("SEV", "shock", True, (a + m.start(), a + m.end())):
                 C.add("SEV", u, "shock", True, (a + m.start(), a + m.end()), L.get(u, "shock", "SEV") is not None, "severity_mismatch")
         for m in _SUPER.finditer(s):
+            u = u_at(m.start())
             if need_unit("CMP", "superlative", m.group(1), (a + m.start(), a + m.end())):
                 vals = [x for x in C.a_v.values() if x is not None]
                 x = C.a_v.get(u)
@@ -374,6 +418,7 @@ def verify_text(
                 ok = x is not None and (x >= max(vals) - tol if m.group(1) == "roughest" else x <= min(vals) + tol)
                 C.add("CMP", u, "superlative", m.group(1), (a + m.start(), a + m.end()), ok, "comparison_mismatch")
         for m in _CMP.finditer(s):
+            u = u_at(m.start())
             tgt = next((r for r in refs if r[0] >= m.end() - 1 and r[3]), None)
             other = tgt[2] if tgt else None
             if need_unit("CMP", "a_v_vs_unit", m.group(1), (a + m.start(), a + m.end())):
@@ -382,6 +427,7 @@ def verify_text(
                     x > (1 + C.margin) * y if m.group(1) == "rougher" else x < y / (1 + C.margin))
                 C.add("CMP", u, "a_v_vs_unit", {"relation": m.group(1), "other": other}, (a + m.start(), a + m.end()), ok, "comparison_mismatch")
         for m in _HIST.finditer(s):
+            u = u_at(m.start())
             rel = m.group(1) or "similar"
             if need_unit("CMP", "a_v_vs_history", rel, (a + m.start(), a + m.end())):
                 f = L.get(u, "a_v_vs_history")
@@ -392,15 +438,18 @@ def verify_text(
                 else:
                     C.add("CMP", u, "a_v_vs_history", rel, (a + m.start(), a + m.end()), f.value["relation"] == rel, "comparison_mismatch")
         for m in _OSM.finditer(s):
+            u = u_at(m.start())
             if need_unit("ANCHOR", "osm_surface", m.group(1), (a + m.start(), a + m.end())):
                 tag = L.value(u, "osm_surface")
                 C.add("ANCHOR", u, "osm_surface", m.group(1), (a + m.start(), a + m.end()),
                       tag is not None and tag.replace("_", " ") == m.group(1).strip(), "wrong_map_tag")
         for m in _SIGNAL.finditer(s):
+            u = u_at(m.start())
             if need_unit("SEV", "surface_signal", m.group(1), (a + m.start(), a + m.end())):
                 C.add("SEV", u, "surface_signal", m.group(1), (a + m.start(), a + m.end()),
                       L.value(u, "surface_signal") == _SURF[m.group(1)], "wrong_surface")
         for m in _NEAR.finditer(s):
+            u = u_at(m.start())
             if need_unit("ANCHOR", "near", m.group(1), (a + m.start(), a + m.end())):
                 pois = [f.value["name"] for f in L.all(u, "near", "ANCHOR")]
                 C.add("ANCHOR", u, "near", m.group(1), (a + m.start(), a + m.end()), m.group(1) in pois, "wrong_anchor")
@@ -417,6 +466,7 @@ def verify_text(
             man = next((k for k, rx in _MAN.items() if rx.search(c)), None)
             mentions = list(_EVENT_RE.finditer(c))
             for m in mentions:
+                u = u_at(ca + m.start())
                 used.append((ca + m.start(), ca + m.end()))
                 n = _count(m.group(1))
                 noun = m.group(2).lower().rstrip("s")
@@ -426,15 +476,18 @@ def verify_text(
                     C.slots.append({"unit": u, "type": typ, "hedge": hedge, "pos": pos, "man": man,
                                     "span": (a + ca + m.start(), a + ca + m.end())})
             for m in _SPEED.finditer(c):
+                u = u_at(ca + m.start())
                 if not _overlaps((ca + m.start(), ca + m.end()), used) and need_unit("NUM", "v_mean_mps", m.group(1), (a + ca + m.start(), a + ca + m.end())):
                     C.num(u, "v_mean_mps", m.group(1), float(m.group(1)) / 3.6, 1 / 3.6, (a + ca + m.start(), a + ca + m.end()))
                 used.append((ca + m.start(), ca + m.end()))
             for m in _ACC.finditer(c):
+                u = u_at(ca + m.start())
                 key = "mtvv_z" if "peak" in c[: m.start()] else "a_v"
                 if need_unit("NUM", key, m.group(1), (a + ca + m.start(), a + ca + m.end())):
                     C.num(u, key, m.group(1), float(m.group(1)), 1.0, (a + ca + m.start(), a + ca + m.end()))
                 used.append((ca + m.start(), ca + m.end()))
             for m in _LEN.finditer(c):
+                u = u_at(ca + m.start())
                 sp = (ca + m.start(), ca + m.end())
                 if _overlaps(sp, used):
                     continue
@@ -506,7 +559,7 @@ def verify_text(
                     reason = "event_count"
                 else:
                     reason = "fabricated_event"
-            C.claims.append(ExtractedClaim("EVT", sl["unit"], sl["type"], {"pos": sl["pos"], "maneuver": sl["man"]},
+            C.claims.append(ExtractedClaim("EVT", sl["unit"], sl["type"], {"pos": sl["pos"], "maneuver": sl["man"], "event": evs[match_slot[j]]["id"] if ok else None},
                                            sl["span"], sl["hedge"], ok, reason))
 
     missed = sorted(
@@ -529,4 +582,5 @@ def verify_text(
         reasons=reasons,
         event_mentions=len(C.slots),
         matched_events=sorted(matched_events),
+        sentence_units=C.sentence_units,
     )

@@ -110,3 +110,17 @@ def test_report_lines(ledger):
             "- Road B (2.6–4.0 km), 1.4 km: ride uncomfortable; surface not rated (speed too low).")
     rep = check(text, ledger)
     assert rep.passed, [(c.kind, c.reason) for c in rep.claims if not c.supported]
+
+
+@pytest.mark.parametrize(
+    "text,ok",
+    [
+        ("Road A felt calm, and Road B (1.9–2.6 km) felt very uncomfortable.", True),  # compound sentence
+        ("Road A and the stretch from 4.0 to 4.7 km both felt calm.", True),  # coordinated subjects
+        ("Road A and Road B (1.9–2.6 km) both felt calm.", False),  # coordination checks every subject
+        ("The roughest stretch was Road B (1.9–2.6 km), which felt very uncomfortable.", True),
+        ("Road A felt calm, but on Road B (1.9–2.6 km) there was a sharp bump around the 2.1 km mark.", True),
+    ],
+)
+def test_claims_attach_to_the_stretch_they_follow(ledger, text, ok):
+    assert check(text, ledger).passed is ok
