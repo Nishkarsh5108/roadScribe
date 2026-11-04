@@ -1,5 +1,6 @@
 {
   "sft_000.txt": {"first_pass": 10, "n": 12, "note": "two event positions rounded more than 50 m from the event"},
   "sft_001.txt": {"first_pass": 15, "n": 16, "note": "one verifier gap: a pronoun after a sentence naming two stretches (verifier fixed, test added)"},
-  "sft_002.txt": {"first_pass": 16, "n": 16, "note": ""}
+  "sft_002.txt": {"first_pass": 16, "n": 16, "note": ""},
+  "sft_003.txt": {"first_pass": 16, "n": 16, "note": ""}
 }
