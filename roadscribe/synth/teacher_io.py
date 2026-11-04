@@ -17,9 +17,14 @@ that fail are reported, never repaired automatically.
     python -m roadscribe.synth.teacher_io sheet --kind sft --start 0 --n 15
     python -m roadscribe.synth.teacher_io sheet --kind qa --start 0 --n 15
     python -m roadscribe.synth.teacher_io ingest
+    python -m roadscribe.synth.teacher_io exemplars
 
 Raw teacher text lives in ``data/processed/teacher/{sft,qa}_*.txt`` as
 blocks headed ``=== <id>``; QA blocks hold a ``Q:`` and an ``A:`` line.
+``teacher/first_pass.json`` records how many narratives of each raw file
+passed before any revision, and ``teacher/exemplars.txt`` lists the frozen
+few-shot exemplars (§8.6 Step 0) that ``exemplars`` proposed. ``ingest``
+also writes ``TEACHER_CARD.md``.
 """
 from __future__ import annotations
 
@@ -42,7 +47,7 @@ from ..layer3.templates import ground
 from .sampler import SynthConfig, SyntheticTrip, sample_trip
 from .teacher import visible_units
 
-__all__ = ["TEACHER_PERSONAS", "teacher_trip", "sheet", "derive_plan", "ingest", "main"]
+__all__ = ["TEACHER_PERSONAS", "teacher_trip", "sheet", "derive_plan", "ingest", "propose_exemplars", "main"]
 
 TEACHER_PERSONAS = ("commuter", "sports_car")  # never the E2 test personas
 TEACHER_ID = "frontier-llm, interactive session, lexicon-constrained free composition v1"
@@ -58,6 +63,8 @@ _ACK = {
     "map_coverage": re.compile(r"no map data|without map data|no map\b", re.I),
 }
 _ADVICE = re.compile(r"\b(ease off|easing off|slow down|slower|back off|take it easy|gentler|brisk pace|lift off)\b", re.I)
+# one few-shot exemplar per cell: both personas, all three task mixes
+EXEMPLAR_CELLS = (("commuter", "narrative"), ("sports_car", "degraded"), ("commuter", "history"))
 
 
 def teacher_trip(kind: str, i: int) -> SyntheticTrip:
@@ -287,6 +294,109 @@ def _failure(rid: str, text: str, rep: VerificationReport, errs: list[str]) -> s
     return "\n".join(lines)
 
 
+def _id_list(path: Path) -> list[str]:
+    if not path.exists():
+        return []
+    return [ln.split("#")[0].strip() for ln in path.read_text(encoding="utf-8").splitlines() if ln.split("#")[0].strip()]
+
+
+def _stats(xs: list[float]) -> str:
+    if not xs:
+        return "-"
+    s = sorted(xs)
+    return (f"mean {sum(s) / len(s):.1f}, median {s[len(s) // 2]:.0f}, "
+            f"p95 {s[min(len(s) - 1, int(0.95 * len(s)))]:.0f}, max {s[-1]:.0f}")
+
+
+def _card(sft: list[dict], qa: list[dict], ex: list[dict], first_pass: dict) -> str:
+    n_fp = sum(v["first_pass"] for v in first_pass.values())
+    n_all = sum(v["n"] for v in first_pass.values())
+    fp_rows = "\n".join(f"| `{k}` | {v['first_pass']} / {v['n']} | {v.get('note', '')} |" for k, v in sorted(first_pass.items()))
+    degr = Counter(p for r in sft for p in r["degradations"])
+    abst = sum(not r["answerable"] for r in qa)
+    return f"""# RoadScribe frontier-teacher data
+
+Written by `python -m roadscribe.synth.teacher_io ingest` from the raw teacher files in
+`data/processed/teacher/`. Edit the raw files and re-run `ingest`; do not edit this card.
+
+| File | Records | Use |
+|---|---|---|
+| `roadscribe_teacher_sft.jsonl` | {len(sft)} | capsule → plan → narrative written by a frontier-model teacher |
+| `roadscribe_teacher_qa.jsonl` | {len(qa)} | driver question → teacher answer or abstention |
+| `roadscribe_teacher_exemplars.jsonl` | {len(ex)} | frozen few-shot exemplars for §8.6 Step 0 |
+
+Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `generator.teacher` is
+`{TEACHER_ID}`.
+
+## How the data were made
+
+1. **Trips.** `teacher_trip(kind, i)` draws trip *i* with the same sampler and ledger code as the template
+   data, on its own seed stream (`teacher:i`, `teacher-qa:i`), and only for the development personas
+   {" and ".join(TEACHER_PERSONAS)}. The task mix cycles 40 % narrative, 35 % degraded and 25 % history.
+2. **Sheets.** `teacher_io sheet` prints each capsule as a trip sheet. For every visible stretch it gives the
+   name (or the range, when the name is ambiguous or missing), length, felt and road class with a_v and
+   a_wz, speed, shock flag and MTVV, map tag and signal surface, nearby places, the comparison with the
+   previous stretch, history, MISSING fields, and every event with its hedge band, position, maneuver
+   and must-mention flag. Events below p = 0.4 and maneuver artifacts are marked as not to be mentioned. A
+   REST line summarises the stretches the budget left out.
+3. **Teacher.** A frontier LLM, working in an interactive session, wrote one narrative per sheet. It chose
+   sentence structure, order, emphasis, aggregation, comparisons and closing advice freely. For every
+   claim it used the closed lexicon of `roadscribe.layer3.lexicon` (felt and road classes, hedges,
+   maneuver phrases, event nouns and counts, positions), so the verifier can check every claim.
+4. **Verification and plans.** `ingest` verifies each narrative against the full claim ledger, with the
+   must-mention events and the REST units. It derives the plan implied by the supported claims: stretches
+   in order of first mention, the ledger facts behind each claim, acknowledgements of MISSING fields and
+   the closing advice. It then re-verifies, validates the plan against the plan grammar and grounds it
+   into frames. A narrative that fails is revised by the teacher and checked again; the checks are never
+   relaxed to let a narrative through.
+
+**First-pass acceptance:** {n_fp} of {n_all} narratives ({100 * n_fp / max(n_all, 1):.1f} %) passed before any
+revision. After revision all pass. Before the first batch, trial narratives exposed two verifier gaps
+(coordinated subjects, and claims in compound sentences). Both were fixed in the verifier, with
+regression tests, before any narrative was counted.
+
+| Raw file | First pass | Note |
+|---|---|---|
+{fp_rows}
+
+## Read before training or evaluating
+
+1. **Terms of use.** These narratives are model outputs. Check the model provider's terms on using outputs
+   to train another model before training on them or releasing them (§8.6).
+2. **Spot check.** §8.6 asks for 200 outputs to be spot-checked by hand. That has not been done yet.
+3. **E2-safe.** Only development personas appear (`e2_test_persona` is false everywhere), so E2's held-out
+   personas stay unseen.
+4. **Not C-PGR.** C-PGR, the cloud-model upper reference, must be run at evaluation time on test capsules
+   under the same prompt and protocol as the SLM. These training narratives cannot stand in for it. If the
+   same model family later serves as C-PGR or as a judge, say so, because a judge can prefer text written
+   in its own style.
+5. **Lexicon-constrained.** Sentence structure is free but the claim vocabulary is closed. This is not the
+   unconstrained free text that §6.1's LLM claim extractor is meant to handle.
+6. **Baselines.** The SLM is trained on this data and on the template data; T+Intent sees neither. When
+   comparing them, report the teacher data as part of the SLM's training budget.
+7. **QA questions.** Teacher QA questions are written by the designer, not elicited from drivers. Keep them
+   out of E1, as with `roadscribe_qa_bank.jsonl`.
+8. **Exemplars.** The exemplars come from the train split. Freeze them, with the prompt, before any sealed
+   set is touched (§8.6 leakage controls).
+
+## Composition
+
+| | |
+|---|---|
+| SFT personas | {dict(Counter(r["persona"] for r in sft))} |
+| SFT task mix | {dict(Counter(r["task_mix"] for r in sft))} |
+| SFT degradations | {dict(degr)} |
+| SFT split | {dict(Counter(r["split"] for r in sft))} |
+| Budgets | {dict(sorted(Counter(r["budget"] for r in sft).items()))} |
+| Worst felt class per trip | {dict(sorted(Counter(r["regime_max_felt_class"] for r in sft).items()))} |
+| Narrative words | {_stats([len(r["narrative"].split()) for r in sft])} |
+| Claims per narrative | {_stats([r["verification"]["n_claims"] for r in sft])} |
+| Event mentions per narrative | {_stats([r["verification"]["event_mentions"] for r in sft])} |
+| QA answerable / abstain | {len(qa) - abst} / {abst} |
+| Exemplars | {", ".join(f"`{r['id']}` ({r['persona']}, {r['task_mix']})" for r in ex) or "-"} |
+"""
+
+
 def ingest(raw: Path = RAW, out: Path = DATA, quiet: bool = False) -> dict:
     sft_rows, qa_rows, fails = [], [], []
     for path in sorted(raw.glob("sft_*.txt")):
@@ -339,19 +449,56 @@ def ingest(raw: Path = RAW, out: Path = DATA, quiet: bool = False) -> dict:
                 "verification": {"passed": True, "n_claims": rep.n_claims, "p_ledger": rep.p_ledger},
                 "generator": {"teacher": TEACHER_ID, "trip": f"teacher-qa:{i}"},
             })
-    for name, rows in (("roadscribe_teacher_sft.jsonl", sft_rows), ("roadscribe_teacher_qa.jsonl", qa_rows)):
+    by_id = {r["id"]: r for r in sft_rows}
+    ex_rows = []
+    for rid in _id_list(raw / "exemplars.txt"):
+        if rid not in by_id or by_id[rid]["split"] != "train":
+            fails.append(f"FAIL exemplar {rid}: not a verified train record")
+        else:
+            ex_rows.append(by_id[rid])
+    for name, rows in (("roadscribe_teacher_sft.jsonl", sft_rows), ("roadscribe_teacher_qa.jsonl", qa_rows),
+                       ("roadscribe_teacher_exemplars.jsonl", ex_rows)):
         with open(out / name, "w", encoding="utf-8") as fh:
-            for r in sorted(rows, key=lambda r: r.get("id") or r["qa_id"]):
+            for r in rows if name.endswith("exemplars.jsonl") else sorted(rows, key=lambda r: r.get("id") or r["qa_id"]):
                 fh.write(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n")
+    first_pass = json.loads((raw / "first_pass.json").read_text(encoding="utf-8")) if (raw / "first_pass.json").exists() else {}
+    (out / "TEACHER_CARD.md").write_text(_card(sft_rows, qa_rows, ex_rows, first_pass), encoding="utf-8")
     summary = {"sft": len(sft_rows), "qa": len(qa_rows), "failed": len(fails),
                "sft_mix": dict(Counter(r["task_mix"] for r in sft_rows)),
                "sft_persona": dict(Counter(r["persona"] for r in sft_rows)),
-               "qa_answerable": sum(r["answerable"] for r in qa_rows)}
+               "qa_answerable": sum(r["answerable"] for r in qa_rows), "exemplars": [r["id"] for r in ex_rows]}
     if not quiet:
         for f in fails:
             print(f)
         print(json.dumps(summary))
     return summary
+
+
+def propose_exemplars(rows: list[dict], target_words: int = 130, max_words: int = 200) -> list[dict]:
+    """One train-split narrative of at most ``max_words`` words per :data:`EXEMPLAR_CELLS`
+    cell (short enough for a KV-cached few-shot prompt): the one that shows the most
+    kinds of claim, relation and hedge, then the one closest to ``target_words``."""
+    out = []
+    for persona, mix in EXEMPLAR_CELLS:
+        best = None
+        for r in rows:
+            if (r["split"] != "train" or r["persona"] != persona or r["task_mix"] != mix
+                    or len(r["narrative"].split()) > max_words):
+                continue
+            kind, i = _parse_id(r["id"])
+            t = teacher_trip(kind, i)
+            plan = json.loads(r["plan"])
+            rep = verify_text(r["narrative"], t.ledger, must_mention_events=t.must_mention_events, omitted_units=plan["omit"])
+            feats = ({c.kind for c in rep.claims} | {f"hedge:{c.hedge}" for c in rep.claims if c.kind == "EVT"}
+                     | {f"rel:{it['rel']}" for it in plan["items"]} | {f"close:{plan['close']['type']}"})
+            words = len(r["narrative"].split())
+            key = (len(feats), -abs(words - target_words), r["id"])
+            if best is None or key > best["key"]:
+                best = {"key": key, "id": r["id"], "persona": persona, "task_mix": mix, "words": words, "features": sorted(feats)}
+        if best is not None:
+            best.pop("key")
+            out.append(best)
+    return out
 
 
 def main(argv: Optional[list[str]] = None) -> None:
@@ -362,10 +509,16 @@ def main(argv: Optional[list[str]] = None) -> None:
     s.add_argument("--start", type=int, default=0)
     s.add_argument("--n", type=int, default=10)
     sub.add_parser("ingest")
+    sub.add_parser("exemplars")
     args = ap.parse_args(argv)
     logging.getLogger("roadscribe.layer3.kst").setLevel(logging.WARNING)
     if args.cmd == "sheet":
         print("\n".join(sheet(args.kind, i) for i in range(args.start, args.start + args.n)))
+    elif args.cmd == "exemplars":
+        with open(DATA / "roadscribe_teacher_sft.jsonl", encoding="utf-8") as fh:
+            rows = [json.loads(ln) for ln in fh]
+        for e in propose_exemplars(rows):
+            print(json.dumps(e))
     else:
         ingest()
 

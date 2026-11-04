@@ -228,8 +228,9 @@ seed; `manifest.json` holds the full statistics.
    `[r for r in rows if not r["e2_test_persona"]]`.
 2. **Template teacher.** Fine-tuning on these narratives teaches the SLM to imitate the T+V template system,
    which is the paper's baseline. It can still teach the plan format, grounding and hedging, but it cannot
-   show that the SLM covers what templates miss (E1–E5). §8.6 plans a frontier-model teacher for that; its free
-   text needs the validated LLM claim extractor of §6.1, because this verifier only reads the template lexicon.
+   show that the SLM covers what templates miss (E1–E5). The frontier-model teacher of §8.6 is in
+   `roadscribe_teacher_sft.jsonl` (see `TEACHER_CARD.md`): its sentence structure is free, but it writes claims
+   in this verifier's lexicon, so every claim is still checked. Fully free text would need §6.1's LLM extractor.
 3. **All synthetic.** §8.6 plans 30 % real HRNUs from training routes; none are included here.
 4. **QA is not E1.** These questions were written by the system designer. Use the bank for development and
    regression tests only; E1 needs questions elicited from drivers, with a sealed half.

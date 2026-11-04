@@ -106,3 +106,14 @@ builds 5,000 capsule → plan → narrative examples, 1,500 DPO pairs and 300 QA
 against their claim ledgers. Read `data/processed/DATASET_CARD.md` before training: the narratives
 come from the template teacher, and two of the four personas are E2 test personas
 (`--exclude-e2-test-personas` leaves them out).
+
+Narratives from a frontier-model teacher (§8.6), on development personas only, are written against
+trip sheets and verified claim by claim:
+
+```bash
+python -m roadscribe.synth.teacher_io sheet --start 0 --n 16   # trip sheets for the teacher
+python -m roadscribe.synth.teacher_io ingest                    # verify, derive plans, write JSONL
+```
+
+`data/processed/TEACHER_CARD.md` describes the protocol, the first-pass acceptance and the caveats
+(terms of use, hand spot-check, C-PGR).

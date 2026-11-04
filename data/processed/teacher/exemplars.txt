@@ -1,0 +1,5 @@
+# Frozen few-shot exemplars for METHODOLOGY §8.6 Step 0 (proposed by `teacher_io exemplars`).
+# Train split only. Do not change these after any sealed set has been touched.
+syn-t0004  # commuter, narrative: cause, contrast, map tag, hedged swerve, REST, advice
+syn-t0009  # sports_car, degraded: GPS-gap acknowledgement, shock, low-speed abstention, advice
+syn-t0018  # commuter, history: rougher/smoother than usual, contrast chain, events by maneuver
