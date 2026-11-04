@@ -13,5 +13,6 @@
   "qa_002.txt": {"first_pass": 20, "n": 20, "note": "4 of 20 answers abstain"},
   "sft_009.txt": {"first_pass": 16, "n": 16, "note": ""},
   "sft_010.txt": {"first_pass": 15, "n": 16, "note": "one felt word ('rough') in a trip-level sentence"},
-  "sft_011.txt": {"first_pass": 16, "n": 16, "note": ""}
+  "sft_011.txt": {"first_pass": 16, "n": 16, "note": ""},
+  "qa_003.txt": {"first_pass": 19, "n": 20, "note": "4 of 20 answers abstain; one felt word ('rough') in a lead-in"}
 }

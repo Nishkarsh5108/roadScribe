@@ -6,7 +6,7 @@ Written by `python -m roadscribe.synth.teacher_io ingest` from the raw teacher f
 | File | Records | Use |
 |---|---|---|
 | `roadscribe_teacher_sft.jsonl` | 188 | capsule → plan → narrative written by a frontier-model teacher |
-| `roadscribe_teacher_qa.jsonl` | 60 | driver question → teacher answer or abstention |
+| `roadscribe_teacher_qa.jsonl` | 80 | driver question → teacher answer or abstention |
 | `roadscribe_teacher_exemplars.jsonl` | 3 | frozen few-shot exemplars for §8.6 Step 0 |
 
 Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `generator.teacher` is
@@ -34,7 +34,7 @@ Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `g
    into frames. A narrative that fails is revised by the teacher and checked again; the checks are never
    relaxed to let a narrative through.
 
-**First-pass acceptance:** 244 of 248 outputs, narratives and answers (98.4 %), passed
+**First-pass acceptance:** 263 of 268 outputs, narratives and answers (98.1 %), passed
 before any revision. After revision all pass. Before the first batch, trial narratives exposed two verifier gaps
 (coordinated subjects, and claims in compound sentences). Both were fixed in the verifier, with
 regression tests, before any narrative was counted.
@@ -44,6 +44,7 @@ regression tests, before any narrative was counted.
 | `qa_000.txt` | 20 / 20 | 4 of 20 answers abstain |
 | `qa_001.txt` | 20 / 20 | 4 of 20 answers abstain |
 | `qa_002.txt` | 20 / 20 | 4 of 20 answers abstain |
+| `qa_003.txt` | 19 / 20 | 4 of 20 answers abstain; one felt word ('rough') in a lead-in |
 | `sft_000.txt` | 10 / 12 | two event positions rounded more than 50 m from the event |
 | `sft_001.txt` | 15 / 16 | one verifier gap: a pronoun after a sentence naming two stretches (verifier fixed, test added) |
 | `sft_002.txt` | 16 / 16 |  |
@@ -90,5 +91,5 @@ regression tests, before any narrative was counted.
 | Narrative words | mean 204.8, median 200, p95 348, max 436 |
 | Claims per narrative | mean 38.6, median 36, p95 69, max 91 |
 | Event mentions per narrative | mean 5.6, median 5, p95 12, max 16 |
-| QA answerable / abstain | 48 / 12 |
+| QA answerable / abstain | 64 / 16 |
 | Exemplars | `syn-t0004` (commuter, narrative), `syn-t0009` (sports_car, degraded), `syn-t0018` (commuter, history) |

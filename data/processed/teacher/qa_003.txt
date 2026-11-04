@@ -1,0 +1,79 @@
+=== syn-q0060
+Q: Did anything happen on Castle Street?
+A: A few things, none of them serious: Castle Street felt comfortable at about 77 km/h, but a jolt around the 7.4 km mark probably came from accelerating hard rather than from the road; there was probably a swerve around the 9.4 km mark, likely around an obstacle; a sharp bump around the 9.5 km mark came as you braked.
+
+=== syn-q0061
+Q: Is Market Street cobbled?
+A: Only the first part rides like it: Market Street (0.0–2.0 km) rides like cobblestones, although the map lists it as asphalt, while Market Street (2.0–2.3 km) rides like asphalt. Market Street (0.0–2.0 km) and Market Street (2.0–2.3 km) are both in excellent condition and felt comfortable at speed.
+
+=== syn-q0062
+Q: Why was Victoria Road a bit uncomfortable?
+A: Mostly because of your speed: Victoria Road felt a little uncomfortable at about 68 km/h near Central Station, but the surface itself is in excellent condition. There was a sharp bump around the 0.3 km mark; another sharp bump around the 0.4 km mark came as you braked; there was one more sharp bump around the 1.0 km mark.
+
+=== syn-q0063
+Q: Can I take Meadow Way faster?
+A: Within reason: Meadow Way (2.1–2.9 km) is in good condition and felt a little uncomfortable at about 33 km/h, and it rides like asphalt, although the map lists it as cobblestone. Meadow Way (2.9–3.6 km) felt a little uncomfortable at about 75 km/h on a surface in good condition, and it was shock-dominated, with a peak 1-s exposure of 1.8 m/s². There was a sharp bump around the 3.1 km mark, so watch for it.
+
+=== syn-q0064
+Q: How good is the road surface where I started?
+A: I can't tell that from this drive: you were moving too slowly on the stretch from 0.0 to 1.6 km to separate the road from your speed.
+
+=== syn-q0065
+Q: Where were the bumps toward the end?
+A: On Market Street: there was a sharp bump around the 6.4 km mark; another sharp bump came around the 7.3 km mark; one more sharp bump around the 7.4 km mark came as you braked. Market Street is in good condition and felt a little uncomfortable at about 41 km/h, but it was shock-dominated, with a peak 1-s exposure of 1.8 m/s².
+
+=== syn-q0066
+Q: Were those early jolts the road's fault?
+A: Probably not: two jolts on Copper Street, around the 0.4 and 0.6 km marks, probably came from stop-and-go driving rather than from the road. Copper Street itself is in excellent condition and felt comfortable at about 75 km/h.
+
+=== syn-q0067
+Q: Which bit should I slow down for?
+A: Forest Road (2.7–3.4 km) was the roughest stretch: in poor condition and uncomfortable at about 46 km/h, and shock-dominated, with a peak 1-s exposure of 4.3 m/s²; a sharp bump around the 3.1 km mark came as you braked. Harbour Way is the other one: it felt uncomfortable mostly because of your speed, since at about 53 km/h you were quick for a surface in fair condition.
+
+=== syn-q0068
+Q: Is it worth avoiding North Ring?
+A: If you can, yes: North Ring was the roughest stretch, in very poor condition and very uncomfortable even at about 28 km/h, and shock-dominated, with a peak 1-s exposure of 7.9 m/s². A sharp bump right at its start came as you braked; another sharp bump around the 4.3 km mark came in a turn. It rides like an unpaved road, and the map lists it as unpaved.
+
+=== syn-q0069
+Q: What's the name of the rough stretch in the middle?
+A: I can't tell that from this drive: without map data I can only describe that stretch by distance, from 1.2 to 1.9 km.
+
+=== syn-q0070
+Q: Which part of the drive was the worst?
+A: The stretch from 2.1 to 3.8 km was the roughest stretch: badly broken up and extremely uncomfortable at about 38 km/h, and shock-dominated, with a peak 1-s exposure of 4.9 m/s². A jolt around the 2.9 km mark may have come from stop-and-go driving rather than from the road; a sharp bump around the 3.6 km mark came as you braked. There was no map data for this trip, so I can't name the street.
+
+=== syn-q0071
+Q: Was Hill Road bad because of the road surface?
+A: I can't tell that from this drive: at about 14 km/h on Hill Road you were moving too slowly to separate the road from your speed.
+
+=== syn-q0072
+Q: Was there anything on the last part of Brook Lane?
+A: I can't tell that from this drive: a 30-second GPS gap on Brook Lane (4.0–4.4 km) means its exact positions are uncertain.
+
+=== syn-q0073
+Q: How confident are you about the bumps on Kings Road?
+A: Not very: there may have been a bump on Kings Road (0.0–2.5 km), around the 0.7 km mark. There may also have been a bump on Kings Road (2.5–3.3 km), around the 3.0 km mark. Both signals were faint.
+
+=== syn-q0074
+Q: Why didn't you name the road in the middle of the drive?
+A: The stretch from 2.4 to 4.4 km could not be matched to a street name in the map. It is in excellent condition and felt a little uncomfortable mostly because of your speed: at about 67 km/h you were quick even for a surface in excellent condition.
+
+=== syn-q0075
+Q: Was the start of Ferry Road worse than usual?
+A: Yes: Ferry Road (0.0–1.1 km) was rougher than usual on this route, though it is in good condition and felt only a little uncomfortable at about 51 km/h near Level Crossing. A sharp bump around the 0.5 km mark came in a turn; there was another sharp bump around the 0.7 km mark.
+
+=== syn-q0076
+Q: Why did Hill Road feel uncomfortable?
+A: Mostly because of your speed: Hill Road felt fairly uncomfortable at about 73 km/h near Swimming Pool, while the surface itself is in good condition. A jolt around the 0.9 km mark probably came from stop-and-go driving rather than from the road.
+
+=== syn-q0077
+Q: Was Willow Drive worse than usual?
+A: Yes: Willow Drive was rougher than usual on this route, and it felt fairly bumpy, though you were moving too slowly there to separate the road from your speed. It rides like cobblestones, although the map lists it as unpaved. There were two sharp bumps around the 3.8 and 4.1 km marks; another sharp bump around the 4.3 km mark came in a turn.
+
+=== syn-q0078
+Q: Which roads were worse than usual today?
+A: Victoria Road (1.1–1.9 km) and Park Avenue were both rougher than usual on this route. Victoria Road (1.1–1.9 km) is in poor condition and felt uncomfortable at about 20 km/h; a sharp bump around the 1.4 km mark came as you braked; there was another sharp bump around the 1.7 km mark. Park Avenue felt uncomfortable mostly because of your speed: at about 48 km/h you were quick for a surface in fair condition. Hill Road (5.9–6.6 km) was rougher than usual too, though it is in good condition and felt only a little uncomfortable.
+
+=== syn-q0079
+Q: Is Riverside Drive improving?
+A: It was smoother than usual today, but Riverside Drive is still in poor condition and felt uncomfortable at about 44 km/h, and it was shock-dominated, with a peak 1-s exposure of 4.6 m/s²; there was a sharp bump around the 0.5 km mark.
