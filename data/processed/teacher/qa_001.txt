@@ -1,0 +1,79 @@
+=== syn-q0020
+Q: Which part of today's drive was hardest on the car?
+A: Factory Road was the roughest stretch: it is in very poor condition and felt very uncomfortable even at about 27 km/h near Water Tower, and it was shock-dominated, with a peak 1-s exposure of 5.7 m/s². There was a sharp bump around the 1.3 km mark. It rides like asphalt, although the map lists it as sett.
+
+=== syn-q0021
+Q: Was Elm Avenue rough because I was going too fast?
+A: On the second part, yes: Elm Avenue (3.1–5.6 km) felt very uncomfortable mostly because of your speed: at about 73 km/h you were quick for a surface in poor condition. On the first part, Elm Avenue (2.4–3.1 km), you were only doing about 35 km/h, yet it still felt very uncomfortable on a surface in poor condition.
+
+=== syn-q0022
+Q: Is Signal Way paved with cobblestones like the map says?
+A: It doesn't ride like it: Signal Way rides like an unpaved road, although the map lists it as cobblestone. Either way it is badly broken up, and it felt extremely uncomfortable even at about 27 km/h, with three sharp bumps around the 2.3, 2.8 and 3.2 km marks.
+
+=== syn-q0023
+Q: How bad is the road surface on the first part of Chapel Street?
+A: I can't tell that from this drive: you were moving too slowly on Chapel Street (5.9–7.0 km) to separate the road from your speed.
+
+=== syn-q0024
+Q: Did I hit any potholes?
+A: Possibly: there were sharp bumps, though I can't tell potholes apart from other bumps. Two sharp bumps were on Beacon Way (0.0–2.4 km), around the 0.3 and 0.4 km marks. Another sharp bump was on Canal Road (4.8–6.3 km), around the 5.6 km mark.
+
+=== syn-q0025
+Q: Was there anything on Ridge Road I should watch for next time?
+A: Just two spots: Ridge Road is in excellent condition and felt comfortable at about 74 km/h, but a sharp bump around the 1.5 km mark came as you braked; there was probably another bump around the 2.2 km mark.
+
+=== syn-q0026
+Q: Is Factory Road really paved with paving stones?
+A: It doesn't seem so: Factory Road (2.6–3.4 km) rides like asphalt, although the map lists it as paving stones. It is in good condition and felt a little uncomfortable at about 30 km/h, with two sharp bumps close together near its middle.
+
+=== syn-q0027
+Q: Did the car swerve at any point?
+A: No swerves showed up on this drive. There was a sharp bump on Beacon Way (4.8–6.5 km), around the 6.0 km mark.
+
+=== syn-q0028
+Q: Why did Ridge Road feel rough at the start?
+A: Mostly because of your speed: Ridge Road felt fairly uncomfortable at about 70 km/h, while the surface itself is in good condition. It was shock-dominated, with a peak 1-s exposure of 2.3 m/s², and a sharp bump around the 0.5 km mark came as you braked. It rides like asphalt, although the map lists it as unpaved.
+
+=== syn-q0029
+Q: Exactly where on Castle Street did the shaking start?
+A: I can't tell that from this drive: a 73-second GPS gap on Castle Street means its exact positions are uncertain.
+
+=== syn-q0030
+Q: What were the bumps on Hill Road?
+A: Hill Road had a sharp bump around the 5.9 km mark; there was probably another bump around the 7.1 km mark; a sharp bump followed around the 7.7 km mark. Hill Road itself is in good condition and felt a little uncomfortable at about 35 km/h.
+
+=== syn-q0031
+Q: Is Beacon Way gravel or cobbles?
+A: Beacon Way rides like cobblestones, although the map lists it as compacted. It felt uncomfortable, but you were moving too slowly there to rate the surface itself; a sharp bump around the 2.4 km mark came in a turn; there was another sharp bump around the 2.7 km mark.
+
+=== syn-q0032
+Q: What was the roughest bit of the drive?
+A: The stretch from 0.5 to 1.0 km was the roughest stretch: it felt very uncomfortable, mostly because of your speed: at about 46 km/h you were quick for a surface in poor condition. It was shock-dominated, with a peak 1-s exposure of 4.8 m/s², and a sharp bump right at its start came as you braked. There was no map data for this trip, so I can't name the street.
+
+=== syn-q0033
+Q: Should I slow down on Elm Avenue next time?
+A: On the first part, yes: Elm Avenue (1.8–3.7 km) felt uncomfortable mostly because of your speed: at about 60 km/h you were quick for a surface in fair condition. There may have been a bump around the 2.3 km mark as you braked. On Elm Avenue (3.7–4.2 km) you were already moving too slowly to separate the road from your speed.
+
+=== syn-q0034
+Q: How bad was Chapel Street near Central Station?
+A: Chapel Street (1.2–1.9 km) is in very poor condition and felt uncomfortable even at about 22 km/h near Central Station, and it was shock-dominated, with a peak 1-s exposure of 3.9 m/s². Two sharp bumps around the 1.3 and 1.4 km marks came as you braked. It rides like cobblestones, and the map lists it as paving stones.
+
+=== syn-q0035
+Q: Was Meadow Way as bad as it usually is?
+A: Yes, Meadow Way (1.5–2.4 km) was the same as usual: badly broken up and extremely uncomfortable even at about 28 km/h, and shock-dominated, with a peak 1-s exposure of 9.9 m/s². There was a sharp bump around the 2.1 km mark; two more sharp bumps around the 2.2 and 2.3 km marks came as you braked.
+
+=== syn-q0036
+Q: Was my drive along Riverside Drive smoother than usual?
+A: Yes: Riverside Drive (4.0–5.8 km), Riverside Drive (5.8–6.8 km) and Riverside Drive (6.8–8.7 km) were all smoother than usual on this route, and all three are in excellent condition and felt comfortable. Willow Drive, by contrast, was rougher than usual.
+
+=== syn-q0037
+Q: Is Chapel Street going to be resurfaced?
+A: I can't tell that from this drive: it only shows how the road felt today, not any roadwork plans.
+
+=== syn-q0038
+Q: How much fuel did I use on this trip?
+A: I can't tell that from this drive: the trip data does not include fuel use.
+
+=== syn-q0039
+Q: Was Willow Drive rougher than usual today?
+A: Yes: Willow Drive was rougher than usual on this route, although it is in good condition and only felt a little uncomfortable at about 38 km/h near Sports Ground.
