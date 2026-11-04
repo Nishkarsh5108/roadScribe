@@ -36,6 +36,7 @@ data/*
 !data/processed/
 *.parquet
 *.csv
+!data/processed/teacher/spot_check.csv
 *.h5
 *.keras
 *.tflite

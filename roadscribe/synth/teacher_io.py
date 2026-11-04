@@ -18,6 +18,7 @@ that fail are reported, never repaired automatically.
     python -m roadscribe.synth.teacher_io sheet --kind qa --start 0 --n 15
     python -m roadscribe.synth.teacher_io ingest
     python -m roadscribe.synth.teacher_io exemplars
+    python -m roadscribe.synth.teacher_io spotcheck
 
 Raw teacher text lives in ``data/processed/teacher/{sft,qa}_*.txt`` as
 blocks headed ``=== <id>``; QA blocks hold a ``Q:`` and an ``A:`` line.
@@ -363,7 +364,9 @@ regression tests, before any narrative was counted.
 
 1. **Terms of use.** These narratives are model outputs. Check the model provider's terms on using outputs
    to train another model before training on them or releasing them (§8.6).
-2. **Spot check.** §8.6 asks for 200 outputs to be spot-checked by hand. That has not been done yet.
+2. **Spot check.** §8.6 asks for 200 outputs to be spot-checked by hand. `teacher/spot_check.csv`
+   (written by `teacher_io spotcheck`) holds a seeded sample of 200 with empty `verdict` and `notes`
+   columns. It has not been filled in yet.
 3. **E2-safe.** Only development personas appear (`e2_test_persona` is false everywhere), so E2's held-out
    personas stay unseen.
 4. **Not C-PGR.** C-PGR, the cloud-model upper reference, must be run at evaluation time on test capsules
@@ -474,6 +477,23 @@ def ingest(raw: Path = RAW, out: Path = DATA, quiet: bool = False) -> dict:
     return summary
 
 
+def write_spot_check(sft: list[dict], qa: list[dict], path: Path, n: int = 200, seed: int = 20261104) -> int:
+    """Write a seeded sample of ``n`` teacher outputs as a CSV for the hand spot check
+    of §8.6, with empty ``verdict`` and ``notes`` columns for the reviewer."""
+    import csv
+
+    pool = ([("sft", r["id"], r["persona"], r["task_mix"], "", r["narrative"]) for r in sft]
+            + [("qa", r["qa_id"], r["persona"], "qa", r["question"], r["gold_answer"]) for r in qa])
+    pool.sort(key=lambda x: x[1])
+    sample = sorted(random.Random(seed).sample(pool, min(n, len(pool))), key=lambda x: x[1])
+    with open(path, "w", encoding="utf-8", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["kind", "id", "persona", "task_mix", "question", "text", "verdict", "notes"])
+        for row in sample:
+            w.writerow([*row, "", ""])
+    return len(sample)
+
+
 def propose_exemplars(rows: list[dict], target_words: int = 130, max_words: int = 200) -> list[dict]:
     """One train-split narrative of at most ``max_words`` words per :data:`EXEMPLAR_CELLS`
     cell (short enough for a KV-cached few-shot prompt): the one that shows the most
@@ -510,6 +530,7 @@ def main(argv: Optional[list[str]] = None) -> None:
     s.add_argument("--n", type=int, default=10)
     sub.add_parser("ingest")
     sub.add_parser("exemplars")
+    sub.add_parser("spotcheck")
     args = ap.parse_args(argv)
     logging.getLogger("roadscribe.layer3.kst").setLevel(logging.WARNING)
     if args.cmd == "sheet":
@@ -519,6 +540,13 @@ def main(argv: Optional[list[str]] = None) -> None:
             rows = [json.loads(ln) for ln in fh]
         for e in propose_exemplars(rows):
             print(json.dumps(e))
+    elif args.cmd == "spotcheck":
+        rows = {}
+        for name in ("roadscribe_teacher_sft.jsonl", "roadscribe_teacher_qa.jsonl"):
+            with open(DATA / name, encoding="utf-8") as fh:
+                rows[name] = [json.loads(ln) for ln in fh]
+        k = write_spot_check(rows["roadscribe_teacher_sft.jsonl"], rows["roadscribe_teacher_qa.jsonl"], RAW / "spot_check.csv")
+        print(f"wrote {k} rows to {RAW / 'spot_check.csv'}")
     else:
         ingest()
 

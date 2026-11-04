@@ -63,7 +63,9 @@ regression tests, before any narrative was counted.
 
 1. **Terms of use.** These narratives are model outputs. Check the model provider's terms on using outputs
    to train another model before training on them or releasing them (§8.6).
-2. **Spot check.** §8.6 asks for 200 outputs to be spot-checked by hand. That has not been done yet.
+2. **Spot check.** §8.6 asks for 200 outputs to be spot-checked by hand. `teacher/spot_check.csv`
+   (written by `teacher_io spotcheck`) holds a seeded sample of 200 with empty `verdict` and `notes`
+   columns. It has not been filled in yet.
 3. **E2-safe.** Only development personas appear (`e2_test_persona` is false everywhere), so E2's held-out
    personas stay unseen.
 4. **Not C-PGR.** C-PGR, the cloud-model upper reference, must be run at evaluation time on test capsules
