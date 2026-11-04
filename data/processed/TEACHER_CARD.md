@@ -5,7 +5,7 @@ Written by `python -m roadscribe.synth.teacher_io ingest` from the raw teacher f
 
 | File | Records | Use |
 |---|---|---|
-| `roadscribe_teacher_sft.jsonl` | 124 | capsule → plan → narrative written by a frontier-model teacher |
+| `roadscribe_teacher_sft.jsonl` | 140 | capsule → plan → narrative written by a frontier-model teacher |
 | `roadscribe_teacher_qa.jsonl` | 40 | driver question → teacher answer or abstention |
 | `roadscribe_teacher_exemplars.jsonl` | 3 | frozen few-shot exemplars for §8.6 Step 0 |
 
@@ -34,7 +34,7 @@ Records have the fields of `roadscribe_sft.jsonl` plus `"source": "teacher"`; `g
    into frames. A narrative that fails is revised by the teacher and checked again; the checks are never
    relaxed to let a narrative through.
 
-**First-pass acceptance:** 161 of 164 outputs, narratives and answers (98.2 %), passed
+**First-pass acceptance:** 177 of 180 outputs, narratives and answers (98.3 %), passed
 before any revision. After revision all pass. Before the first batch, trial narratives exposed two verifier gaps
 (coordinated subjects, and claims in compound sentences). Both were fixed in the verifier, with
 regression tests, before any narrative was counted.
@@ -51,6 +51,7 @@ regression tests, before any narrative was counted.
 | `sft_005.txt` | 16 / 16 |  |
 | `sft_006.txt` | 16 / 16 |  |
 | `sft_007.txt` | 16 / 16 |  |
+| `sft_008.txt` | 16 / 16 |  |
 
 ## Read before training or evaluating
 
@@ -76,14 +77,14 @@ regression tests, before any narrative was counted.
 
 | | |
 |---|---|
-| SFT personas | {'commuter': 62, 'sports_car': 62} |
-| SFT task mix | {'narrative': 52, 'degraded': 42, 'history': 30} |
-| SFT degradations | {'no_map': 11, 'gps_gap': 4, 'speed_low': 10, 'osm_contradiction': 7, 'mapmatch_failed': 8, 'no_gyro': 5, 'low_conf_events': 6} |
-| SFT split | {'train': 115, 'dev': 9} |
-| Budgets | {64: 22, 128: 39, 256: 47, 512: 16} |
-| Worst felt class per trip | {0: 22, 1: 22, 2: 20, 3: 20, 4: 20, 5: 20} |
-| Narrative words | mean 204.5, median 207, p95 361, max 436 |
-| Claims per narrative | mean 38.2, median 37, p95 70, max 91 |
-| Event mentions per narrative | mean 5.8, median 5, p95 12, max 16 |
+| SFT personas | {'commuter': 70, 'sports_car': 70} |
+| SFT task mix | {'narrative': 56, 'degraded': 49, 'history': 35} |
+| SFT degradations | {'no_map': 14, 'gps_gap': 6, 'speed_low': 10, 'osm_contradiction': 8, 'mapmatch_failed': 8, 'no_gyro': 6, 'low_conf_events': 8} |
+| SFT split | {'train': 129, 'dev': 11} |
+| Budgets | {64: 23, 128: 47, 256: 54, 512: 16} |
+| Worst felt class per trip | {0: 24, 1: 24, 2: 24, 3: 24, 4: 22, 5: 22} |
+| Narrative words | mean 203.2, median 203, p95 361, max 436 |
+| Claims per narrative | mean 38.0, median 35, p95 70, max 91 |
+| Event mentions per narrative | mean 5.6, median 5, p95 12, max 16 |
 | QA answerable / abstain | 32 / 8 |
 | Exemplars | `syn-t0004` (commuter, narrative), `syn-t0009` (sports_car, degraded), `syn-t0018` (commuter, history) |
