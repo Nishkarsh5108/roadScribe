@@ -1,0 +1,125 @@
+{
+  "trip_id": "pvs5",
+  "route_id": "B",
+  "vehicle_id": 2,
+  "dur_min": 22.31,
+  "path_km": 11.54,
+  "n_samples": 133877,
+  "n_events": 61,
+  "n_units": 5,
+  "capsule_text": "TRIP pvs5 | 22.3 min | 11.5 km | persona=commuter | ch=acc,gyro,gps,map | hist=none\nU2 0.4-2.5km - | felt 3 SHOCK | bump x14\nU3 2.5-5.8km - | felt 1 SHOCK | bump x19; jolt x9; artifact x2\nU4 5.8-7.2km - | felt 3 SHOCK | bump x1\nU5 7.2-11.5km - | felt 1 SHOCK | jolt x2; bump x7\nREST 1 unit, 0.4 km, surface -, felt 1-1, 7 events",
+  "capsule_tokens": 142,
+  "units": [
+    {
+      "unit_id": "U1",
+      "s0_km": 0.0,
+      "s1_km": 0.42,
+      "iso_felt": 1,
+      "shock": true,
+      "a_v": 0.346,
+      "event_ids": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "E7"
+      ]
+    },
+    {
+      "unit_id": "U2",
+      "s0_km": 0.42,
+      "s1_km": 2.49,
+      "iso_felt": 3,
+      "shock": true,
+      "a_v": 1.067,
+      "event_ids": [
+        "E8",
+        "E9",
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15",
+        "E16",
+        "E17",
+        "E18",
+        "E19",
+        "E20",
+        "E21"
+      ]
+    },
+    {
+      "unit_id": "U3",
+      "s0_km": 2.49,
+      "s1_km": 5.76,
+      "iso_felt": 1,
+      "shock": true,
+      "a_v": 0.543,
+      "event_ids": [
+        "E22",
+        "E23",
+        "E24",
+        "E25",
+        "E26",
+        "E27",
+        "E28",
+        "E29",
+        "E30",
+        "E31",
+        "E32",
+        "E33",
+        "E34",
+        "E35",
+        "E36",
+        "E37",
+        "E38",
+        "E39",
+        "E40",
+        "E41",
+        "E42",
+        "E43",
+        "E44",
+        "E45",
+        "E46",
+        "E47",
+        "E48",
+        "E49",
+        "E50",
+        "E51"
+      ]
+    },
+    {
+      "unit_id": "U4",
+      "s0_km": 5.76,
+      "s1_km": 7.15,
+      "iso_felt": 3,
+      "shock": true,
+      "a_v": 1.346,
+      "event_ids": [
+        "E52"
+      ]
+    },
+    {
+      "unit_id": "U5",
+      "s0_km": 7.15,
+      "s1_km": 11.54,
+      "iso_felt": 1,
+      "shock": true,
+      "a_v": 0.481,
+      "event_ids": [
+        "E53",
+        "E54",
+        "E55",
+        "E56",
+        "E57",
+        "E58",
+        "E59",
+        "E60",
+        "E61"
+      ]
+    }
+  ]
+}

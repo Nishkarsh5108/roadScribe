@@ -1,0 +1,92 @@
+[
+  {
+    "trip_id": "pvs1",
+    "route": "A",
+    "vehicle": 1,
+    "duration_min": 24.0,
+    "distance_km": 13.78,
+    "events_detected": 33,
+    "units": 3,
+    "tokens": 103
+  },
+  {
+    "trip_id": "pvs2",
+    "route": "B",
+    "vehicle": 1,
+    "duration_min": 20.8,
+    "distance_km": 11.54,
+    "events_detected": 51,
+    "units": 5,
+    "tokens": 145
+  },
+  {
+    "trip_id": "pvs3",
+    "route": "C",
+    "vehicle": 1,
+    "duration_min": 17.6,
+    "distance_km": 10.69,
+    "events_detected": 21,
+    "units": 3,
+    "tokens": 98
+  },
+  {
+    "trip_id": "pvs4",
+    "route": "A",
+    "vehicle": 2,
+    "duration_min": 22.1,
+    "distance_km": 13.76,
+    "events_detected": 33,
+    "units": 3,
+    "tokens": 102
+  },
+  {
+    "trip_id": "pvs5",
+    "route": "B",
+    "vehicle": 2,
+    "duration_min": 22.3,
+    "distance_km": 11.54,
+    "events_detected": 61,
+    "units": 5,
+    "tokens": 142
+  },
+  {
+    "trip_id": "pvs6",
+    "route": "C",
+    "vehicle": 2,
+    "duration_min": 16.0,
+    "distance_km": 10.68,
+    "events_detected": 30,
+    "units": 3,
+    "tokens": 103
+  },
+  {
+    "trip_id": "pvs7",
+    "route": "A",
+    "vehicle": 3,
+    "duration_min": 21.4,
+    "distance_km": 13.76,
+    "events_detected": 38,
+    "units": 3,
+    "tokens": 98
+  },
+  {
+    "trip_id": "pvs8",
+    "route": "B",
+    "vehicle": 3,
+    "duration_min": 20.6,
+    "distance_km": 11.54,
+    "events_detected": 60,
+    "units": 5,
+    "tokens": 136
+  },
+  {
+    "trip_id": "pvs9",
+    "route": "C",
+    "vehicle": 3,
+    "duration_min": 15.3,
+    "distance_km": 10.71,
+    "events_detected": 30,
+    "units": 3,
+    "tokens": 102
+  }
+]

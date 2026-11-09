@@ -1,0 +1,77 @@
+{
+  "trip_id": "pvs1",
+  "route_id": "A",
+  "vehicle_id": 1,
+  "dur_min": 24.01,
+  "path_km": 13.78,
+  "n_samples": 144036,
+  "n_events": 33,
+  "n_units": 3,
+  "capsule_text": "TRIP pvs1 | 24.0 min | 13.8 km | persona=commuter | ch=acc,gyro,gps,map | hist=none\nU1 0.0-4.3km - | felt 2 SHOCK | bump x12; jolt x2\nU2 4.3-9.4km - | felt 4 SHOCK | bump x7; jolt x1\nU3 9.4-13.8km - | felt 2 SHOCK | artifact x3; bump x8",
+  "capsule_tokens": 103,
+  "units": [
+    {
+      "unit_id": "U1",
+      "s0_km": 0.0,
+      "s1_km": 4.31,
+      "iso_felt": 2,
+      "shock": true,
+      "a_v": 0.588,
+      "event_ids": [
+        "E1",
+        "E2",
+        "E3",
+        "E4",
+        "E5",
+        "E6",
+        "E7",
+        "E8",
+        "E9",
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E14"
+      ]
+    },
+    {
+      "unit_id": "U2",
+      "s0_km": 4.31,
+      "s1_km": 9.42,
+      "iso_felt": 4,
+      "shock": true,
+      "a_v": 1.601,
+      "event_ids": [
+        "E15",
+        "E16",
+        "E17",
+        "E18",
+        "E19",
+        "E20",
+        "E21",
+        "E22"
+      ]
+    },
+    {
+      "unit_id": "U3",
+      "s0_km": 9.42,
+      "s1_km": 13.78,
+      "iso_felt": 2,
+      "shock": true,
+      "a_v": 0.616,
+      "event_ids": [
+        "E23",
+        "E24",
+        "E25",
+        "E26",
+        "E27",
+        "E28",
+        "E29",
+        "E30",
+        "E31",
+        "E32",
+        "E33"
+      ]
+    }
+  ]
+}
