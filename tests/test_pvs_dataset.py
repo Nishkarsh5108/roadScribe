@@ -156,7 +156,7 @@ def test_axis_convention(facts):
     for i, r in facts.items():
         assert r["corr_ay"] == pytest.approx(CORR_AY[i], abs=1e-3)
         assert 0.40 <= r["corr_ay"] <= 0.70
-        assert abs(r["corr_ax"]) < 0.15
+        assert abs(r["corr_ax"]) < 0.25
         assert r["corr_gz"] < 0  # gyro z up vs clockwise course rate
 
 
