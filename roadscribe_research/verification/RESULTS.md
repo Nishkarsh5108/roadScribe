@@ -104,3 +104,42 @@ Wd FFT weighting at fs=100: max|err| over test tones 0.5-40 Hz = 0.0000 dB
 VDV of impulsive bump: 2 kHz reference=1.3842, FFT@100=1.3842, IIR@100=1.3719
 peak |aw|:              reference=3.7215, FFT@100=3.7220, IIR@100=3.5812
 ```
+
+## run_full_evaluation.py (Narrative Benchmark, Paper §4)
+
+Interpreter: `C:/Users/nishk/anaconda3/python.exe` (numpy 1.26.4, scipy 1.16.3).
+Data: 9 PVS trips (108.6 km), 300 question-answering pairs (`roadscribe_qa_bank.jsonl`), 2,500 held-out persona samples (`test_e2.jsonl`).
+
+```
+=== PVS Benchmark (108.6 km, 9 trips) ===
+Condition [T]:
+  P_L: 99.15% | P_G: 93.21% | Halluc Missing: 0.00%
+  rho_KSF: 0.483 | tau_b: 0.413 | BC: 68.9% | OI: -0.743
+  AGP_L: 100.0% | AGR_L: 92.4%
+  AGP_G: 18.2% | AGR_G: 100.0% | wAGR_G: 100.0%
+  ECE_ling: 0.2875 | Plan Valid: 100.0% | Fallback: 0.0%
+
+Condition [T+V]:
+  P_L: 99.15% | P_G: 93.20% | Halluc Missing: 0.00%
+  rho_KSF: 0.481 | tau_b: 0.411 | BC: 68.3% | OI: -0.759
+  AGP_L: 100.0% | AGR_L: 92.4%
+  AGP_G: 18.2% | AGR_G: 100.0% | wAGR_G: 100.0%
+  ECE_ling: 0.2875 | Plan Valid: 100.0% | Fallback: 0.0%
+
+Condition [S-PGR]:
+  P_L: 98.90% | P_G: 92.97% | Halluc Missing: 0.00%
+  rho_KSF: 0.499 | tau_b: 0.427 | BC: 70.2% | OI: -0.728
+  AGP_L: 100.0% | AGR_L: 69.3%
+  AGP_G: 24.2% | AGR_G: 100.0% | wAGR_G: 100.0%
+  ECE_ling: 0.2914 | Plan Valid: 61.1% | Fallback: 72.2%
+
+=== E1 Driver Question Answering (300 pairs) ===
+Total Questions: 300 (Answerable: 240, Unanswerable: 60)
+Baseline T Correct Rate: 59.7% | Abstention R: 75.0%
+S-PGR Correct Rate:      100.0% | Abstention R: 100.0%
+
+=== E2 Held-Out Personas (2,500 samples) ===
+Evaluated 2,500 samples across held-out personas: {'car_sick_passenger', 'fleet_manager'}
+Baseline T Nearest Persona Fit: 52.0%
+S-PGR Grounded Persona Fit:    96.4% (P_L: 98.8%)
+```
