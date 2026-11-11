@@ -1,0 +1,498 @@
+{
+ "alignment": {
+  "pvs1": {
+   "median_dist_m": 0.23614079141908145,
+   "p95_dist_m": 0.47245586250774646,
+   "valid_frac": 0.9875656085978506,
+   "theta_end_m": 13830.0,
+   "ref_len_m": 13831.0
+  },
+  "pvs4": {
+   "median_dist_m": 2.6072016899627095,
+   "p95_dist_m": 4.384357071771225,
+   "valid_frac": 0.9903013012106391,
+   "theta_end_m": 13827.0,
+   "ref_len_m": 13831.0
+  },
+  "pvs7": {
+   "median_dist_m": 1.4839703762918246,
+   "p95_dist_m": 3.029860903271359,
+   "valid_frac": 0.9930842953604879,
+   "theta_end_m": 13829.0,
+   "ref_len_m": 13831.0
+  },
+  "pvs2": {
+   "median_dist_m": 0.2391623027324452,
+   "p95_dist_m": 0.4718163531497205,
+   "valid_frac": 0.9896618651952135,
+   "theta_end_m": 11631.0,
+   "ref_len_m": 11632.0
+  },
+  "pvs5": {
+   "median_dist_m": 3.8183162226807057,
+   "p95_dist_m": 7.4788542461110055,
+   "valid_frac": 0.9918581981968523,
+   "theta_end_m": 11632.0,
+   "ref_len_m": 11632.0
+  },
+  "pvs8": {
+   "median_dist_m": 1.6491323290720672,
+   "p95_dist_m": 3.998015664476587,
+   "valid_frac": 0.9855118186671844,
+   "theta_end_m": 11632.0,
+   "ref_len_m": 11632.0
+  },
+  "pvs3": {
+   "median_dist_m": 0.22370955929455963,
+   "p95_dist_m": 0.4709504010954474,
+   "valid_frac": 0.9855031375217358,
+   "theta_end_m": 10736.0,
+   "ref_len_m": 10736.0
+  },
+  "pvs6": {
+   "median_dist_m": 2.531260386537423,
+   "p95_dist_m": 5.20569997449305,
+   "valid_frac": 0.9785519168250605,
+   "theta_end_m": 10735.0,
+   "ref_len_m": 10736.0
+  },
+  "pvs9": {
+   "median_dist_m": 1.5558890698543508,
+   "p95_dist_m": 4.124669073221612,
+   "valid_frac": 0.9858664190923488,
+   "theta_end_m": 10731.0,
+   "ref_len_m": 10736.0
+  }
+ },
+ "primary_100m": {
+  "label": "primary: 100 m, v>=5 m/s in all three vehicles",
+  "n_locations": 310,
+  "n_rows": 930,
+  "kappa_felt_class": 0.6568906103173305,
+  "felt_class_pairs_differ_ge1": 0.6612903225806451,
+  "felt_class_pairs_differ_ge2": 0.07741935483870968,
+  "felt_class_all_three_equal": 0.0967741935483871,
+  "kappa_road_class": 0.7178901912904432,
+  "road_class_pairs_differ_ge1": 0.7645161290322581,
+  "road_class_pairs_differ_ge2": 0.14193548387096774,
+  "road_class_all_three_equal": 0.04516129032258064,
+  "kappa_gt_quality": 0.9313720600638139,
+  "n_locations_gt_quality": 310,
+  "spearman_a_v": 0.7685020387241787,
+  "spearman_a_dec": 0.7626279888112696,
+  "spearman_r2": 0.6503108857163094,
+  "variance_shares": {
+   "log_a_dec": {
+    "location": 0.23758720947902165,
+    "vehicle": 0.1817476200225115,
+    "speed": 0.002893676295051755,
+    "residual": 0.02074150665371948,
+    "slope_log_v_within": 0.5091630932098395
+   },
+   "log_a_v": {
+    "location": 0.3387666596320302,
+    "vehicle": 0.18826269303415388,
+    "speed": 0.012027413145900624,
+    "residual": 0.033863614379213536,
+    "slope_log_v_within": 0.7846349456775924
+   },
+   "log_a_wz": {
+    "location": 0.3551844826638331,
+    "vehicle": 0.27170626960361954,
+    "speed": 0.012317377941296503,
+    "residual": 0.03100781951446043,
+    "slope_log_v_within": 0.8591630932098394
+   },
+   "r2": {
+    "location": 0.43582213373714,
+    "vehicle": 0.3985911524687517,
+    "speed": 0.02372405030436919,
+    "residual": 0.1122360313326892,
+    "slope_log_v_within": 1.9893295712721868
+   }
+  },
+  "gamma_pooled": -0.6372221720692124,
+  "gamma_within": 0.8591630932098394,
+  "gamma_within_minus_pooled": 1.4963852652790517,
+  "spearman_loc_roughness_vs_speed": -0.29647913492436734,
+  "lovo_acc_a_v": 0.867741935483871,
+  "lovo_balanced_acc_a_v": 0.6089979439329722,
+  "lovo_acc_a_dec": 0.9086021505376344,
+  "lovo_balanced_acc_a_dec": 0.6700296596878629,
+  "lovo_acc_r2": 0.7086021505376344,
+  "lovo_balanced_acc_r2": 0.4071805875231344,
+  "majority_baseline": 0.7623655913978494,
+  "class_counts": [
+   709,
+   207,
+   14
+  ],
+  "ci95": {
+   "kappa_felt": [
+    0.5302485353737945,
+    0.7163213594539518
+   ],
+   "kappa_road": [
+    0.5981149424979821,
+    0.7641313594224974
+   ],
+   "kappa_gt": [
+    0.9097551219738409,
+    0.9497395037465667
+   ],
+   "veh_share_dec": [
+    0.14266383610948044,
+    0.2747000456743642
+   ],
+   "veh_share_v": [
+    0.14763159397788259,
+    0.273785312061995
+   ],
+   "g_diff": [
+    1.264297709965657,
+    1.6432731533025895
+   ],
+   "rho_rough_speed": [
+    -0.5297465803429634,
+    0.0891329911187066
+   ],
+   "h5_diff_road_minus_felt": [
+    -0.011827956989247271,
+    0.10693839856230028
+   ]
+  },
+  "verdicts": {
+   "H1_felt_kappa_lt_0.6": false,
+   "H2a_road_kappa_lt_0.8": true,
+   "H2b_vehicle_share_ge_5pct": true,
+   "H2_main": true,
+   "H3a_rho_lt_minus_0.2": true,
+   "H3b_gamma_diff_gt_0.1": true,
+   "H4_gt_kappa_ge_0.6": true,
+   "H5_road_minus_felt_ge_5pts": false,
+   "KILL_roads_show_no_problem": false
+  }
+ },
+ "per_route_100m": {
+  "A": {
+   "label": "route A",
+   "n_locations": 120,
+   "n_rows": 360,
+   "kappa_felt_class": 0.6463671417613864,
+   "felt_class_pairs_differ_ge1": 0.6611111111111111,
+   "felt_class_pairs_differ_ge2": 0.09722222222222222,
+   "felt_class_all_three_equal": 0.10833333333333334,
+   "kappa_road_class": 0.7284444091030989,
+   "road_class_pairs_differ_ge1": 0.7777777777777778,
+   "road_class_pairs_differ_ge2": 0.15833333333333333,
+   "road_class_all_three_equal": 0.041666666666666664,
+   "kappa_gt_quality": 0.937331314044406,
+   "n_locations_gt_quality": 120,
+   "spearman_a_v": 0.7633377317869295,
+   "spearman_a_dec": 0.7557862814547306,
+   "spearman_r2": 0.5751070676204365,
+   "variance_shares": {
+    "log_a_dec": {
+     "location": 0.15168716353051823,
+     "vehicle": 0.14742578554667796,
+     "speed": 0.0034728285174813567,
+     "residual": 0.02017501208020173,
+     "slope_log_v_within": 0.6086841137747248
+    },
+    "log_a_v": {
+     "location": 0.22431943959784026,
+     "vehicle": 0.16193683451412508,
+     "speed": 0.011869550922675281,
+     "residual": 0.0319044771050836,
+     "slope_log_v_within": 0.8356414939429027
+    },
+    "log_a_wz": {
+     "location": 0.23758835466352174,
+     "vehicle": 0.23091373724557349,
+     "speed": 0.013493567506254935,
+     "residual": 0.031600221230898166,
+     "slope_log_v_within": 0.9586841137747252
+    },
+    "r2": {
+     "location": 0.3292658724745749,
+     "vehicle": 0.37007481229655625,
+     "speed": 0.036020910984911954,
+     "residual": 0.1115679534445116,
+     "slope_log_v_within": 2.535562369484334
+    }
+   },
+   "gamma_pooled": -0.680161840742292,
+   "gamma_within": 0.9586841137747252,
+   "gamma_within_minus_pooled": 1.6388459545170173,
+   "spearman_loc_roughness_vs_speed": -0.4622959927772761,
+   "lovo_acc_a_v": 0.8472222222222222,
+   "lovo_balanced_acc_a_v": 0.6489512083903328,
+   "lovo_acc_a_dec": 0.8333333333333334,
+   "lovo_balanced_acc_a_dec": 0.591860465116279,
+   "lovo_acc_r2": 0.6194444444444445,
+   "lovo_balanced_acc_r2": 0.3593894082180676,
+   "majority_baseline": 0.7138888888888889,
+   "class_counts": [
+    257,
+    94,
+    9
+   ]
+  },
+  "B": {
+   "label": "route B",
+   "n_locations": 93,
+   "n_rows": 279,
+   "kappa_felt_class": 0.6474433164757207,
+   "felt_class_pairs_differ_ge1": 0.6236559139784946,
+   "felt_class_pairs_differ_ge2": 0.043010752688172046,
+   "felt_class_all_three_equal": 0.10752688172043011,
+   "kappa_road_class": 0.6575886371331573,
+   "road_class_pairs_differ_ge1": 0.7598566308243727,
+   "road_class_pairs_differ_ge2": 0.13261648745519714,
+   "road_class_all_three_equal": 0.043010752688172046,
+   "kappa_gt_quality": 0.9083815055668416,
+   "n_locations_gt_quality": 93,
+   "spearman_a_v": 0.7293127629733519,
+   "spearman_a_dec": 0.7635254095670078,
+   "spearman_r2": 0.7143873156078103,
+   "variance_shares": {
+    "log_a_dec": {
+     "location": 0.3588577193492952,
+     "vehicle": 0.20446366350439785,
+     "speed": 0.003629740625322423,
+     "residual": 0.023563639519645886,
+     "slope_log_v_within": 0.6068394944714528
+    },
+    "log_a_v": {
+     "location": 0.48178731631037963,
+     "vehicle": 0.20584763987394866,
+     "speed": 0.013665586345240892,
+     "residual": 0.03783727529043232,
+     "slope_log_v_within": 0.9053228897754666
+    },
+    "log_a_wz": {
+     "location": 0.4943180226584083,
+     "vehicle": 0.28164386161806715,
+     "speed": 0.012430547418171577,
+     "residual": 0.03245835623964754,
+     "slope_log_v_within": 0.956839494471453
+    },
+    "r2": {
+     "location": 0.5531154645484733,
+     "vehicle": 0.31956012506346293,
+     "speed": 0.021055299167224557,
+     "residual": 0.10705958167440746,
+     "slope_log_v_within": 2.31925910649423
+    }
+   },
+   "gamma_pooled": -0.5357009284833757,
+   "gamma_within": 0.956839494471453,
+   "gamma_within_minus_pooled": 1.4925404229548287,
+   "spearman_loc_roughness_vs_speed": -0.15342723284891524,
+   "lovo_acc_a_v": 0.9247311827956989,
+   "lovo_balanced_acc_a_v": 0.6274114774114774,
+   "lovo_acc_a_dec": 0.931899641577061,
+   "lovo_balanced_acc_a_dec": 0.6163614163614164,
+   "lovo_acc_r2": 0.8351254480286738,
+   "lovo_balanced_acc_r2": 0.5158933658933659,
+   "majority_baseline": 0.8387096774193549,
+   "class_counts": [
+    234,
+    43,
+    2
+   ]
+  },
+  "C": {
+   "label": "route C",
+   "n_locations": 97,
+   "n_rows": 291,
+   "kappa_felt_class": 0.6531087217172921,
+   "felt_class_pairs_differ_ge1": 0.697594501718213,
+   "felt_class_pairs_differ_ge2": 0.0859106529209622,
+   "felt_class_all_three_equal": 0.07216494845360824,
+   "kappa_road_class": 0.7369255145275676,
+   "road_class_pairs_differ_ge1": 0.7525773195876289,
+   "road_class_pairs_differ_ge2": 0.13058419243986255,
+   "road_class_all_three_equal": 0.05154639175257732,
+   "kappa_gt_quality": 0.9359790262982415,
+   "n_locations_gt_quality": 97,
+   "spearman_a_v": 0.7921751174696682,
+   "spearman_a_dec": 0.7806867592397783,
+   "spearman_r2": 0.6458464829230661,
+   "variance_shares": {
+    "log_a_dec": {
+     "location": 0.19493283486666763,
+     "vehicle": 0.17399945791933205,
+     "speed": 0.002619072708488989,
+     "residual": 0.019319032212300136,
+     "slope_log_v_within": 0.4793608029456196
+    },
+    "log_a_v": {
+     "location": 0.28419384899651223,
+     "vehicle": 0.18104868248170267,
+     "speed": 0.01089777740870321,
+     "residual": 0.03515408000304825,
+     "slope_log_v_within": 0.7351918489658427
+    },
+    "log_a_wz": {
+     "location": 0.3016206284336931,
+     "vehicle": 0.269230301199118,
+     "speed": 0.012130691847025322,
+     "residual": 0.029892442905220955,
+     "slope_log_v_within": 0.8293608029456191
+    },
+    "r2": {
+     "location": 0.3740887649562658,
+     "vehicle": 0.44252911834579683,
+     "speed": 0.011144550517263775,
+     "residual": 0.12185357347219435,
+     "slope_log_v_within": 1.2413511421931105
+    }
+   },
+   "gamma_pooled": -0.6650256945051776,
+   "gamma_within": 0.8293608029456191,
+   "gamma_within_minus_pooled": 1.4943864974507965,
+   "spearman_loc_roughness_vs_speed": -0.2649905322953924,
+   "lovo_acc_a_v": 0.8213058419243986,
+   "lovo_balanced_acc_a_v": 0.6847493948819142,
+   "lovo_acc_a_dec": 0.9106529209621993,
+   "lovo_balanced_acc_a_dec": 0.7776183514718357,
+   "lovo_acc_r2": 0.7079037800687286,
+   "lovo_balanced_acc_r2": 0.4720603293206033,
+   "majority_baseline": 0.7491408934707904,
+   "class_counts": [
+    218,
+    70,
+    3
+   ]
+  }
+ },
+ "secondary_100m_no_bumps": {
+  "label": "100 m, no bump stretches",
+  "n_locations": 288,
+  "n_rows": 864,
+  "kappa_felt_class": 0.6435612556235794,
+  "felt_class_pairs_differ_ge1": 0.6736111111111112,
+  "felt_class_pairs_differ_ge2": 0.0798611111111111,
+  "felt_class_all_three_equal": 0.08333333333333333,
+  "kappa_road_class": 0.7075537917178965,
+  "road_class_pairs_differ_ge1": 0.7650462962962963,
+  "road_class_pairs_differ_ge2": 0.14351851851851852,
+  "road_class_all_three_equal": 0.04513888888888889,
+  "kappa_gt_quality": 0.9356935286264921,
+  "n_locations_gt_quality": 288,
+  "spearman_a_v": 0.751247175101509,
+  "spearman_a_dec": 0.7278519250837591,
+  "spearman_r2": 0.6347282337133802,
+  "variance_shares": {
+   "log_a_dec": {
+    "location": 0.2143480832511708,
+    "vehicle": 0.19249764247376489,
+    "speed": 0.0027863931404600436,
+    "residual": 0.021409557839802702,
+    "slope_log_v_within": 0.48950249535327284
+   },
+   "log_a_v": {
+    "location": 0.31195192705812863,
+    "vehicle": 0.1995008489098076,
+    "speed": 0.011706517125221652,
+    "residual": 0.03465681897501652,
+    "slope_log_v_within": 0.7629536926985359
+   },
+   "log_a_wz": {
+    "location": 0.31689895270671276,
+    "vehicle": 0.2845945733368909,
+    "speed": 0.012116515844623579,
+    "residual": 0.03165256415844441,
+    "slope_log_v_within": 0.8395024953532728
+   },
+   "r2": {
+    "location": 0.41905763367476245,
+    "vehicle": 0.43531579252597297,
+    "speed": 0.024041071435287276,
+    "residual": 0.10792540614201898,
+    "slope_log_v_within": 1.9785001482290996
+   }
+  },
+  "gamma_pooled": -0.6921566209413029,
+  "gamma_within": 0.8395024953532728,
+  "gamma_within_minus_pooled": 1.5316591162945756,
+  "spearman_loc_roughness_vs_speed": -0.23981981601822944,
+  "lovo_acc_a_v": 0.875,
+  "lovo_balanced_acc_a_v": 0.6020503770465112,
+  "lovo_acc_a_dec": 0.9155092592592593,
+  "lovo_balanced_acc_a_dec": 0.6678118348233291,
+  "lovo_acc_r2": 0.71875,
+  "lovo_balanced_acc_r2": 0.4035184789743833,
+  "majority_baseline": 0.7800925925925926,
+  "class_counts": [
+   674,
+   181,
+   9
+  ]
+ },
+ "secondary_50m": {
+  "label": "50 m",
+  "n_locations": 632,
+  "n_rows": 1896,
+  "kappa_felt_class": 0.6572380938869063,
+  "felt_class_pairs_differ_ge1": 0.6751054852320675,
+  "felt_class_pairs_differ_ge2": 0.09651898734177215,
+  "felt_class_all_three_equal": 0.08386075949367089,
+  "kappa_road_class": 0.7248149965982185,
+  "road_class_pairs_differ_ge1": 0.7320675105485233,
+  "road_class_pairs_differ_ge2": 0.14240506329113925,
+  "road_class_all_three_equal": 0.06645569620253164,
+  "kappa_gt_quality": 0.9371040970748056,
+  "n_locations_gt_quality": 632,
+  "spearman_a_v": 0.7466781591940044,
+  "spearman_a_dec": 0.7235450745295026,
+  "spearman_r2": 0.5894773463886213,
+  "variance_shares": {
+   "log_a_dec": {
+    "location": 0.25502506426904886,
+    "vehicle": 0.17295788266920045,
+    "speed": 0.00250430541788512,
+    "residual": 0.03177189317445389,
+    "slope_log_v_within": 0.45464187275797263
+   },
+   "log_a_v": {
+    "location": 0.3623092801743803,
+    "vehicle": 0.1771436078945631,
+    "speed": 0.011466263117288041,
+    "residual": 0.04886474824809592,
+    "slope_log_v_within": 0.744257327581335
+   },
+   "log_a_wz": {
+    "location": 0.37251653564714987,
+    "vehicle": 0.252640545153727,
+    "speed": 0.011458199433067709,
+    "residual": 0.04640938180026298,
+    "slope_log_v_within": 0.8046418727579728
+   },
+   "r2": {
+    "location": 0.4920595101150635,
+    "vehicle": 0.32975623653495983,
+    "speed": 0.02318144025848584,
+    "residual": 0.15056010699996888,
+    "slope_log_v_within": 2.03521389134962
+   }
+  },
+  "gamma_pooled": -0.6532995559662581,
+  "gamma_within": 0.8046418727579728,
+  "gamma_within_minus_pooled": 1.457941428724231,
+  "spearman_loc_roughness_vs_speed": -0.31066726727988664,
+  "lovo_acc_a_v": 0.8639240506329114,
+  "lovo_balanced_acc_a_v": 0.624861096288854,
+  "lovo_acc_a_dec": 0.9345991561181435,
+  "lovo_balanced_acc_a_dec": 0.701085187451809,
+  "lovo_acc_r2": 0.6603375527426161,
+  "lovo_balanced_acc_r2": 0.38166647057178876,
+  "majority_baseline": 0.7473628691983122,
+  "class_counts": [
+   1417,
+   444,
+   35
+  ]
+ }
+}

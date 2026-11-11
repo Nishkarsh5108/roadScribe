@@ -106,3 +106,34 @@ The phases are described in `PHASES.md`. Tonight's scope:
   Road-level ranking recovery: r > 0.95.
 - 00:27: **Commit `624fee0`, PREREG_P2.md**, written while P1 was still running and before its results were seen.
 - 00:28: **D14.** Both pre-registration headers had *guessed* times ("about 00:50", "about 01:05"). I corrected them to the real commit times in a new commit; nothing was amended. Lesson: take times from git, not from estimates.
+- 00:30: Started P2 in parallel; it needs only P1's stretch table, not P1's results.
+- 00:31: **Commit `081c9dc`, PREREG_P3.md** (felt vibration for an unseen vehicle), CLAIM_TAXONOMY.md, and the Phase 3 data sources (links checked) in PHASES.md. All committed before any P1 or P2 result was seen.
+
+### P1 results (finished 00:31; `results/p1_results.json`)
+
+**Setup.** Primary set: 310 locations × 3 vehicles (100 m stretches, v̄ ≥ 5 m/s in all three). Alignment quality: non-reference trips sit a median of 1.5–3.8 m from the reference; 97.9–99.3% of samples are valid. 95% CIs are block-bootstrap intervals.
+
+| Hypothesis | Pre-registered prediction | Result | Verdict |
+|---|---|---|---|
+| H1: felt claims differ across vehicles | κ_felt < 0.6 | κ_felt = 0.657 [0.530, 0.716] | **Failed.** Felt claims agree more than I predicted |
+| **H2 (main): road claims are not vehicle-invariant** | κ_road < 0.8 and vehicle share ≥ 5% | κ_road = 0.718 [0.598, 0.764]; vehicle share of log a_dec = **18.2%** [14.3, 27.5] | **Supported.** The kill criterion is *not* triggered |
+| H3a: rough places are driven slower | ρ(roughness, speed) < −0.2 | ρ = −0.296 [−0.530, +0.089] | Passes the point criterion, but **the CI includes 0** |
+| H3b: speed elasticity is confounded across locations | γ̂_within − γ̂_pooled > 0.1 | γ̂_pooled = **−0.64**, γ̂_within = **+0.86**; difference 1.50 [1.26, 1.64] | **Supported, strongly** |
+| H4: ground-truth labels agree across trips | κ_GT ≥ 0.6 | κ_GT = 0.931 [0.910, 0.950] | Holds; GT is a usable invariant reference |
+| H5: road index beats felt on held-out vehicles | Gain ≥ 5 points | LOVO accuracy 90.9% vs 86.8%: +4.1 [−1.2, +10.7]. Balanced accuracy 0.670 vs 0.609. Majority baseline 76.2% (709 good / 207 regular / 14 bad). R2 scores 70.9%, below the majority baseline | **Failed** |
+
+**Further facts from P1**
+- Road classes differ between two vehicles at the same place in 76% of pairs (by ≥ 2 classes in 14%). All three vehicles agree at only 4.5% of places.
+- The weighted κ_road exceeds κ_felt even though exact agreement is lower. Road classes spread over more bands, so κ rewards rank consistency. Both views are reported.
+- Variance shares (unique, type II) for log a_dec: location 23.8%, vehicle 18.2%, speed 0.3%, residual 2.1%. For log a_v: vehicle 18.8%. **RoadScribe's "road" index is no more vehicle-invariant than its "felt" index.**
+- The residual (location × vehicle interaction plus noise) is only about 2%. The disagreement is therefore mostly a **systematic offset per vehicle**, which a gain calibration estimated on shared roads should remove. This is why P2-H3 matters.
+- The within-location speed slope of log a_dec is 0.51. RoadScribe's γ = 0.35 removes well under half of the speed effect at a fixed place.
+- Robustness: the same pattern holds without bump stretches (288 locations; γ̂_pooled −0.69, γ̂_within 0.84) and with 50 m stretches (632 locations; −0.65 / 0.81). It also holds per route: κ_road 0.66–0.74, vehicle share 15–20%.
+
+**Interpretation, kept modest**
+- (1) On roads the identifiability problem is real and large: one vehicle's "road" claim carries a vehicle signature worth about 18% of the variance.
+- (2) The speed elasticity has the **wrong sign** when estimated across places within trips, a Simpson's-paradox pattern driven by endogenous speed. γ needs within-place variation, i.e. repeated traversals, to be identified. This is the cleanest concrete instance so far of "not identifiable from one traversal".
+- (3) Most of the vehicle effect looks like a gain. If so, the fix is calibration on shared roads, not necessarily the full spectral factorisation (P2 will tell).
+- Caveat: vehicle and driver are confounded, and there is one traversal per vehicle and route.
+
+**Note on RoadScribe's own γ:** the 0.32–0.36 reported on 2026-11-01 was fitted with groups defined by segment or trip. Per P1 that estimate is contaminated by endogenous speed. The `[placeholder]` tag on `SpeedConfig.gamma` was well deserved.
