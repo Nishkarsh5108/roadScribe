@@ -142,6 +142,37 @@ The phases are described in `PHASES.md`. Tonight's scope:
 - **So the SCR road estimator is not new even within the road domain.**
 - *Not found in one search:* the specific confound that **drivers slow on rough stretches, so speed elasticity estimated across places has the wrong sign** (P1-H3b). That makes it the most promising "new fact" from tonight, but one search is not a literature review. It needs a proper check (driver speed choice versus pavement condition; endogeneity in crowdsourced roughness) before anything claims it.
 
+### P2 results (finished 00:38; `results/p2_results.json`; held-out route, calibration fitted on the other two)
+
+| Index | Vehicle share [95% CI] | Cross-vehicle Spearman [95% CI] | Within-place slope on log v | LOVO accuracy / balanced |
+|---|---|---|---|---|
+| `log a_dec` (RoadScribe) | 18.2% [14.1, 27.5] | 0.763 [0.602, 0.861] | 0.51 | 90.9% / 0.670 |
+| `log a_dec` + vehicle gain | **0.001%** [0.000, 0.08] | 0.762 [0.598, 0.860] | 0.48 | **97.3% / 0.681** |
+| R3 uncalibrated (spatial band) | 30.9% [24.3, 39.4] | 0.811 [0.712, 0.869] | 2.08 | 65.2% / 0.438 |
+| R3 SCR-calibrated | **0.05%** [0.003, 0.18] | **0.824** [0.706, 0.896] | 1.33 | 96.1% / 0.643 |
+
+**Pre-registered verdicts**
+- **P2-H1 passed.** R3_cal's vehicle share is far below a_dec's and R3_uncal's.
+- **P2-H2 (the gate) passed.** Spearman R3_cal − a_dec = +0.062 [0.019, 0.118].
+- **P2-H3 passed, on the Spearman criterion.** R3_cal − a_dec_gain = +0.062 [0.021, 0.121]. The vehicle shares are both about 0, so the share criterion cannot separate them.
+- **P2-H4 failed.** R3_cal keeps more within-place speed dependence than a_dec (1.33 vs 0.51). Flaw I found in my own pre-registration: R3 is a log *power* level and a_dec a log *amplitude*, so the slopes are in different units. Converted, R3_cal's slope is about 0.67, which is still above 0.51. **The failure stands either way.**
+- **Penalty sensitivity (exploratory):** R3_cal's Spearman is 0.830 at λ × 0.1 and 0.818 at λ × 10, so the result is robust to the penalty.
+- **Calibration values:** vehicle gains, fitted on other routes, are stable across held-out routes, about (+0.05, −0.37, +0.32).
+
+**Exploratory decomposition (not pre-registered; `p2_exploratory_decomposition.py`)**
+- Spearman is invariant to a per-vehicle gain, so the gain calibration cannot change it (0.763 → 0.762, as observed).
+- R3_cal's +0.062 splits into the **index definition** (R3_uncal − a_dec = +0.048 [−0.016, +0.137]) and the **frequency-dependent channel removal** (R3_cal − R3_uncal = +0.014 [−0.049, +0.064]). Neither part is significant on its own.
+- **Honest summary:** most of the modest rank-agreement gain comes from describing the road in *spatial* frequency (a fixed wavelength band) rather than in time-domain W_k RMS, not from my channel factorisation.
+
+**What P1–P3 say together (D16)**
+1. **The problem is real and large on roads.** A single vehicle's "road" claim carries an 18% vehicle share; all three vehicles agree on the road class at only 4.5% of places; the speed effect has the wrong sign across places.
+2. **The remedies that work are simple:**
+   - a per-vehicle gain learned on *shared* roads (removes the vehicle main effect almost exactly; best held-out-vehicle accuracy, 97.3%);
+   - a within-place speed elasticity (γ ≈ 0.86, *not* 0.35);
+   - describing the road in spatial frequency.
+3. **The full spectral factorisation adds little on PVS.** It gives a small, non-significant rank gain, more residual speed dependence, and worse forward prediction (P3).
+4. **Consequence for the paper:** the contribution is the *identifiability measurement and its consequences for claims*, with simple, principled remedies. It is **not** a new estimator or architecture. That matches the 2026-11-11 verdict, now backed by data.
+
 ### P3 results (finished 00:37; `results/p3_results.json`, `results/p3_predictions.csv`)
 
 **Setup.** Predict each held-out vehicle's band-limited W_k-weighted vertical vibration at each of the 310 places (930 predictions, route held out).

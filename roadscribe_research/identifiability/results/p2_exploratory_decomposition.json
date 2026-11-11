@@ -1,0 +1,22 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "spearman": {
+  "log_a_dec": 0.7626279888112696,
+  "R3_uncal": 0.8106494344374031,
+  "R3_cal": 0.8242025277024467
+ },
+ "index_definition_effect_R3uncal_minus_adec": [
+  0.04802144562613353,
+  [
+   -0.015961131579607806,
+   0.13724464285546717
+  ]
+ ],
+ "channel_calibration_effect_R3cal_minus_R3uncal": [
+  0.013553093265043614,
+  [
+   -0.04889010837359945,
+   0.06392215552449078
+  ]
+ ]
+}
