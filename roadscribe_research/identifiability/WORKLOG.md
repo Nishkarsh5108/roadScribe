@@ -187,6 +187,31 @@ The phases are described in `PHASES.md`. Tonight's scope:
 - **The speed-elasticity sign flip is robust across all three placements.**
 - **Consequence for the paper:** state the problem as placement-dependent and lead with the realistic phone-like case. Do not imply that every sensor shows an 18% vehicle share.
 
+### X3, exploratory: robustness of P1's two main findings (`results/x3_robustness.json`; not pre-registered)
+
+**X3b, placebo for the vehicle share.** Vehicle labels were shuffled within each place, 1,000 times.
+
+| | Vehicle share |
+|---|---|
+| Null mean | 0.06% |
+| Null 99th percentile | 0.27% |
+| Observed | **18.2%** |
+
+p = 0.001, the minimum possible with 1,000 permutations. **The vehicle signature in road claims is real, not an artefact of the method.**
+
+**X3a: is the speed-elasticity sign flip just surface composition?** Mostly, yes.
+
+| Surface | Locations | Pooled γ | Within-place γ |
+|---|---|---|---|
+| Asphalt | 236 | +0.16 | +0.96 |
+| Cobblestone | 47 | +0.54 | +0.88 |
+| Dirt | 23 | +1.36 | +0.99 |
+| All | 310 | −0.64 | +0.86 |
+
+- **Correction to my P1 interpretation.** The negative pooled slope arises *across* surface types, because cobblestone and dirt are driven slowly. That is an obvious confounder, so the sign flip itself is weak as a "new fact".
+- **What survives:** within asphalt, the across-place estimate (+0.16) is still attenuated by about 80% relative to the within-place one (+0.96). Estimating speed elasticity from single-trip naturalistic data is badly biased even within one surface type. This narrower claim still needs a literature check before it is presented as new.
+- **D17.** In the summary and in any future write-up, describe this as "speed is confounded with surface and condition; cross-place estimates are biased (sign-flipped overall, about 80% attenuated within asphalt)". Do not call it a surprising sign flip.
+
 ### X2, exploratory: contradictions in RoadScribe's own narratives (`results/x2_narrative_contradictions.json`; not pre-registered)
 
 **Setup.** The template narrator T (personas commuter and sports_car) writes 9 trips × 2 = 18 narratives. Claims are extracted with the repository's verifier and mapped to the shared route coordinate. Narratives of the same route by different vehicles are then compared per 100 m stretch.

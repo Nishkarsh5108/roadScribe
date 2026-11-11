@@ -1,0 +1,37 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "surface_counts": {
+  "asphalt": 236,
+  "cobble": 47,
+  "dirt": 23,
+  "mixed": 4
+ },
+ "X3a_by_surface": {
+  "asphalt": {
+   "n_locations": 236,
+   "gamma_pooled": 0.16358409551901099,
+   "gamma_within": 0.9590345247934057
+  },
+  "cobble": {
+   "n_locations": 47,
+   "gamma_pooled": 0.540481932223892,
+   "gamma_within": 0.883815322718898
+  },
+  "dirt": {
+   "n_locations": 23,
+   "gamma_pooled": 1.3561344539244264,
+   "gamma_within": 0.9945023474851281
+  }
+ },
+ "X3a_all": {
+  "n_locations": 310,
+  "gamma_pooled": -0.6372221720692124,
+  "gamma_within": 0.8591630932098392
+ },
+ "X3b_placebo": {
+  "observed_vehicle_share": 0.18174762002251155,
+  "null_mean": 0.0006443999161769383,
+  "null_p99": 0.002680519697534203,
+  "p_value": 0.000999000999000999
+ }
+}
