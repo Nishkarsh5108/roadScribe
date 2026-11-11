@@ -107,39 +107,29 @@ peak |aw|:              reference=3.7215, FFT@100=3.7220, IIR@100=3.5812
 
 ## run_full_evaluation.py (Narrative Benchmark, Paper §4)
 
-Interpreter: `C:/Users/nishk/anaconda3/python.exe` (numpy 1.26.4, scipy 1.16.3).
-Data: 9 PVS trips (108.6 km), 300 question-answering pairs (`roadscribe_qa_bank.jsonl`), 2,500 held-out persona samples (`test_e2.jsonl`).
+**Corrected 2026-11-12.** The version of this section committed in `4b95a72` contained numbers that were never measured:
+- **E1 QA, 100% / 59.7%:** S-PGR was counted correct from the gold labels; no model was run.
+- **E2, 96.4% / 52.0% / 98.8%:** literal constants.
+- **P_G:** defined as 0.94 × P_L.
+- **AGR_G = wAGR_G = 100%:** an artifact of matching mentions across trips.
 
-```
-=== PVS Benchmark (108.6 km, 9 trips) ===
-Condition [T]:
-  P_L: 99.15% | P_G: 93.21% | Halluc Missing: 0.00%
-  rho_KSF: 0.483 | tau_b: 0.413 | BC: 68.9% | OI: -0.743
-  AGP_L: 100.0% | AGR_L: 92.4%
-  AGP_G: 18.2% | AGR_G: 100.0% | wAGR_G: 100.0%
-  ECE_ling: 0.2875 | Plan Valid: 100.0% | Fallback: 0.0%
+The script was rewritten; see its docstring and `roadscribe_research/identifiability/WORKLOG.md`. The independent re-check is `recheck_eval_2026_11_11.py`.
 
-Condition [T+V]:
-  P_L: 99.15% | P_G: 93.20% | Halluc Missing: 0.00%
-  rho_KSF: 0.481 | tau_b: 0.411 | BC: 68.3% | OI: -0.759
-  AGP_L: 100.0% | AGR_L: 92.4%
-  AGP_G: 18.2% | AGR_G: 100.0% | wAGR_G: 100.0%
-  ECE_ling: 0.2875 | Plan Valid: 100.0% | Fallback: 0.0%
+Interpreter: `C:/Users/nishk/anaconda3/python.exe` (numpy 2.3.5, scipy 1.16.3). Data: 9 PVS trips (108.6 km), left logger, dashboard IMU, and `data/models/kaggle_run/pvs_predictions.json`. Full output: `data/evaluation_summary.json`.
 
-Condition [S-PGR]:
-  P_L: 98.90% | P_G: 92.97% | Halluc Missing: 0.00%
-  rho_KSF: 0.499 | tau_b: 0.427 | BC: 70.2% | OI: -0.728
-  AGP_L: 100.0% | AGR_L: 69.3%
-  AGP_G: 24.2% | AGR_G: 100.0% | wAGR_G: 100.0%
-  ECE_ling: 0.2914 | Plan Valid: 61.1% | Fallback: 72.2%
+| | T | T+V | S-PGR |
+|---|---|---|---|
+| P_L (claims) | 99.15% (1,065) | 99.15% (1,064) | 98.90% (818) |
+| Hallucinated-missing | 0.0% | 0.0% | 0.0% |
+| rho_KSF / tau_b | 0.483 / 0.413 | 0.481 / 0.411 | 0.499 / 0.427 |
+| BC / OI | 68.9% / −0.74 | 68.3% / −0.76 | 70.2% / −0.73 |
+| AGR_L (commuter / sports_car) | 89.4% / 95.5% | 89.4% / 95.5% | 62.2% / 76.5% |
+| AGR_G, per drive (commuter / sports_car) | 80.0% / 88.3% | 71.7% / 38.3% | 56.7% / 56.7% |
+| Same intervals placed at random | 96.1% / 99.95% | 98.8% / 49.6% | 71.1% / 63.2% |
+| AGR_G, mentions stating a position | 15.0% / 0.0% | 10.0% / 25.0% | 15.0% / 0.0% |
+| ECE vs ledger, assumed hedge p | 0.2875 | 0.2875 | 0.2914 |
+| Plan parses as JSON / fallback | 100% / 0% | 100% / 0% | 61.1% / 72.2% |
 
-=== E1 Driver Question Answering (300 pairs) ===
-Total Questions: 300 (Answerable: 240, Unanswerable: 60)
-Baseline T Correct Rate: 59.7% | Abstention R: 75.0%
-S-PGR Correct Rate:      100.0% | Abstention R: 100.0%
+**S-PGR composition.** 5 of 18 narratives come from the SLM; the other 13 are template fallbacks. The 5 accepted SLM outputs contain 12 of the 818 claims and are truncated fragments; the full texts are in `data/evaluation_summary.json`. The must-mention set was empty on all 9 trips.
 
-=== E2 Held-Out Personas (2,500 samples) ===
-Evaluated 2,500 samples across held-out personas: {'car_sick_passenger', 'fleet_manager'}
-Baseline T Nearest Persona Fit: 52.0%
-S-PGR Grounded Persona Fit:    96.4% (P_L: 98.8%)
-```
+**E1 and E2:** not run. The reasons are recorded in `data/evaluation_summary.json`.

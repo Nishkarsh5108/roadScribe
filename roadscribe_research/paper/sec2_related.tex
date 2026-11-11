@@ -86,4 +86,4 @@ A jolt during stop-and-go traffic, a 48-second GNSS gap or a map tag that contra
 \paragraph{L4: No controlled comparison with templates, and no on-device evaluation.}
 The coaching systems compare neither their LLM variants with their template variants nor run the model on the phone; sensor--language work uses large models off-device.
 Whether a language model adds anything a template cannot, and at what fidelity, latency and energy cost on a phone, is unmeasured.
-\emph{RoadScribe} runs a quantized SLM on device, keeps the template narrator as both baseline and fallback, and evaluates six narrators, including template-plus-variation and template-plus-paraphrase controls, on tasks designed to expose where templates run out (Section~\ref{sec:eval}).
+\emph{RoadScribe} is designed to run a quantized SLM on device, keeps the template narrator as both baseline and fallback, and specifies six narrators, including template-plus-variation and template-plus-paraphrase controls, on tasks designed to expose where templates run out (Section~\ref{sec:eval}).

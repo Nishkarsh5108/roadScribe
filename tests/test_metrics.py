@@ -65,3 +65,37 @@ def test_ece_ling():
     correct = [1] * 9 + [0] + [1] * 7 + [0] * 3 + [1] * 5 + [0] * 5
     nominal = {"assertive": 0.95, "likely": 0.75, "possibly": 0.5}
     assert ece_ling(hedges, correct, nominal) == pytest.approx((0.05 + 0.05 + 0.0) / 3)
+
+
+# ----------------------------------------------------------------- grounding per recording (2026-11-12)
+from roadscribe.eval.metrics import anomaly_grounding_by_recording  # noqa: E402
+
+
+def test_grounding_never_matches_across_recordings():
+    """Regression test: pooling trips let a mention in one trip match a bump in another."""
+    trip_a = ("a", [Mention("bump", 90, 110)], [], 1000.0)  # a mention, no labelled bump
+    trip_b = ("b", [], [RefEvent("bump", 100, 1.0)], 1000.0)  # a labelled bump, no mention
+    pooled = anomaly_grounding(trip_a[1] + trip_b[1], trip_a[2] + trip_b[2])
+    assert pooled.agr == 1.0  # what the pooled scoring reported
+    by_rec = anomaly_grounding_by_recording([trip_a, trip_b])
+    assert by_rec.n_matched == 0 and by_rec.agr == 0.0 and by_rec.n_refs == 1
+
+
+def test_grounding_counts_each_reference_once():
+    refs = [RefEvent("bump", 100, 1.0), RefEvent("bump", 500, 1.0)]
+    rec = ("t1", [Mention("bump", 90, 110)], refs, 1000.0)
+    g = anomaly_grounding_by_recording([rec])
+    assert g.n_refs == 2 and g.agr == pytest.approx(0.5) and g.agp == pytest.approx(1.0)
+
+
+def test_chance_level_exposes_wide_mentions():
+    # one mention covering the whole recording "finds" every bump, and so does chance
+    refs = [RefEvent("bump", s, 1.0) for s in (100, 400, 800)]
+    wide = ("t1", [Mention("bump", 0, 1000)], refs, 1000.0)
+    g = anomaly_grounding_by_recording([wide], chance_draws=50, seed=1)
+    assert g.agr == pytest.approx(1 / 3)  # one mention can match one event
+    assert g.chance_agr == pytest.approx(g.agr)  # and placement does not matter
+    # a narrow, correctly placed mention beats chance
+    narrow = ("t1", [Mention("bump", 395, 405)], refs, 1000.0)
+    g2 = anomaly_grounding_by_recording([narrow], chance_draws=200, seed=1)
+    assert g2.agr == pytest.approx(1 / 3) and g2.chance_agr < 0.1

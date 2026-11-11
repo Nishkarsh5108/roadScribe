@@ -60,7 +60,7 @@ The paper makes three novel technical contributions.
   The SLM chooses and orders content by emitting a plan constrained by a grammar generated from the capsule's ledger, so it can reference only units and facts that exist; grounding is deterministic; a claim verifier checks every sentence against the ledger, including events, hedges and fields marked missing; and a sentence that fails twice is replaced by the template realization of the same plan item.
   The language model therefore controls selection, ordering, aggregation and phrasing, but not values (Section~\ref{sec:layer3}).
 \end{itemize}
-In support of these, we contribute a benchmark whose metrics separate language errors from sensing errors (claim precision against the ledger and against ground truth, kinetic--semantic fidelity, anomaly grounding), and a preregistered within-subject study with 28 drivers plus a two-week field deployment that measure usefulness, trust, workload, situation awareness and error detection against strong template baselines (Section~\ref{sec:eval}).
+In support of these, we contribute a benchmark whose metrics separate language errors from sensing errors (claim precision against the ledger and against ground truth, kinetic--semantic fidelity, anomaly grounding), and the design of a preregistered within-subject study with 28 drivers plus a two-week field deployment to measure usefulness, trust, workload, situation awareness and error detection against strong template baselines (Section~\ref{sec:eval}).
 The implementation, with tests that reproduce every number we report as verified, is released as open source.
 
 \paragraph{Results in brief.}

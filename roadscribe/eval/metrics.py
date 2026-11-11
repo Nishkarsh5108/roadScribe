@@ -32,6 +32,8 @@ __all__ = [
     "RefEvent",
     "AnomalyGrounding",
     "anomaly_grounding",
+    "RecordingGrounding",
+    "anomaly_grounding_by_recording",
     "ece_ling",
 ]
 
@@ -175,3 +177,76 @@ def ece_ling(hedges: Sequence[str], correct: Sequence[bool], nominal: Mapping[st
         sel = hedges == h
         total += sel.sum() / n * abs(correct[sel].mean() - nominal[str(h)])
     return float(total)
+
+
+# --------------------------------------------------------------------------- grounding per recording
+@dataclass(frozen=True)
+class RecordingGrounding:
+    """Anomaly grounding scored inside each recording, with counts summed over recordings."""
+
+    n_mentions: int
+    n_refs: int
+    n_matched: int
+    agp: float
+    agr: float
+    chance_agr: float  # NaN unless chance draws were requested
+    per_recording: tuple  # (recording_id, n_mentions, n_refs, n_matched, mean chance matches)
+
+
+def anomaly_grounding_by_recording(
+    recordings: Sequence[tuple],
+    delta_s: float = 25.0,
+    chance_draws: int = 0,
+    seed: int = 0,
+    compatible: Optional[Callable[[str, str], bool]] = None,
+) -> RecordingGrounding:
+    """AGP/AGR with matching restricted to each recording, plus a chance level.
+
+    ``recordings`` holds ``(recording_id, mentions, refs, length)`` tuples, with
+    positions in that recording's own coordinate. Positions from different
+    recordings are not comparable, so a mention may only match a reference
+    event of the same recording. Pooling all mentions and references into one
+    matching lets a mention in one trip match a bump in another, and inflated
+    a reported AGR to 100%. Each recording's references are counted once.
+
+    With ``chance_draws > 0``, each recording's mention intervals are also
+    dropped uniformly at random within ``[0, length]`` (same widths and types),
+    and the mean number of matches gives ``chance_agr``. If the observed AGR is
+    close to it, the metric is measuring how wide the mentions are, not
+    whether they point at the events.
+    """
+    rng = np.random.default_rng(seed)
+    tot_m = tot_r = tot_hit = 0
+    tot_chance = 0.0
+    rows = []
+    for rec_id, mentions, refs, length in recordings:
+        mentions, refs = list(mentions), list(refs)
+        hit = len(anomaly_grounding(mentions, refs, delta_s, compatible).matches) if mentions and refs else 0
+        chance = float("nan")
+        if chance_draws > 0:
+            if mentions and refs:
+                draws = []
+                for _ in range(chance_draws):
+                    rnd = []
+                    for m in mentions:
+                        w = max(0.0, m.s_hi - m.s_lo)
+                        lo = float(rng.uniform(0.0, max(1e-9, float(length) - w)))
+                        rnd.append(Mention(m.type, lo, lo + w))
+                    draws.append(len(anomaly_grounding(rnd, refs, delta_s, compatible).matches))
+                chance = float(np.mean(draws))
+            else:
+                chance = 0.0
+            tot_chance += chance
+        tot_m += len(mentions)
+        tot_r += len(refs)
+        tot_hit += hit
+        rows.append((rec_id, len(mentions), len(refs), hit, chance))
+    return RecordingGrounding(
+        n_mentions=tot_m,
+        n_refs=tot_r,
+        n_matched=tot_hit,
+        agp=tot_hit / tot_m if tot_m else float("nan"),
+        agr=tot_hit / tot_r if tot_r else float("nan"),
+        chance_agr=(tot_chance / tot_r if tot_r else float("nan")) if chance_draws > 0 else float("nan"),
+        per_recording=tuple(rows),
+    )

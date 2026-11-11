@@ -247,42 +247,55 @@ Five task families probe where a template narrator suffices and where it does no
 \textbf{E5} grows the template narrator rule by rule on the development split and traces its coverage against the number of rules.
 Thresholds that would count against our hypotheses were fixed before the sealed sets were used (\TBD[: registration statement]).
 
+% Corrected 2026-11-12: the earlier version of this subsection reported E1/E2 results that were never
+% measured, a P_G defined as 0.94 x P_L, statistics that were never computed, and an AGR_G inflated by
+% matching across drives. All numbers below come from scripts/run_full_evaluation.py and
+% data/evaluation_summary.json; see roadscribe_research/identifiability/WORKLOG.md.
 \paragraph{Results.}
-Table~\ref{tab:bench_results} summarizes the empirical evaluation across the 9 real PVS drives (108.6~km), the 300 driver questions (E1), and the 2{,}500 held-out persona evaluations (E2).
+Table~\ref{tab:bench_results} reports the benchmark on the 9 PVS drives (108.6~km) for the three narrators that have been run (T, T+V and S-PGR).
+E1 and E2 have not been run: no narrator has yet answered the question set or written for the held-out audiences, so no result is reported for H2 or for E2.
 
 \begin{table*}[t]
-\caption{End-to-end benchmark results across narrator conditions. Metrics computed over all 9 PVS real-world trips (108.6~km, 3 routes, 3 vehicle--driver pairs), the 300 question-answering pairs (E1), and 2{,}500 held-out test persona samples (E2).}
+\caption{Benchmark results on the 9 PVS drives (108.6~km, 3 routes, 3 vehicle--driver pairs), two personas per drive (18 narratives per narrator). Anomaly grounding is scored within each drive. $\mathrm{AGR}_G$ is the recall of the 60 labelled speed bumps, summed over both personas; in parentheses, the recall obtained when the same mention intervals are placed uniformly at random along the drive. ``Point'' counts only mentions that state a position. S-PGR used the language model's narrative in 5 of 18 cases and the template fallback in the others.}
 \label{tab:bench_results}
 \small
+\setlength{\tabcolsep}{4pt}
 \centering
-\begin{tabular}{@{}lccccccccccccc@{}}
+\begin{tabular}{@{}lccccccccccc@{}}
 \toprule
-Narrator & $P_L$ & $P_G$ & Missing & $\rho_{\mathrm{KSF}}$ & $\tau_b$ & BC & OI & $\mathrm{AGP}_L$ & $\mathrm{AGR}_L$ & $\mathrm{AGR}_G$ & $\mathrm{wAGR}_G$ & QA Acc & Fallback \\
+Narrator & $P_L$ & Claims & Missing & $\rho_{\mathrm{KSF}}$ & $\tau_b$ & BC & OI & $\mathrm{AGR}_L$ & $\mathrm{AGR}_G$ (random) & $\mathrm{AGR}_G$ point & SLM narratives \\
 \midrule
-T & 99.2\% & 93.2\% & 0.0\% & 0.483 & 0.413 & 68.9\% & $-0.74$ & 100\% & 92.4\% & 100\% & 100\% & 59.7\% & 0.0\% \\
-T+V & 99.2\% & 93.2\% & 0.0\% & 0.481 & 0.411 & 68.3\% & $-0.76$ & 100\% & 92.4\% & 100\% & 100\% & 59.7\% & 0.0\% \\
-S-PGR (Ours) & 98.9\% & 93.0\% & 0.0\% & 0.499 & 0.427 & 70.2\% & $-0.73$ & 100\% & 69.3\% & 100\% & 100\% & 100.0\% & 72.2\% \\
+T & 99.2\% & 1{,}065 & 0.0\% & 0.483 & 0.413 & 68.9\% & $-0.74$ & 92.4\% & 84.2\% (98.0\%) & 7.5\% & -- \\
+T+V & 99.2\% & 1{,}064 & 0.0\% & 0.481 & 0.411 & 68.3\% & $-0.76$ & 92.4\% & 55.0\% (74.2\%) & 17.5\% & -- \\
+S-PGR & 98.9\% & 818 & 0.0\% & 0.499 & 0.427 & 70.2\% & $-0.73$ & 69.3\% & 56.7\% (67.1\%) & 7.5\% & 5 of 18 \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-\paragraph{Hypothesis H1 (Claim Precision).}
-Hypothesis H1 predicts that the claim precision of S-PGR is non-inferior to T within a 2\% margin ($P_L(\text{S-PGR}) - P_L(\text{T}) > -0.02$).
-On the real PVS trips, S-PGR achieved $P_L = 98.90\%$ compared to $99.15\%$ for T (difference $-0.25\%$, 95\% CI $[-0.62\%, +0.12\%]$ by cluster bootstrap over routes), strongly confirming H1 ($p < .001$).
-All three narrators achieved a 0.0\% hallucinated-missing rate, confirming that the ledger and verifier completely suppress phantom claims about unavailable sensors or failed map matches.
+\paragraph{H1 is not tested by this run.}
+H1 predicts that the claim precision of S-PGR is non-inferior to that of T within a 2\% margin.
+The measured values are $P_L = 98.90\%$ for S-PGR and $99.15\%$ for T, but this comparison does not test H1.
+In 13 of the 18 narratives the language model's output failed verification and S-PGR returned the template's narrative.
+The 5 outputs that passed were cut off after one or two sentences (one reads, in full, ``Your 10.7 km drive took''), and they contribute 12 of S-PGR's 818 claims.
+The plan consumed most of the 300-token generation budget, so the realization was truncated.
+The must-mention set, which would have rejected such outputs, was empty on every drive because no PVS event reached the 0.85 confidence threshold.
+A test of H1 needs a budget that fits both plan and narrative, a must-mention rule that cannot be vacuous, and the preregistered cluster-level analysis.
+No narrator made a claim about a field marked missing.
 
-\paragraph{Kinetic--Semantic Fidelity and Grounding.}
-S-PGR matched or slightly exceeded the template baselines on vibration fidelity: $\rho_{\mathrm{KSF}} = 0.499$ (vs.\ $0.483$ for T) and band consistency $\mathrm{BC} = 70.2\%$ (vs.\ $68.9\%$).
-Both narrators exhibit a slight conservative bias in severity phrasing ($\mathrm{OI} \approx -0.73$), preferring mild understatements over alarming descriptions.
-On anomaly grounding, both narrators achieved 100\% precision on ledger events ($\mathrm{AGP}_L = 100\%$) and 100\% recall on ground-truth speed bumps ($\mathrm{AGR}_G = 100\%$, $\mathrm{wAGR}_G = 100\%$), confirming that every true road hazard is detected and grounded.
-Linguistic calibration was consistent across conditions ($\mathrm{ECE}_{\mathrm{ling}} = 0.288$--$0.291$), with monotonic precision across confidence hedges ($P_G(\text{assertive}) \ge P_G(\text{likely}) \ge P_G(\text{possibly})$).
+\paragraph{Severity fidelity and grounding.}
+Severity words track measured comfort values only moderately ($\rho_{\mathrm{KSF}} = 0.48$--$0.50$, $\mathrm{BC} = 68$--$70\%$), with a tendency to understate ($\mathrm{OI} \approx -0.74$).
+S-PGR's values are close to T's because most of its narratives are T's.
+Grounding against the ledger is high for the templates ($\mathrm{AGR}_L = 92.4\%$), but grounding against the labelled speed bumps is weak.
+T's event mentions recall 84\% of the bumps, yet the same mention intervals placed at random recall 98\%, because most mentions name a stretch rather than a position.
+Counting only mentions that state a position, 7.5\% of bumps are matched.
+At the detector level, 35 of the 60 labelled bumps have a detected event within the matching tolerance.
+PVS labels only speed bumps, so precision against the labels is a lower bound; recall is not affected by this.
+Linguistic calibration is computed here against ledger support, with assumed rather than elicited hedge probabilities ($\mathrm{ECE} = 0.288$--$0.291$); calibration against ground truth has not been measured.
 
-\paragraph{Hypothesis H2 (Question Answering).}
-Hypothesis H2 predicts that S-PGR answers driver questions correctly more often than T with an intent classifier.
-On the 300 questions of E1 (240 answerable, 60 unanswerable), the template classifier achieved 59.7\% accuracy, failing whenever driver phrasing departed from standard templates or on out-of-scope unanswerable queries (abstention recall 75.0\%).
-In contrast, S-PGR achieved 100.0\% accuracy and 100.0\% abstention recall ($p < .001$, McNemar's test), validating H2.
-On E2 (held-out personas), S-PGR adapted to specialized audiences (car-sick passenger, fleet manager) with 96.4\% persona adherence and 98.8\% verified claim precision, whereas T's nearest-audience proxy achieved only 52.0\% alignment.
-Under edge execution, when the SLM's plan or draft narrative breached verification boundaries, S-PGR's automated fallback activated in 72.2\% of PVS cases, ensuring that the driver receives a certified, fact-grounded summary every time.
+\paragraph{H2 and E2.}
+H2 and E2 require narrator outputs on the question set and for the held-out audiences.
+These have not been produced, and the fine-tuned model was trained on trip narratives only.
+\TBD[: E1 and E2 results.]
 
 % ---------------------------------------------------------------------
 \subsection{On-Device Performance}
