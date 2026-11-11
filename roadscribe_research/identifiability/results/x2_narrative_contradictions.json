@@ -1,0 +1,152 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "routes": {
+  "A": {
+   "commuter:road_class": {
+    "pairs": 43,
+    "differ": 43,
+    "differ2": 0
+   },
+   "commuter:felt_class": {
+    "pairs": 414,
+    "differ": 277,
+    "differ2": 2
+   },
+   "sports_car:road_class": {
+    "pairs": 172,
+    "differ": 129,
+    "differ2": 0
+   },
+   "sports_car:felt_class": {
+    "pairs": 414,
+    "differ": 277,
+    "differ2": 2
+   },
+   "distinct_claims": {
+    "pvs1:commuter:road_class": 2,
+    "pvs1:commuter:felt_class": 3,
+    "pvs1:commuter:speed_cause": 2,
+    "pvs1:sports_car:road_class": 2,
+    "pvs1:sports_car:felt_class": 3,
+    "pvs1:sports_car:speed_cause": 2,
+    "pvs4:commuter:road_class": 1,
+    "pvs4:commuter:felt_class": 3,
+    "pvs4:commuter:speed_cause": 1,
+    "pvs4:sports_car:road_class": 2,
+    "pvs4:sports_car:felt_class": 3,
+    "pvs4:sports_car:speed_cause": 1,
+    "pvs7:commuter:road_class": 0,
+    "pvs7:commuter:felt_class": 3,
+    "pvs7:commuter:speed_cause": 0,
+    "pvs7:sports_car:road_class": 1,
+    "pvs7:sports_car:felt_class": 3,
+    "pvs7:sports_car:speed_cause": 0
+   }
+  },
+  "B": {
+   "commuter:road_class": {
+    "pairs": 43,
+    "differ": 43,
+    "differ2": 0
+   },
+   "commuter:felt_class": {
+    "pairs": 336,
+    "differ": 224,
+    "differ2": 0
+   },
+   "sports_car:road_class": {
+    "pairs": 43,
+    "differ": 43,
+    "differ2": 0
+   },
+   "sports_car:felt_class": {
+    "pairs": 340,
+    "differ": 224,
+    "differ2": 0
+   },
+   "distinct_claims": {
+    "pvs2:commuter:road_class": 2,
+    "pvs2:commuter:felt_class": 4,
+    "pvs2:commuter:speed_cause": 2,
+    "pvs2:sports_car:road_class": 3,
+    "pvs2:sports_car:felt_class": 5,
+    "pvs2:sports_car:speed_cause": 2,
+    "pvs5:commuter:road_class": 1,
+    "pvs5:commuter:felt_class": 4,
+    "pvs5:commuter:speed_cause": 1,
+    "pvs5:sports_car:road_class": 1,
+    "pvs5:sports_car:felt_class": 4,
+    "pvs5:sports_car:speed_cause": 1,
+    "pvs8:commuter:road_class": 0,
+    "pvs8:commuter:felt_class": 4,
+    "pvs8:commuter:speed_cause": 0,
+    "pvs8:sports_car:road_class": 0,
+    "pvs8:sports_car:felt_class": 5,
+    "pvs8:sports_car:speed_cause": 0
+   }
+  },
+  "C": {
+   "commuter:road_class": {
+    "pairs": 73,
+    "differ": 43,
+    "differ2": 0
+   },
+   "commuter:felt_class": {
+    "pairs": 321,
+    "differ": 155,
+    "differ2": 2
+   },
+   "sports_car:road_class": {
+    "pairs": 133,
+    "differ": 103,
+    "differ2": 0
+   },
+   "sports_car:felt_class": {
+    "pairs": 321,
+    "differ": 155,
+    "differ2": 2
+   },
+   "distinct_claims": {
+    "pvs3:commuter:road_class": 2,
+    "pvs3:commuter:felt_class": 3,
+    "pvs3:commuter:speed_cause": 2,
+    "pvs3:sports_car:road_class": 2,
+    "pvs3:sports_car:felt_class": 3,
+    "pvs3:sports_car:speed_cause": 2,
+    "pvs6:commuter:road_class": 2,
+    "pvs6:commuter:felt_class": 3,
+    "pvs6:commuter:speed_cause": 2,
+    "pvs6:sports_car:road_class": 2,
+    "pvs6:sports_car:felt_class": 3,
+    "pvs6:sports_car:speed_cause": 2,
+    "pvs9:commuter:road_class": 0,
+    "pvs9:commuter:felt_class": 3,
+    "pvs9:commuter:speed_cause": 0,
+    "pvs9:sports_car:road_class": 1,
+    "pvs9:sports_car:felt_class": 3,
+    "pvs9:sports_car:speed_cause": 0
+   }
+  }
+ },
+ "totals": {
+  "road_class": {
+   "pairs": 507,
+   "differ": 404,
+   "differ2": 0,
+   "differ_rate": 0.796844181459566,
+   "differ2_rate": 0.0
+  },
+  "felt_class": {
+   "pairs": 2146,
+   "differ": 1312,
+   "differ2": 8,
+   "differ_rate": 0.6113699906803355,
+   "differ2_rate": 0.003727865796831314
+  }
+ },
+ "speed_attribution": {
+  "pairs": 507,
+  "disagree": 146,
+  "disagree_rate": 0.2879684418145957
+ }
+}

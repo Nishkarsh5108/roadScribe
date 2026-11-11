@@ -173,6 +173,33 @@ The phases are described in `PHASES.md`. Tonight's scope:
 3. **The full spectral factorisation adds little on PVS.** It gives a small, non-significant rank gain, more residual speed dependence, and worse forward prediction (P3).
 4. **Consequence for the paper:** the contribution is the *identifiability measurement and its consequences for claims*, with simple, principled remedies. It is **not** a new estimator or architecture. That matches the 2026-11-11 verdict, now backed by data.
 
+### X1, exploratory: sensor placement (finished 00:47; `results/x1_placements.json`; not pre-registered)
+
+| Placement | κ_road | Vehicle share, log a_dec | Spearman, a_dec | γ̂ pooled / within | LOVO accuracy, a_dec |
+|---|---|---|---|---|---|
+| Dashboard (phone-like) | 0.718 | **18.2%** | 0.763 | −0.64 / +0.86 | 90.9% |
+| Above suspension | **0.858** | **2.9%** | 0.750 | −0.52 / +1.11 | 97.0% |
+| Below suspension | 0.603 | 11.8% | 0.827 | −0.67 / +1.13 | 90.8% |
+
+- **My prediction was wrong.** I expected the smallest vehicle share below the suspension. It is smallest *above* the suspension.
+- For the above-suspension IMU, P1's kill criterion would be met (κ_road ≥ 0.8, vehicle share < 5%). **The size of the problem depends on where the sensor sits**, and the phone-like dashboard mount is the worst of the three.
+- A plausible reading, untested: the dashboard's vehicle effect is largely the dash structure and mount, and the below-suspension one is wheel and tyre (unsprung) resonance inside the W_k band.
+- **The speed-elasticity sign flip is robust across all three placements.**
+- **Consequence for the paper:** state the problem as placement-dependent and lead with the realistic phone-like case. Do not imply that every sensor shows an 18% vehicle share.
+
+### X2, exploratory: contradictions in RoadScribe's own narratives (`results/x2_narrative_contradictions.json`; not pre-registered)
+
+**Setup.** The template narrator T (personas commuter and sports_car) writes 9 trips × 2 = 18 narratives. Claims are extracted with the repository's verifier and mapped to the shared route coordinate. Narratives of the same route by different vehicles are then compared per 100 m stretch.
+
+| Claim type | Distinct claims in the 18 narratives | Co-located stretch pairs | Pairs that differ |
+|---|---|---|---|
+| Road surface ("the surface itself is …") | 24 (14 narratives have at least one) | 507 | **79.7%**, all by exactly 1 class |
+| Felt ("felt fairly uncomfortable") | 62 | 2,146 | 61.1% (0.4% by ≥ 2 classes) |
+| Speed attribution ("mostly because of speed") | 20 | 507 (pairs where both make a road claim) | 28.8% (one narrative blames speed, the other does not) |
+
+- **Caveat that limits all three rates:** the stretch pairs are *not* independent. A single road claim about a long stretch produces many pairs, so the road rate rests on 24 claims. It is an *illustration* that RoadScribe's narratives contradict each other about the same road, **not a measurement** of how often. Phase 4 needs per-claim units and many more narratives, including LLM narrators.
+- Felt claims are expected to differ, so their 61% is not an error rate.
+
 ### P3 results (finished 00:37; `results/p3_results.json`, `results/p3_predictions.csv`)
 
 **Setup.** Predict each held-out vehicle's band-limited W_k-weighted vertical vibration at each of the 310 places (930 predictions, route held out).

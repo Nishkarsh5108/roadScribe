@@ -26,6 +26,29 @@ The mathematics is known (spectral disentangling; Bedell et al. 2019; drive-by m
 
 The machinery (convex Whittle SCR, evidence tree, recomputing verifier) is the instrument and the baseline, not the novelty.
 
+## Status after the night of 2026-11-12
+
+Details are in `WORKLOG.md`.
+
+| Phase | Status | Gate outcome |
+|---|---|---|
+| 0: integrity | **Done** (`092ae35`) | Fabricated numbers replaced by measured ones; the paper compiles |
+| 1: pilot P1 | **Done** | Gate **passed** for the phone-like dashboard sensor: road κ 0.72, vehicle share 18.2%. **Not** passed for the above-suspension IMU (κ 0.86, share 2.9%; exploratory X1). The speed elasticity flips sign across places (−0.64 vs +0.86 within) at every placement |
+| 2: SCR v0, pilot P2 | **Done, with caveats** | The gate (rank agreement better than RoadScribe's index) passed: +0.06 [0.02, 0.12]. But a gain-only calibration removes the vehicle main effect equally well; most of the rank gain comes from a spatial-frequency index, not channel removal; SCR keeps more speed dependence (P2-H4 failed); and SCR predicts felt vibration *worse* than calibrated γ + gains (P3 failed) |
+| Narrative claims (exploratory X2) | **Done** | In RoadScribe's own template narratives, co-located road-surface claims for different cars disagree in about 80% of stretch pairs (pairs are not independent; see the log) |
+
+**Decisions that follow**
+- **The identifiability question stands, and its evidence is simple.** It needs no spectral model: a vehicle signature in the "road" claims, and a sign-flipped speed effect estimated across places.
+- **The default instrument for Phase 4 becomes:**
+  - per-vehicle gains learned on shared roads;
+  - a within-place speed elasticity;
+  - a spatial-frequency road index.
+- **SCR's spectral factorisation is optional future work.** It must first fix its bias and its per-place road parametrisation, and beat the scalar model on P3.
+
+**Before any claim of novelty**
+- Run a proper literature check on endogenous speed (drivers slowing on rough roads) in crowdsourced roughness work. One search found nothing, which is not proof.
+- Botshekan et al. (2020) and others already separate road and vehicle from phones, so only the *claim-level* framing and the endogeneity finding are candidates for novelty.
+
 ## Phases and gates
 
 ### Phase 0: integrity and an honest baseline (night of 2026-11-12)

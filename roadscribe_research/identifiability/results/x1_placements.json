@@ -1,0 +1,39 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "dashboard": {
+  "n_locations": 310,
+  "kappa_felt_class": 0.6568906103173305,
+  "kappa_road_class": 0.7178901912904432,
+  "spearman_a_dec": 0.7626279888112696,
+  "gamma_pooled": -0.6372221720692124,
+  "gamma_within": 0.8591630932098394,
+  "lovo_acc_a_dec": 0.9086021505376344,
+  "lovo_acc_a_v": 0.867741935483871,
+  "vehicle_share_log_a_dec": 0.1817476200225115,
+  "residual_share_log_a_dec": 0.02074150665371948
+ },
+ "above_suspension": {
+  "n_locations": 310,
+  "kappa_felt_class": 0.7199915899739252,
+  "kappa_road_class": 0.8583720072347588,
+  "spearman_a_dec": 0.7496478262168483,
+  "gamma_pooled": -0.5213577248139721,
+  "gamma_within": 1.1147891539475974,
+  "lovo_acc_a_dec": 0.9698924731182795,
+  "lovo_acc_a_v": 0.9473118279569892,
+  "vehicle_share_log_a_dec": 0.028809063503990203,
+  "residual_share_log_a_dec": 0.02824228201174804
+ },
+ "below_suspension": {
+  "n_locations": 310,
+  "kappa_felt_class": 0.46174103681654904,
+  "kappa_road_class": 0.6034037698239022,
+  "spearman_a_dec": 0.8268993433854671,
+  "gamma_pooled": -0.6651699879148062,
+  "gamma_within": 1.1343133274190418,
+  "lovo_acc_a_dec": 0.9075268817204301,
+  "lovo_acc_a_v": 0.8741935483870967,
+  "vehicle_share_log_a_dec": 0.11796863049811233,
+  "residual_share_log_a_dec": 0.026170865352612763
+ }
+}
