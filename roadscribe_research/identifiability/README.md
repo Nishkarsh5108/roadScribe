@@ -2,7 +2,7 @@
 
 This page is for reading over coffee. The full chronological record, with every decision (D1–D17), is `WORKLOG.md`.
 
-The work is on the local branch `night/2026-11-12-identifiability` in 13 commits. **Nothing was pushed.**
+The work is on the local branch `night/2026-11-12-identifiability`: 12 commits, plus the one that fixed this sentence. **Nothing was pushed.**
 
 ## What was done
 
