@@ -102,6 +102,15 @@ For each domain, build a taxonomy of claims: invariant, covariant (with its tran
 
 A finding paper with benchmark, criterion and fix, aimed at NeurIPS (main track or Datasets & Benchmarks) or IMWUT. The human study is optional and only for IMWUT.
 
+#### Phase 3 data sources (checked 2026-11-12)
+
+| Dataset | Nuisance | What it offers | Source | Caveat |
+|---|---|---|---|---|
+| PVS | Vehicle, speed | 3 vehicles × the same 3 routes. Labels: speed bumps, surface type, and per-side road quality (good/regular/bad) | Local copy | One traversal per vehicle and route |
+| Ottawa time-varying-speed bearings (Huang & Baddour, Data in Brief 2018) | Rate | v2 has 60 recordings: 10 s at 200 kHz, an accelerometer, and an encoder speed channel. Faults: healthy, inner race, outer race, ball, combined. Speed profiles: increasing, decreasing, up-down, down-up | https://data.mendeley.com/datasets/v43hmbwxpm, DOI 10.17632/v43hmbwxpm.2 | The rate is measured, so this is the cleanest SCR test |
+| Penn Haptic Texture Toolkit (Culbertson et al. 2014) | Sliding speed, force | 100 textures. Two 10 s tool recordings per texture: 3-axis acceleration, force and speed, with natural speed variation | https://grasp.upenn.edu/projects/the-penn-haptic-texture-toolkit | Non-commercial research licence; one tool, so only the common channel is identifiable |
+| RealWorld HAR (Sztyler & Stuckenschmidt, PerCom 2016) | Sensor placement | Accelerometer, gyroscope and others at several body positions, 8 activities | https://www.uni-mannheim.de/dws/research/projects/activity-recognition/dataset/dataset-realworld/ | "7 positions, 15 subjects" is from memory; an aggregator lists different numbers. **Verify before use** |
+
 ### Track R: a short, honest RoadScribe paper (optional)
 
 Only if the user wants something for the late-November deadline. It would contain:
