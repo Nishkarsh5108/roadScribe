@@ -55,3 +55,54 @@ The phases are described in `PHASES.md`. Tonight's scope:
 
 - 00:12: Created branch `night/2026-11-12-identifiability` (D1). Created `roadscribe_research/identifiability/`.
 - 00:12: Re-checked C1 against the Kaggle notebooks in `kaggle_staging/{kernel,pulled,pulled_v5}`. Holds.
+- 00:13: **Commit `4b15aca`.** Audit, re-check script, PHASES.md and this log.
+- 00:14: **New re-validation item C11.** The abstract says the textbook PELT rule failed in 136 of 300 series; my memory note said 300/300. `tests/test_mipelt.py` documents both: 300/300 for the rule as implemented in `verify_math.py`, and 136/300 for a fairer variant. The paper uses the conservative number. **The paper is right; my note was imprecise.**
+
+### Phase 0: integrity (00:14–00:20)
+- **D7.** Rewrote `scripts/run_full_evaluation.py` instead of patching it, because the fabricated parts are spread through it. Its docstring lists each change and the reason.
+- **D8.** Added `anomaly_grounding_by_recording` to `roadscribe/eval/metrics.py`. It matches only within a recording, counts each reference once, and has an optional random-placement chance level. Three regression tests in `tests/test_metrics.py`; one reproduces the pooled 100% and shows the per-recording score is 0.
+- **D9.** E1 and E2 are reported as `not_run`, with reasons. I did not run the SLM on QA. It was never trained on QA, so running it would measure something the paper does not claim, and the question bank is "not E1" by the data card's own warning.
+- **D10.** Paper edits are the smallest changes that make each statement true:
+  - `sec4_evaluation.tex`: results subsection and table replaced with measured values;
+  - abstract: "evaluate … in a preregistered study with 28 drivers" changed to "specify";
+  - intro: the study is described as designed, not run;
+  - related work: "runs … on device" changed to "is designed to run".
+
+  I added a LaTeX comment explaining the correction. The paper compiles: 24 pages, no overfull boxes after setting `\tabcolsep` to 4 pt.
+- **D11.** `data/evaluation_summary.json` stays untracked, because `data/*` is gitignored (so the fabricated JSON was never pushed). `RESULTS.md` carries the numbers.
+- **Measured (`run_full_evaluation.py`):**
+  - T: P_L 99.15% (1,065 claims). Per-drive AGR_G 80.0% (commuter) and 88.3% (sports_car), against **96.1% / 99.95% for random placement**. Point-only mentions: 15.0% / 0.0%. AGR_L 89.4% / 95.5%.
+  - S-PGR: 5 of 18 narratives come from the SLM (12 claims in total); AGR_G 56.7% / 56.7% against chance 71.1% / 63.2%.
+  - **In every condition, recall of labelled bumps is below the chance level.**
+  - The fast test suite passes: 206 passed, 19 PVS/slow deselected.
+- 00:20: **Commit `092ae35`.**
+
+### Phase 1: pilot P1 (00:20–)
+- 00:20: GNSS-only feasibility check (scratchpad script; no vibration data read). On every route the 3 vehicles' tracks overlap: median 2.5–4.7 m, 95th percentile ≤ 8 m. Same direction, lengths within 0.3%, and all three routes are loops.
+  - **D12.** Loops break nearest-point projection, so fixes are matched in time order inside a forward window (−30 m, +300 m). A unit test covers a loop whose start is also its end.
+- 00:21: **Commit `6a135d8`, PREREG_P1.md**, before any vibration data was read. The header first said "about 00:50"; I corrected it from the commit time (see 00:28).
+- 00:22: Wrote the `roadscribe/paired/` package (`route_align`, `stretches`, `agreement`) with 5 unit tests, all passing. Started `p1_cross_vehicle.py` in the background.
+
+### Phase 2: SCR instrument v0 (00:23–)
+- **D13.** `roadscribe/scr/whittle.py` implements the penalised Whittle fit of log S = A_c(f) + B_s(f/ρ) − log ρ:
+  - cubic B-splines in log f and log ν;
+  - second-difference penalties, plus an optional smoothness penalty between adjacent segments along θ;
+  - a gauge penalty that pins the mean level of channel 0;
+  - L-BFGS with an analytic gradient, on a convex objective.
+
+  Docstrings cite the precedents (Pawitan & O'Sullivan; Bedell et al.).
+- **Synthetic check of C6** (`tests/test_scr.py`; 3 channels, 30 power-law road segments, K = 3 periodogram noise):
+
+  | Seed | Speed diversity at each segment: common-channel / difference RMSE (log units) | One shared speed per segment: common-channel / difference RMSE |
+  |---|---|---|
+  | 0 | 0.012 / 0.022 | 1.094 / 0.017 |
+  | 1 | 0.023 / 0.016 | 0.668 / 0.015 |
+  | 2 | 0.010 / 0.020 | 0.975 / 0.017 |
+
+  **C6 is confirmed numerically.**
+  - Differences between channels are identified from shared roads alone.
+  - Separating the road from the *common* channel needs the same place driven at different speeds; without that, the error is 30–100× larger.
+
+  Road-level ranking recovery: r > 0.95.
+- 00:27: **Commit `624fee0`, PREREG_P2.md**, written while P1 was still running and before its results were seen.
+- 00:28: **D14.** Both pre-registration headers had *guessed* times ("about 00:50", "about 01:05"). I corrected them to the real commit times in a new commit; nothing was amended. Lesson: take times from git, not from estimates.

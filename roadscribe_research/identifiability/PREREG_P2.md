@@ -1,6 +1,6 @@
 # Pre-registration P2: does channel calibration make road claims vehicle-invariant?
 
-*Written 2026-11-12, about 01:05 IST, while P1 was still running. P1's results had not been seen. Committed before P2 runs.*
+*Written 2026-11-12 and committed at 00:27:50 IST (commit `624fee0`), while P1 was still running and before its results were seen. The header first said "about 01:05"; that was a guess, corrected from the commit time.*
 
 ## Question
 

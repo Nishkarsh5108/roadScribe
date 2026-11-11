@@ -1,6 +1,6 @@
 # Pre-registration P1: do RoadScribe's road claims hold across vehicles?
 
-*Written 2026-11-12, about 00:50 IST. Committed before any vibration data was read for this analysis.*
+*Written 2026-11-12 and committed at 00:21:48 IST (commit `6a135d8`), before any vibration data was read for this analysis. The header first said "about 00:50"; that was a guess, corrected from the commit time.*
 
 **Already seen before writing this:**
 - A GNSS-only feasibility check. The tracks of the three vehicles overlap: median gap 2.5–4.7 m, 95th percentile at most 8 m. Each route is driven in the same direction, path lengths agree within 0.3%, and all three routes are loops.
