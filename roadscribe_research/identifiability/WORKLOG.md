@@ -136,4 +136,33 @@ The phases are described in `PHASES.md`. Tonight's scope:
 - (3) Most of the vehicle effect looks like a gain. If so, the fix is calibration on shared roads, not necessarily the full spectral factorisation (P2 will tell).
 - Caveat: vehicle and driver are confounded, and there is one traversal per vehicle and route.
 
+**Prior-art check after P1 (00:35)**
+- *Road and vehicle separation from crowdsourced phones is established.* Botshekan et al., Data-Centric Engineering 2020 (the MIT "Carbin" line), estimate the road roughness PSD from smartphone vertical acceleration by an inverse random-vibration analysis with vehicle dynamics. They report that phone position matters only marginally.
+- *Speed and vehicle dependence of vibration-based monitoring is well documented:* Stribling (TRB), multiple vehicle types and speeds; a 2023 study with speed corrections from taxi data; a 2024 deep-learning study validated on 29 vehicles.
+- **So the SCR road estimator is not new even within the road domain.**
+- *Not found in one search:* the specific confound that **drivers slow on rough stretches, so speed elasticity estimated across places has the wrong sign** (P1-H3b). That makes it the most promising "new fact" from tonight, but one search is not a literature review. It needs a proper check (driver speed choice versus pavement condition; endogeneity in crowdsourced roughness) before anything claims it.
+
+### P3 results (finished 00:37; `results/p3_results.json`, `results/p3_predictions.csv`)
+
+**Setup.** Predict each held-out vehicle's band-limited W_k-weighted vertical vibration at each of the 310 places (930 predictions, route held out).
+
+| Predictor | Log RMSE | Bias | Comfort class exact | Weighted κ |
+|---|---|---|---|---|
+| SCR (spectral) | 0.196 | −0.095 | 69.1% | 0.874 |
+| **Calibrated γ + vehicle gains** | **0.158** | 0.000 | **75.9%** | **0.905** |
+| Naive (mean of the other two vehicles) | 0.469 | 0.000 | 30.2% | 0.576 |
+
+- **P3-H1 failed:** RMSE(SCR) − RMSE(γ + gains) = +0.037 [0.024, 0.051]. SCR is worse, and the CI excludes 0.
+- **P3-H2 failed:** class agreement −6.8 points [−10.6, −3.3].
+- **Sanity check passed:** both nuisance models beat naive by a wide margin. Modelling vehicle and speed matters a great deal; naive transfer gets the comfort class right only 30% of the time.
+- **Calibration values.** On the other two routes, γ̂ = 0.76 / 0.90 / 0.89 (held-out route A / B / C), consistent with P1's 0.86. Vehicle gains in log units are about +0.05, −0.38 and +0.33: at the same place and speed, **vehicle 3 reads about 2× vehicle 2**.
+
+**Likely cause of SCR's bias.** Labelled as exploratory reasoning, not tested. The χ² log-bias correction ψ(3) − log 3 covers periodogram noise only. Real spectra also vary between frames within a 100 m stretch (events, surface changes), which adds a further Jensen gap. If that variability is lognormal with σ² of about 0.38, it would explain −0.095. But even with the bias removed, RMSE would be about √(0.196² − 0.095²) ≈ 0.171, which is still worse than 0.158. The per-place power-law road term is the other suspect.
+
+**What this means for the plan (D15)**
+- On PVS, the nuisance structure is captured better by a *scalar* model (one gain per vehicle plus a within-place speed elasticity) than by my spectral factorisation v0.
+- This agrees with P1's small interaction term (about 2%).
+- **The SCR spectral factorisation is demoted from "the instrument" to "an optional instrument that has not yet earned its place".**
+- The identifiability *question* survives intact. The decisive facts in P1 (the 18% vehicle share and the sign-flipped speed elasticity) need no spectral model at all.
+
 **Note on RoadScribe's own γ:** the 0.32–0.36 reported on 2026-11-01 was fitted with groups defined by segment or trip. Per P1 that estimate is contaminated by endogenous speed. The `[placeholder]` tag on `SpeedConfig.gamma` was well deserved.

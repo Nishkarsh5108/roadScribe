@@ -1,0 +1,42 @@
+{
+ "n": 930,
+ "n_locations": 310,
+ "point": {
+  "scr": {
+   "rmse": 0.1957230531835576,
+   "bias": -0.09476774161844849,
+   "class_exact": 0.6913978494623656,
+   "class_kappa": 0.874391653032407
+  },
+  "gamma_gain": {
+   "rmse": 0.15846863671568806,
+   "bias": 0.0,
+   "class_exact": 0.7591397849462366,
+   "class_kappa": 0.9054164003022026
+  },
+  "naive": {
+   "rmse": 0.4691769011533679,
+   "bias": -4.178258694825858e-19,
+   "class_exact": 0.3021505376344086,
+   "class_kappa": 0.5756513010996012
+  }
+ },
+ "calibrated_gamma_per_heldout_route": {
+  "A": 0.7589514228938211,
+  "B": 0.9032200953573183,
+  "C": 0.8941805480499239
+ },
+ "ci95_rmse_scr_minus_gamma_gain": [
+  0.024231272124260284,
+  0.051280644910568995
+ ],
+ "ci95_class_exact_scr_minus_gamma_gain": [
+  -0.10641369511543992,
+  -0.03344579008073812
+ ],
+ "verdicts": {
+  "P3_H1": false,
+  "P3_H2": false,
+  "sanity_both_beat_naive": true
+ }
+}
