@@ -379,3 +379,57 @@ The verifier caught every invented name and map tag. Severity claims are 84% sup
   - **Whether its selections are better is not measured.**
 
 **Paper (14 pages, compiles clean, no placeholders).** Sections 5.2–5.3 have the full SLM story, the table has two new rows, and the abstract, introduction and discussion are updated. I corrected one overstatement ("halved the error rate" became "52% to 30%").
+
+---
+
+## Night of 2026-11-13: revise the paper after the simulated ICDSI review (started 00:21)
+
+The review (3 / 4 / 3; about 60%) is saved in memory as `roadscribe-icdsi-review-2026-11-13`.
+
+The user asked for:
+- clearly defined novelty and scope;
+- stronger experiments;
+- every review point addressed.
+
+Rules for the night:
+- Work until about 07:00, then hibernate, and only once everything is committed and pushed.
+- A one-shot "continue" prompt is scheduled for 04:20, in case the usage limit (resetting at 04:10) interrupts.
+
+### Plan (status is updated in the action log below)
+
+**Framing.** Two-level identifiability of generated claims:
+- **(i) World level:** is the ledger quantity determined by the sensors when nuisance variables change?
+- **(ii) Input level:** is each training-target claim determined by the model's input?
+
+Each level gets an operational test, a remedy, and a controlled experiment. RoadScribe is the testbed, not the contribution.
+
+**GPU experiments (Kaggle)**
+
+| ID | Experiment | Addresses |
+|---|---|---|
+| G1 (P6, pre-registered) | Controlled target-identifiability ablation: two fine-tunes identical in input format, records, size and hyperparameters, differing only in whether the targets contain values absent from the capsule | Reviewer A #2 (confounded retraining) |
+| G2 | Prompted baselines, Qwen2.5-3B and 7B without fine-tuning, realizing from grounded frames | Reviewer A #15 |
+
+**CPU experiments**
+
+| ID | Experiment | Addresses |
+|---|---|---|
+| E5 | Why the template fails the strict verifier on 22% of narratives; fix it so the fallback guarantee holds | Reviewer A #4 |
+| E1 | Noise floor: left vs right logger of the same vehicle on the same pass | Reviewer B #5 |
+| E2 | κ against kilometres of shared road used for calibration (data-efficiency curve) | Reviewer B #9, C #7 |
+| E3 | Route-and-vehicle held-out quality classification, plus every missing confidence interval | Reviewer B #2, #8 |
+| E4 | Speed-filter sensitivity (3 m/s) and the count of excluded stretches | Reviewer B #6 |
+| E6 | Sentence-level fallback on the model narratives | Reviewer A #5 |
+| E7 | Verifier extraction recall on hand-annotated narratives | Reviewer A #3 |
+| E8 | Event-detector precision | Reviewer C #4 |
+| E9 | Worked-example figure | Reviewer A #7 |
+
+**Paper**
+- Reframe the title and contributions. Cite Sayers 1986, Abowd–Kramarz–Margolis 1999, Maynez 2020, Dhingra 2019, Nie 2019, Dušek 2019 and Filippova 2020.
+- Fix the consistency problems: 108 vs 54, the guarantee, the illustrative 80% → 23%.
+- Add the pre-registration table with commit hashes, the timing of γ = 0.35, data and code availability, the frontier-model name and the disclosure statement.
+- Expand acronyms; rename "felt" to cabin comfort and the classes to "speed-normalized comfort classes"; discuss γ̂ = 0.87 against 0.5.
+- Fix Fig. 2's labels.
+
+### Action log (night of 2026-11-13)
+- 00:21: Scheduled a one-shot "continue" for 04:20 (CronCreate, session-only).
