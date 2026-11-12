@@ -89,6 +89,10 @@ class SpeedConfig:
 
     gamma: float = 0.35  # [placeholder] PVS dashboard estimates were 0.32-0.36; fit per corpus
     v_ref: float = 10.0  # [methodology] m/s
+    # Calibration on shared roads (identifiability study, 2026-11-12): log gain of this vehicle
+    # relative to the fleet mean, estimated where several vehicles drove the same places.
+    # 0.0 means uncalibrated (the original behaviour).
+    vehicle_gain_log: float = 0.0
     v_min: float = 5.0  # [methodology] below this report raw a_w with speed_low
 
 

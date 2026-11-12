@@ -34,11 +34,14 @@ def fit_speed_elasticity(log_aw: Sequence[float], log_v: Sequence[float], groups
 
 
 def decoupled_intensity(a_w: float, v_mean: float, cfg: SpeedConfig | None = None) -> Optional[float]:
-    """a_w (v_ref / v_mean)^gamma, or ``None`` (speed_low) when v_mean < v_min."""
+    """a_w (v_ref / v_mean)^gamma / exp(vehicle_gain_log), or ``None`` (speed_low) when v_mean < v_min.
+
+    With the defaults (``vehicle_gain_log = 0``) this is the original decoupling.
+    """
     cfg = cfg or SpeedConfig()
     if not np.isfinite(v_mean) or v_mean < cfg.v_min:
         return None
-    return float(a_w * (cfg.v_ref / v_mean) ** cfg.gamma)
+    return float(a_w * (cfg.v_ref / v_mean) ** cfg.gamma * np.exp(-cfg.vehicle_gain_log))
 
 
 def counterfactual(a_w: float, v_mean: float, v_new: float, gamma: float) -> float:
