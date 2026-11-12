@@ -68,7 +68,7 @@ def main():
     ax.xaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     ax.yaxis.set_minor_formatter(matplotlib.ticker.NullFormatter())
     ax.set_xlabel("Mean speed on the 100 m stretch (m/s, log scale)")
-    ax.set_ylabel("W_k-weighted vertical vibration a_wz (m/s², log scale)")
+    ax.set_ylabel(r"$W_k$-weighted vertical vibration $a_{wz}$ (m/s$^2$, log scale)")
     ax.set_title(f"Across places: slope {slope_pooled:+.2f}", loc="left", fontsize=11, color=INK)
     ax.legend(frameon=False, loc="upper right", fontsize=9)
     ax = axes[1]
@@ -77,12 +77,10 @@ def main():
         ax.scatter(rx[k], ry[k], s=22, c=c, marker=m, alpha=0.75, edgecolors=SURFACE, linewidths=0.6)
     xs = np.linspace(rx.min(), rx.max(), 50)
     ax.plot(xs, slope_within * xs, color=INK, linewidth=1.8)
-    ax.set_xlabel("log speed, net of place and vehicle")
-    ax.set_ylabel("log a_wz, net of place and vehicle")
+    ax.set_xlabel(r"$\log \bar{v}$, net of place and vehicle")
+    ax.set_ylabel(r"$\log a_{wz}$, net of place and vehicle")
     ax.set_title(f"Within each place: slope {slope_within:+.2f}", loc="left", fontsize=11, color=INK)
-    fig.text(0.01, 0.005, f"PVS, {d['loc'].nunique()} stretches × 3 vehicles (dashboard IMU, v ≥ 5 m/s). Rough places are driven slower, "
-             "so the across-place slope has the wrong sign.", fontsize=8.5, color=INK2)
-    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.tight_layout()
     out = HERE / "results" / "p1_speed_elasticity_flip.png"
     fig.savefig(out, dpi=180, facecolor=SURFACE)
     print(f"pooled {slope_pooled:+.3f}  within {slope_within:+.3f}  -> {out}")

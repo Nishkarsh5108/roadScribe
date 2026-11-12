@@ -473,3 +473,59 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - The paper's "8.7% of positions" becomes "none of the 7,793 positions", with the lenient upper bound given.
 - Frontier teacher model: the project's training notebook (`kaggle_staging/kernel/roadscribe_3b_qlora.ipynb`) records the 196 teacher narratives as "frontier Opus teacher examples". The card in the repo says only "frontier-llm". The paper names Claude Opus (Anthropic); the user should confirm the version.
 - 00:43: PREREG_P7 committed (`1da084e`, amended only to correct its header time from a guessed 01:15 to 00:43). It covers the noise floor, data efficiency, held-out correctness and the speed floor. Three timestamps in this log were also guesses and were corrected to the commit clock (they are marked "about").
+- 00:47–00:52: **P7 results** (`p7_review_checks.py`, `results/p7_results.json`). All six pre-registered hypotheses hold.
+  - **H1, noise floor.**
+    - Left vs right dashboard module, same vehicle, same pass: κ_road = 0.979 [0.965, 0.985] over 930 (trip, place) pairs.
+    - The two modules differ by one class in 7.8% of pairs and never by two. Side share of log a_dec: 0.03%.
+  - **H2, calibration reaches the floor.** κ_cal = 0.958 [0.927, 0.970], within 0.021 of the floor. Calibration closes (0.958 − 0.718) / (0.979 − 0.718) = 92% of the gap.
+  - **H3, replication on the right logger.**
+    - Before calibration: vehicle share 17.8%, κ_road 0.724, κ_felt 0.658.
+    - After leave-one-route-out calibration: κ_cal 0.955.
+    - γ̂ 0.85–0.94; gains (+0.07, −0.36, +0.29).
+    - The within-place elasticity is +0.87 and the pooled one −0.63, the same sign flip as on the left logger.
+  - **H4, data efficiency (median κ_cal over 310 places, 200 draws per K):**
+    - 0.5 km: 0.946 [0.83, 0.98]
+    - 1 km: 0.960 [0.91, 0.99]
+    - 2 km: 0.957 [0.92, 0.98]
+    - 4 km: 0.953 [0.93, 0.97]
+    - 8 km: 0.952 [0.94, 0.97]
+    - All: 0.958
+    - About 1 km of shared road per pair of routes suffices.
+  - **H5, held-out correctness** (cut-points and calibration fitted without the test route; cut-points also without the test vehicle):
+
+    | Index | Accuracy | Balanced accuracy |
+    |---|---|---|
+    | a_cal | 98.3% [97.2, 99.2] | 0.82 |
+    | a_dec | 90.5% [86.4, 94.5] | 0.66 |
+    | a_v | 86.5% [81.1, 91.3] | 0.60 |
+    | majority class | 76.2% | n/a |
+
+    - The difference cal − dec is +7.7 points [4.4, 11.4].
+    - Vehicle-only held out (P4's scheme): 98.5% [97.4, 99.4] vs 90.9% [86.5, 95.0].
+  - **H6, speed floor** (all 361 places were covered by all three vehicles at some speed):
+
+    | Floor | Places | Vehicle share | κ_uncal | κ_cal |
+    |---|---|---|---|---|
+    | 0 m/s | 361 | 15.4% | 0.746 | 0.952 |
+    | 3 m/s | 352 | 15.5% | 0.746 | 0.955 |
+    | 5 m/s | 310 | 18.2% | 0.718 | 0.958 |
+
+    - **The 5 m/s floor removes 27 of the 38 places whose worst label is "bad"** (11 remain). The reviewer's worry is correct about composition, but the findings do not depend on the floor.
+  - **Ablation** (κ over 310 places, leave one route out):
+
+    | Calibration | κ | Within-place speed slope |
+    |---|---|---|
+    | none | 0.718 | +0.51 |
+    | gain only, γ = 0.35 | 0.958 | +0.51 |
+    | gain only, γ = 0.5 | 0.951 | +0.35 |
+    | elasticity only | 0.860 | −0.01 |
+    | gain + γ̂ | 0.958 | −0.04 |
+
+    - **Agreement comes from the per-vehicle gain. The within-place elasticity is what removes the speed dependence.** The paper must say this; it is more honest than crediting γ̂.
+  - **CIs the paper lacked:**
+    - κ_uncal 0.718 [0.602, 0.765]
+    - κ_felt 0.657 [0.533, 0.719]
+    - Felt vehicle share 18.8% [14.8, 27.4] (from P1)
+    - γ̂ on all routes 0.86 [0.68, 1.02], which excludes the theoretical 0.5
+    - All-three-equal: calibrated 64.8% [58.7, 70.9], uncalibrated 4.5% [2.6, 6.7]
+    - Bootstrap: 2,000 resamples of contiguous 10-place blocks within routes (12, 10 and 10 blocks).
