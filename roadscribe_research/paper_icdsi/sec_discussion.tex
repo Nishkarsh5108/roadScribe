@@ -2,12 +2,9 @@
 \label{sec:discussion}
 
 \paragraph{What verification guarantees.}
-On PVS, RoadScribe's verifier and template fallback guarantee that every narrative agrees with its ledger.
-The world-level results show that this is weaker than it sounds.
-Uncalibrated, the ledger's road values carry an 18\% vehicle signature and a speed dependence that a single trip cannot remove.
-A perfectly faithful narrator therefore contradicts another vehicle's narrator about the same street at most places.
-The input-level results show the converse: a verifier can make a model's failures safe without making the model useful.
-Both problems are visible before deployment, one with paired recordings and the other with the training set.
+On PVS, RoadScribe's verifier and fallback guarantee that every narrative agrees with its ledger.
+Uncalibrated, however, a perfectly faithful narrator contradicts another vehicle's narrator about the same street at most places. Conversely, the verifier made the model's failures safe without making the model useful.
+Both problems were visible before deployment: one in paired recordings, the other in the training set.
 
 \paragraph{What the calibration needs.}
 For agreement between vehicles, one gain per vehicle was enough. It could be estimated from about a kilometre of road shared with vehicles already calibrated, a condition that fleets and repeated commutes meet.
@@ -24,13 +21,10 @@ Agreement between vehicles shows that a class is reproducible, not that it is co
 The accuracy against PVS quality labels on held-out routes and vehicles (98.3\%, balanced 0.82) is evidence that it also tracks the labelled condition. These labels have three levels and are dominated by ``good'' (76\%).
 
 \paragraph{Limitations.}
-\begin{itemize}
-\item \emph{Data.} PVS has three vehicle--driver pairs and one pass per vehicle and route. Vehicle and driver are therefore confounded, and the confidence intervals do not cover the sampling of vehicles.
-\item \emph{Sensors.} The sensors are fixed modules, not phones, and the size of the vehicle signature depends on the mount (2.9--18.2\%).
-\item \emph{Training data.} The language models were fine-tuned for one epoch on synthetic, template-style narratives.
-\item \emph{Not evaluated.} We did not evaluate question answering, unseen audiences, reader preferences, or on-device latency and energy.
-\item \emph{Event claims} are confirmed by both other vehicles only about half of the time.
-\end{itemize}
+PVS has three vehicle--driver pairs and one pass per vehicle and route. Vehicle and driver are therefore confounded, and our intervals do not cover the sampling of vehicles.
+The sensors are fixed modules, not phones, and the size of the vehicle signature depends on the mount (2.9--18.2\%).
+The language models were fine-tuned for one epoch on synthetic, template-style narratives.
+We did not evaluate question answering, unseen audiences, reader preferences, or on-device cost.
 
 \section{Conclusion}
 \label{sec:conclusion}

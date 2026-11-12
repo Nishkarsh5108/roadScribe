@@ -73,7 +73,7 @@ An elasticity for decoupling has to come from repeated passes over the same plac
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{fig_speed.png}
+\includegraphics[width=0.88\linewidth]{fig_speed.png}
 \caption{Speed elasticity of dashboard vibration at 310 places, three vehicles ($v\ge5$~m\,s$^{-1}$). Left: across places (pooled OLS, slope $-0.64$). Right: within places, net of place and vehicle (partial-regression plot of Eq.~\eqref{eq:fe}, slope $+0.86$).}
 \label{fig:speed}
 \end{figure}
@@ -95,7 +95,7 @@ Agreement does not show that a class describes the road, so we predicted the qua
 The calibrated road value reaches 98.3\% [97.2, 99.2] (balanced accuracy 0.82), the uncalibrated one 90.5\% [86.4, 94.5] (0.66), the ride value 86.5\% (0.60), and the majority class 76.2\%; calibration adds $+7.7$ points [4.4, 11.4].
 \emph{Speed floor.}
 The 5~m\,s$^{-1}$ floor removes 27 of the 38 places labelled ``bad'' in some trip; without it (361 places) the vehicle share is 15.4\% and calibration raises $\kappa$ from 0.75 to 0.95.
-\emph{A spectral alternative,} removing each vehicle's frequency response estimated with Eq.~\eqref{eq:scr}, also removed the vehicle share but kept more speed dependence and predicted a held-out vehicle's vibration less accurately (log RMSE 0.196 vs.\ 0.158; difference [0.024, 0.051]).
+\emph{A spectral alternative} (P2, P3), removing each vehicle's frequency response fitted with Eq.~\eqref{eq:scr}, kept more speed dependence and predicted a held-out vehicle's vibration less accurately (log RMSE 0.196 vs.\ 0.158).
 
 In the text, 70 of the 310 places receive three different road classes from the three vehicles and one class after calibration (Table~\ref{tab:example}).
 Road-surface claims in the template narratives about the same stretch disagree between vehicles in 23\% of co-located pairs with calibrated ledgers against 80\% without; these rates rest on few distinct claims (28 and 24 in 18 narratives) and illustrate the change rather than measure it.
@@ -119,7 +119,7 @@ Veh. & $\bar v$ (m/s) & $a_{wz}$ & $\tilde a_w$ & uncalibrated wording & $\hat g
 
 \subsection{Event claims (exploratory)}
 \label{sec:events}
-The same test applies to events without labels: is an event that one vehicle detects also detected by the others at the same place?
-Of 337 events RoadScribe would mention, 52.8\% are detected by \emph{both} other vehicles within 50~m, against 6.8\% when the others' events are shifted locally by 100--500~m (which keeps the event density of rough stretches).
-Only 17\% of the detections lie within 50~m of a labelled speed bump, the only event type PVS labels (34 of 60 bumps are found), so most detections are road features the labels miss; but about half are not confirmed by both other vehicles, and the detector's confidence is not calibrated to bumps (low-confidence ``jolts'' are at bumps 72\% of the time, high-confidence ``bumps'' 8\%).
+The same test applies to events without labels.
+Of 337 events RoadScribe would mention, 52.8\% are also detected by \emph{both} other vehicles within 50~m, against 6.8\% when the others' events are shifted by 100--500~m.
+Only 17\% lie within 50~m of a labelled speed bump, the only event type PVS labels, so most detections are features the labels miss. About half, however, are not confirmed by both other vehicles.
 A single-pass event claim is an unconfirmed observation and should be hedged as one.

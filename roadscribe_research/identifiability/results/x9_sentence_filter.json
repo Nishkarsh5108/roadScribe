@@ -19,5 +19,35 @@
   "remainder_all_claims_supported": 28,
   "remainder_passes_strict": 28,
   "remainder_misses_must_mention": 0
+ },
+ "P6 arm A": {
+  "narratives": 54,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.32850678733031674,
+  "supported_claims_kept_per_narrative": 13.833333333333334,
+  "supported_claims_before_per_narrative": 20.666666666666668,
+  "remainder_all_claims_supported": 54,
+  "remainder_passes_strict": 54,
+  "remainder_misses_must_mention": 0
+ },
+ "P6 arm B": {
+  "narratives": 54,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.5180433039294307,
+  "supported_claims_kept_per_narrative": 18.166666666666668,
+  "supported_claims_before_per_narrative": 31.12962962962963,
+  "remainder_all_claims_supported": 54,
+  "remainder_passes_strict": 54,
+  "remainder_misses_must_mention": 0
+ },
+ "P6 arm C": {
+  "narratives": 54,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.41089108910891087,
+  "supported_claims_kept_per_narrative": 14.018518518518519,
+  "supported_claims_before_per_narrative": 22.72222222222222,
+  "remainder_all_claims_supported": 54,
+  "remainder_passes_strict": 54,
+  "remainder_misses_must_mention": 0
  }
 }

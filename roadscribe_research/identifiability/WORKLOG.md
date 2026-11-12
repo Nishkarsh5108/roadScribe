@@ -593,3 +593,28 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   | Distances | −0.11 | [−0.20, −0.02] | see below |
 
   - B's distance errors come mostly from "the 0.0 and 0.05 km marks", where the verifier reads the second position as a length. This is a verifier extraction quirk. It is not fixed for P6, since D27 fixed the verifier; it is reported in the paper.
+- 03:03: **Arm A finished.** Kept 1,200 records, mean 568 tokens; trained 29 min; mean loss 0.571.
+- **P6 verdicts** (`results/p6_results.json`; definitions D27; cluster bootstrap over 9 drives). **3 of 4 held:**
+  - **P6-H1 held.** Precision B − A = +0.249 [0.189, 0.308]: A 0.513, B 0.762, C 0.608.
+  - **P6-H2 not held.**
+    - C/B wrong-position share = 2.51 [1.72, 4.41], so the C part passed. A/B = 0.62 [0.39, 1.23], so the A part failed.
+    - Reason: in A the verifier classifies most failing event claims as `event_count` (412) or `overclaimed_hedge` (230) before position, so the `wrong_position` reason is rarer in A (19%) than in B (31%). The operationalization did not measure what H2 meant.
+    - The exploratory per-type error of event claims that state a position shows the intended pattern: A 94%, C 82%, B 42%. Both readings are reported in the paper.
+  - **P6-H3 held.** Non-position errors per narrative: C 3.15 vs A 16.3; ratio 0.19 [0.11, 0.29].
+  - **P6-H4 held.** Precision B − C = +0.154 [0.117, 0.193].
+  - **Exploratory per-type error rates:**
+
+    | Type | A | B | C | A − B |
+    |---|---|---|---|---|
+    | Speeds | 87% | 3% | 3% | +0.84 [0.57, 1.0] |
+    | Accelerations | 77% | 41% | 41% | +0.36 [0.29, 0.45] |
+    | Distances | 0.3% | 13% | 1.9% | |
+
+    - A invented 70 place names; B and C none.
+  - **No arm had a narrative accepted.** Presence is necessary, not sufficient.
+  - **Sentence filter** keeps A 33%, C 41%, B 52% of sentences; every remainder passes.
+- 03:04: **Both prompted kernels hit CUDA OOM** at prefill with batch 6 (7B: allocating 9.5 GiB; 3B: 1.4 GiB with 14.2 GiB in use).
+  - Fix: batch 2 with a per-prompt fallback on OOM, plus `expandable_segments`.
+  - Re-pushed: 7B v2 at 03:05, 3B v4 at 03:09.
+  - The sampling settings are unchanged, but batch composition changes the random streams; it cannot change what the prompts contain.
+- 03:15: **Paper:** P6 integrated (§6.2, Table 6, contributions, abstract); trimmed to 15 pages.

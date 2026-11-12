@@ -13,8 +13,7 @@ RoadScribe turns one recorded trip into a short narrative for a stated audience 
 
 \paragraph{Layer 1: vibration measures.}
 The inertial measurement unit (IMU) gives specific force at 100~Hz and the global navigation satellite system (GNSS) receiver gives speed at 1~Hz.
-The mount rotation is estimated without fixtures (geometric median of gravity samples~\cite{vardi2000l1median}; Procrustes fit of horizontal acceleration to GNSS acceleration~\cite{schonemann1966procrustes}).
-ISO~2631-1 weightings~\cite{iso2631} ($W_k$ vertical, $W_d$ horizontal) give, per stretch, the \emph{ride value} $a_v=(a_{wx}^2+a_{wy}^2+a_{wz}^2)^{1/2}$ and the \emph{road value} $\tilde a_w=a_{wz}(v_{\mathrm{ref}}/\bar v)^{\gamma}$, reported only for $\bar v\ge5$~m\,s$^{-1}$.
+After estimating the mount rotation from gravity and GNSS acceleration~\cite{vardi2000l1median,schonemann1966procrustes}, ISO~2631-1 weightings~\cite{iso2631} ($W_k$ vertical, $W_d$ horizontal) give, per stretch, the \emph{ride value} $a_v=(a_{wx}^2+a_{wy}^2+a_{wz}^2)^{1/2}$ and the \emph{road value} $\tilde a_w=a_{wz}(v_{\mathrm{ref}}/\bar v)^{\gamma}$, reported only for $\bar v\ge5$~m\,s$^{-1}$.
 The exponent follows from road spectra $G_d(n)\propto n^{-w}$~\cite{iso8608}: a fixed vehicle's RMS response scales as $\bar v^{(w-1)/2}$, so $\gamma=0.5$ for the nominal $w=2$; RoadScribe's configuration uses $\gamma=0.35$, estimated across places on the PVS trips during development (Sect.~\ref{sec:speed}).
 Both values are mapped to the six comfort classes of ISO~2631-1 Annex~C (cut-points 0.315, 0.561, 0.894, 1.414, 2.236~m\,s$^{-2}$): \emph{ride classes} and \emph{road classes}, the latter speed-normalized comfort classes, not a pavement condition index.
 Impulsive events are detected with the Teager--Kaiser energy operator~\cite{kaiser1990tkeo} on the 4--25~Hz vertical band and tagged with their maneuver context.

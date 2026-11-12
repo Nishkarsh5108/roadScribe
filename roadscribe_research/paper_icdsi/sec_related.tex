@@ -9,13 +9,7 @@ In sensor-to-text generation, the gap between the two properties takes a specifi
 Our world-level test asks whether the source value is a property of the world, a question that checks of text against source cannot answer.
 
 \paragraph{Unsupported targets and hallucination.}
-References that state facts absent from the input (\emph{divergent references}) are a known source of hallucination in data-to-text generation.
-Proposed remedies include:
-\begin{itemize}
-\item metrics that account for them~\cite{dhingra2019parent};
-\item cleaning or re-annotating the data so that inputs and texts match~\cite{dusek2019semantic,nie2019simple};
-\item training that controls how far outputs may go beyond the input~\cite{filippova2020controlled}.
-\end{itemize}
+References that state facts absent from the input (\emph{divergent references}) are a known source of hallucination in data-to-text generation. Remedies include metrics that account for them~\cite{dhingra2019parent}, cleaning or re-annotating the data so that inputs and texts match~\cite{dusek2019semantic,nie2019simple}, and training that controls how far outputs may go beyond the input~\cite{filippova2020controlled}.
 Fine-tuning a language model on facts it cannot know from pre-training likewise increases hallucination~\cite{gekhman2024newknowledge}.
 Our input-level test is a typed version of this diagnosis, done before training.
 Our controlled experiment holds the targets fixed and changes only whether the input contains the values they state, so that the effect on each value type can be read directly.

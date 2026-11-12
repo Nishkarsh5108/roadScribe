@@ -1,43 +1,31 @@
 \section{Introduction}
 \label{sec:intro}
 
-Language models are increasingly asked to describe sensor data in words: activity from wearables, driving from phones, machines from their vibration~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
-For such text to be trusted, its claims must be checked.
-The data-to-text answer is to compile the measurements into facts, generate text from them, and verify every claim against the facts, falling back to a deterministic narrator when verification fails~\cite{wiseman2017challenges,moryossef2019step,jhamtani2021truce}.
-A system built this way is \emph{faithful}: it never says what its facts do not say~\cite{maynez2020faithfulness}.
+Language models are increasingly asked to describe sensor data: activity from wearables, driving from phones, machines from their vibration~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
+The data-to-text answer to the question of trust is to compile the measurements into facts, generate text from them, and verify every claim against the facts, falling back to a deterministic narrator when verification fails~\cite{wiseman2017challenges,moryossef2019step,jhamtani2021truce}.
+Such a system is \emph{faithful}: it never says what its facts do not say~\cite{maynez2020faithfulness}.
 
 This paper is about what faithfulness leaves open.
-A verifier compares a sentence with a value, but it cannot tell whether the value determines what the sentence asserts.
-We call a claim \emph{identifiable} when it does, and we study two ways in which it can fail.
-\begin{itemize}
-\item \emph{World level.} The value is not a property of the world the sentence talks about.
-The vibration a car records on a road depends on the car and on its speed.
-``The surface is in fair condition'' can agree perfectly with one car's ledger and contradict another car's ledger for the same street.
-\item \emph{Input level.} A fine-tuned narrator is trained on targets that state values its input does not contain.
-It then learns to produce such values without evidence.
-The verifier rejects the output, which is safe, but the model contributes nothing.
-\end{itemize}
-
-We study both in RoadScribe, a verified narrator that turns IMU and GNSS recordings of car trips into narratives.
-We use the Passive Vehicular Sensors (PVS) dataset, in which three vehicles drove the same three routes, and a 3B-parameter language model fine-tuned under controlled conditions.
+A verifier compares a sentence with a value; it cannot tell whether the value determines what the sentence asserts.
+We call a claim \emph{identifiable} when it does, and study two ways in which it fails.
+At the \emph{world level}, the value is not a property of what the sentence talks about. The vibration a car records on a road depends on the car and its speed, so ``the surface is in fair condition'' can agree with one car's ledger and contradict another car's ledger for the same street.
+At the \emph{input level}, a fine-tuned narrator is trained on targets that state values its input does not contain. It learns to produce such values without evidence, and the verifier then rejects its output: safely, but the model contributes nothing.
+We study both in RoadScribe, a verified narrator for IMU and GNSS recordings of car trips. We use the PVS dataset, in which three vehicles drove the same three routes, and a 3B-parameter language model fine-tuned under controlled conditions.
 
 \paragraph{Contributions.}
 \begin{enumerate}
-\item \emph{Two-level claim identifiability with an operational test for each level} (Sect.~\ref{sec:ident}).
-At the world level, the test compares the agreement of claims across conditions (vehicles) with a same-condition noise floor and a label-shuffling placebo.
-At the input level, a typed audit measures whether each value the training targets state is present in the model's input.
-Both tests are cheap, independent of the model, and applicable to other sensor-to-text systems.
+\item \emph{Two-level claim identifiability, with an operational test for each level} (Sect.~\ref{sec:ident}). The world-level test compares cross-condition agreement with a same-condition noise floor and a placebo. The input-level test is a typed audit of whether each value the training targets state is present in the input. Both are cheap, model-independent and applicable to other sensor-to-text systems.
 \item \emph{World-level evidence, pre-registered} (Sect.~\ref{sec:world}).
-RoadScribe's road class differs between two vehicles at the same place in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value (0.06\% under the placebo). Two sensors in the same vehicle agree at $\kappa=0.98$.
-A speed elasticity estimated across places has the wrong sign.
-One gain per vehicle, estimated on about a kilometre of shared road, raises cross-vehicle agreement from $\kappa=0.72$ to $0.96$. It also raises the accuracy of road-quality labels on held-out routes and vehicles from 90.5\% to 98.3\%. The result replicates on a second logger.
-\item \emph{Input-level evidence from a controlled experiment, pre-registered} (Sect.~\ref{sec:input}).
-\PSIXCONTRIB
-\item \emph{A design consequence.}
-When the model only selects content and code writes the values, every valid model plan yields a verified narrative. When the model writes the values, none does.
+  \begin{itemize}
+  \item RoadScribe's road class differs between two vehicles at the same place in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value. Two sensors in one vehicle agree at $\kappa=0.98$.
+  \item A speed elasticity estimated across places has the wrong sign.
+  \item One gain per vehicle, estimated on about a kilometre of shared road, raises cross-vehicle agreement from $\kappa=0.72$ to $0.96$, and the accuracy on road-quality labels of held-out routes and vehicles from 90.5\% to 98.3\%. The result replicates on a second logger.
+  \end{itemize}
+\item \emph{Input-level evidence from a controlled experiment, pre-registered} (Sect.~\ref{sec:input}). \PSIXCONTRIB
+\item \emph{A design consequence.} When the model only selects content and code writes the values, every valid model plan yields a verified narrative.
 \end{enumerate}
 
 \paragraph{Scope.}
-We propose no new roughness estimator, language model or verifier, and per-vehicle calibration itself is established practice~\cite{sayers1986iri}.
-Our claims concern which statements a sensor-to-text system may make and how to test this before deployment.
-They rest on one public dataset with three vehicle--driver pairs and one pass per route, on fixed sensor modules rather than phones, and on a synthetic training corpus.
+We propose no new roughness estimator, language model or verifier. Per-vehicle calibration is established practice~\cite{sayers1986iri}.
+Our claims concern which statements a sensor-to-text system may make, and how to test this before deployment.
+They rest on one public dataset (three vehicle--driver pairs, one pass per route, fixed modules rather than phones) and on a synthetic training corpus.

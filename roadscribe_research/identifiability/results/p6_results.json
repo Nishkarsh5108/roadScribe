@@ -6,6 +6,91 @@
   "bootstrap": "cluster over drives, 10000 resamples"
  },
  "arms": {
+  "A": {
+   "n": 54,
+   "claims": 2174,
+   "supported": 1116,
+   "precision": 0.5133394664213431,
+   "evt_claims": 929,
+   "wrong_position": 177,
+   "wrong_position_share": 0.19052744886975242,
+   "non_position_errors": 881,
+   "non_position_per_narrative": 16.314814814814813,
+   "hallucinated_missing": 11,
+   "accepted": 0,
+   "claims_per_narrative": 40.25925925925926,
+   "words_per_narrative": 236.61111111111111,
+   "must_mention_missed": 0,
+   "hit_token_limit": 0,
+   "reasons": {
+    "event_count": 412,
+    "wrong_position": 177,
+    "wrong_anchor": 67,
+    "overclaimed_hedge": 230,
+    "rest_count": 2,
+    "no_history": 14,
+    "number_mismatch": 110,
+    "unsupported_cause": 7,
+    "severity_mismatch": 12,
+    "hallucinated_missing": 11,
+    "wrong_surface": 3,
+    "wrong_map_tag": 3,
+    "comparison_mismatch": 9,
+    "misattributed_maneuver": 1
+   },
+   "by_value_type": {
+    "acceleration": {
+     "claims": 124,
+     "unsupported": 96,
+     "error_rate": 0.7741935483870968
+    },
+    "anchor": {
+     "claims": 70,
+     "unsupported": 70,
+     "error_rate": 1.0
+    },
+    "cmp": {
+     "claims": 147,
+     "unsupported": 34,
+     "error_rate": 0.23129251700680273
+    },
+    "distance": {
+     "claims": 390,
+     "unsupported": 1,
+     "error_rate": 0.002564102564102564
+    },
+    "duration": {
+     "claims": 54,
+     "unsupported": 0,
+     "error_rate": 0.0
+    },
+    "event_other": {
+     "claims": 219,
+     "unsupported": 149,
+     "error_rate": 0.680365296803653
+    },
+    "position": {
+     "claims": 710,
+     "unsupported": 664,
+     "error_rate": 0.9352112676056338
+    },
+    "rest": {
+     "claims": 33,
+     "unsupported": 9,
+     "error_rate": 0.2727272727272727
+    },
+    "sev": {
+     "claims": 412,
+     "unsupported": 22,
+     "error_rate": 0.05339805825242718
+    },
+    "speed": {
+     "claims": 15,
+     "unsupported": 13,
+     "error_rate": 0.8666666666666667
+    }
+   }
+  },
   "B": {
    "n": 54,
    "claims": 2206,
@@ -174,13 +259,92 @@
    }
   }
  },
- "hypotheses": {},
+ "hypotheses": {
+  "P6-H1": {
+   "prediction": "precision B - A >= 0.15",
+   "diff": 0.24867322623504862,
+   "ci95": [
+    0.1886924235450814,
+    0.30773850805823744
+   ],
+   "p_le_0": 0.0,
+   "holds": true
+  },
+  "P6-H2": {
+   "prediction": "wrong-position share C >= 2 B and A >= 2 B",
+   "A": 0.19052744886975242,
+   "B": 0.3070776255707763,
+   "C": 0.7707558859975217,
+   "C_over_B": {
+    "ratio": 2.5099708406462042,
+    "ci95": [
+     1.7191295611871242,
+     4.409501645709824
+    ]
+   },
+   "A_over_B": {
+    "ratio": 0.6204536996650674,
+    "ci95": [
+     0.3854940808163691,
+     1.2277802404895668
+    ]
+   },
+   "holds": false
+  },
+  "P6-H3": {
+   "prediction": "non-position errors per narrative C < 0.5 A",
+   "A": 16.314814814814813,
+   "C": 3.1481481481481484,
+   "C_over_A": {
+    "ratio": 0.19296254256526676,
+    "ci95": [
+     0.11248454882571075,
+     0.2876288659793815
+    ]
+   },
+   "holds": true
+  },
+  "P6-H4": {
+   "prediction": "precision B > C",
+   "diff": 0.15428609533098314,
+   "ci95": [
+    0.11720729647090045,
+    0.1931020342719913
+   ],
+   "p_le_0": 0.0,
+   "holds": true
+  }
+ },
  "per_type_contrasts_exploratory": {
+  "position: A - B": {
+   "diff": 0.5172005149174617,
+   "ci95": [
+    0.39134701851927933,
+    0.6608557578836377
+   ],
+   "p_le_0": 0.0
+  },
   "position: C - B": {
    "diff": 0.40279125232435925,
    "ci95": [
     0.26318775308543874,
     0.5616413198174686
+   ],
+   "p_le_0": 0.0
+  },
+  "position: A - C": {
+   "diff": 0.11440926259310247,
+   "ci95": [
+    0.07459320784447028,
+    0.15626285589728667
+   ],
+   "p_le_0": 0.0
+  },
+  "speed: A - B": {
+   "diff": 0.8380952380952381,
+   "ci95": [
+    0.5661764705882353,
+    1.0
    ],
    "p_le_0": 0.0
   },
@@ -192,6 +356,22 @@
    ],
    "p_le_0": 0.6631
   },
+  "speed: A - C": {
+   "diff": 0.8372549019607843,
+   "ci95": [
+    0.5714285714285714,
+    1.0
+   ],
+   "p_le_0": 0.0
+  },
+  "acceleration: A - B": {
+   "diff": 0.36359752189703054,
+   "ci95": [
+    0.29322650228497366,
+    0.44715426326123053
+   ],
+   "p_le_0": 0.0
+  },
   "acceleration: C - B": {
    "diff": -0.004798925040790825,
    "ci95": [
@@ -200,6 +380,22 @@
    ],
    "p_le_0": 0.53
   },
+  "acceleration: A - C": {
+   "diff": 0.36839644693782136,
+   "ci95": [
+    0.26609713652903016,
+    0.48006727161534524
+   ],
+   "p_le_0": 0.0
+  },
+  "distance: A - B": {
+   "diff": -0.1253979827439543,
+   "ci95": [
+    -0.20908461922396113,
+    -0.04400536224281634
+   ],
+   "p_le_0": 1.0
+  },
   "distance: C - B": {
    "diff": -0.10904316638913794,
    "ci95": [
@@ -207,9 +403,2056 @@
     -0.023942513480585303
    ],
    "p_le_0": 0.9976
+  },
+  "distance: A - C": {
+   "diff": -0.016354816354816355,
+   "ci95": [
+    -0.0301402716979393,
+    -0.0053021577475692175
+   ],
+   "p_le_0": 1.0
   }
  },
  "per_narrative": {
+  "A": [
+   {
+    "trip": "pvs1",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 37,
+    "n_sup": 22,
+    "n_evt": 14,
+    "wrong_pos": 1,
+    "non_pos": 14,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "event_count": 5,
+     "wrong_position": 1,
+     "wrong_anchor": 2,
+     "overclaimed_hedge": 6,
+     "rest_count": 1
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 3,
+     "position": 6,
+     "anchor": 2,
+     "event_other": 8,
+     "rest": 3
+    },
+    "types_bad": {
+     "position": 6,
+     "anchor": 2,
+     "event_other": 6,
+     "rest": 1
+    },
+    "words": 181,
+    "n_new_tokens": 277
+   },
+   {
+    "trip": "pvs1",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 42,
+    "n_sup": 17,
+    "n_evt": 20,
+    "wrong_pos": 3,
+    "non_pos": 22,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "event_count": 9,
+     "wrong_position": 3,
+     "number_mismatch": 3,
+     "overclaimed_hedge": 8
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 12,
+     "event_other": 8
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "position": 12,
+     "acceleration": 3,
+     "event_other": 8
+    },
+    "words": 207,
+    "n_new_tokens": 344
+   },
+   {
+    "trip": "pvs2",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 44,
+    "n_sup": 24,
+    "n_evt": 19,
+    "wrong_pos": 2,
+    "non_pos": 18,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "unsupported_cause": 1,
+     "severity_mismatch": 1,
+     "overclaimed_hedge": 10,
+     "wrong_position": 2,
+     "wrong_anchor": 1,
+     "event_count": 5
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 8,
+     "sev": 9,
+     "cmp": 3,
+     "position": 11,
+     "event_other": 8,
+     "anchor": 1,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "event_other": 7,
+     "position": 9,
+     "anchor": 1,
+     "rest": 1
+    },
+    "words": 282,
+    "n_new_tokens": 417
+   },
+   {
+    "trip": "pvs2",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 63,
+    "n_sup": 28,
+    "n_evt": 27,
+    "wrong_pos": 3,
+    "non_pos": 32,
+    "missing": 1,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 8,
+     "event_count": 8,
+     "overclaimed_hedge": 13,
+     "hallucinated_missing": 1,
+     "wrong_anchor": 2,
+     "wrong_position": 3
+    },
+    "types_n": {
+     "distance": 10,
+     "duration": 1,
+     "cmp": 4,
+     "sev": 11,
+     "acceleration": 7,
+     "position": 13,
+     "speed": 1,
+     "event_other": 14,
+     "anchor": 2
+    },
+    "types_bad": {
+     "acceleration": 7,
+     "position": 12,
+     "sev": 1,
+     "speed": 1,
+     "event_other": 12,
+     "anchor": 2
+    },
+    "words": 307,
+    "n_new_tokens": 504
+   },
+   {
+    "trip": "pvs3",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 30,
+    "n_sup": 14,
+    "n_evt": 13,
+    "wrong_pos": 5,
+    "non_pos": 11,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 3,
+     "event_count": 7,
+     "wrong_position": 5,
+     "overclaimed_hedge": 1
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 6,
+     "sev": 6,
+     "anchor": 3,
+     "position": 13,
+     "cmp": 1
+    },
+    "types_bad": {
+     "anchor": 3,
+     "position": 13
+    },
+    "words": 209,
+    "n_new_tokens": 317
+   },
+   {
+    "trip": "pvs3",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 35,
+    "n_sup": 15,
+    "n_evt": 14,
+    "wrong_pos": 7,
+    "non_pos": 13,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "number_mismatch": 4,
+     "event_count": 6,
+     "wrong_position": 7,
+     "severity_mismatch": 1,
+     "overclaimed_hedge": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 2,
+     "sev": 7,
+     "acceleration": 4,
+     "position": 14,
+     "speed": 1
+    },
+    "types_bad": {
+     "cmp": 1,
+     "acceleration": 3,
+     "position": 14,
+     "sev": 1,
+     "speed": 1
+    },
+    "words": 240,
+    "n_new_tokens": 380
+   },
+   {
+    "trip": "pvs4",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 32,
+    "n_sup": 14,
+    "n_evt": 14,
+    "wrong_pos": 4,
+    "non_pos": 14,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "overclaimed_hedge": 1,
+     "event_count": 9,
+     "wrong_position": 4,
+     "severity_mismatch": 1,
+     "wrong_surface": 1,
+     "wrong_map_tag": 1,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 2,
+     "sev": 7,
+     "position": 14,
+     "anchor": 2
+    },
+    "types_bad": {
+     "position": 14,
+     "sev": 2,
+     "anchor": 2
+    },
+    "words": 198,
+    "n_new_tokens": 317
+   },
+   {
+    "trip": "pvs4",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 36,
+    "n_sup": 18,
+    "n_evt": 15,
+    "wrong_pos": 3,
+    "non_pos": 15,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 4,
+     "event_count": 8,
+     "severity_mismatch": 1,
+     "overclaimed_hedge": 2,
+     "wrong_position": 3
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "speed": 1,
+     "acceleration": 4,
+     "position": 15,
+     "cmp": 2
+    },
+    "types_bad": {
+     "speed": 1,
+     "acceleration": 3,
+     "position": 13,
+     "sev": 1
+    },
+    "words": 214,
+    "n_new_tokens": 364
+   },
+   {
+    "trip": "pvs5",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 49,
+    "n_sup": 23,
+    "n_evt": 22,
+    "wrong_pos": 0,
+    "non_pos": 26,
+    "missing": 2,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "hallucinated_missing": 2,
+     "overclaimed_hedge": 18,
+     "wrong_anchor": 3,
+     "event_count": 3
+    },
+    "types_n": {
+     "distance": 8,
+     "duration": 1,
+     "sev": 9,
+     "cmp": 3,
+     "event_other": 18,
+     "anchor": 3,
+     "position": 4,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "event_other": 16,
+     "anchor": 3,
+     "position": 4,
+     "rest": 1
+    },
+    "words": 186,
+    "n_new_tokens": 289
+   },
+   {
+    "trip": "pvs5",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 53,
+    "n_sup": 28,
+    "n_evt": 17,
+    "wrong_pos": 4,
+    "non_pos": 21,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 4,
+     "number_mismatch": 4,
+     "wrong_position": 4,
+     "overclaimed_hedge": 3,
+     "event_count": 8,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "distance": 10,
+     "duration": 1,
+     "cmp": 4,
+     "sev": 8,
+     "anchor": 4,
+     "acceleration": 5,
+     "position": 17,
+     "speed": 1,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 2,
+     "anchor": 4,
+     "acceleration": 3,
+     "position": 14,
+     "speed": 1,
+     "rest": 1
+    },
+    "words": 307,
+    "n_new_tokens": 504
+   },
+   {
+    "trip": "pvs6",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 30,
+    "n_sup": 18,
+    "n_evt": 13,
+    "wrong_pos": 3,
+    "non_pos": 9,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "event_count": 6,
+     "wrong_position": 3,
+     "overclaimed_hedge": 2,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 2,
+     "position": 10,
+     "event_other": 3,
+     "anchor": 1
+    },
+    "types_bad": {
+     "position": 9,
+     "event_other": 2,
+     "anchor": 1
+    },
+    "words": 189,
+    "n_new_tokens": 285
+   },
+   {
+    "trip": "pvs6",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 40,
+    "n_sup": 18,
+    "n_evt": 16,
+    "wrong_pos": 2,
+    "non_pos": 20,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "severity_mismatch": 1,
+     "number_mismatch": 4,
+     "event_count": 7,
+     "wrong_position": 2,
+     "wrong_anchor": 2,
+     "overclaimed_hedge": 6
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 7,
+     "speed": 1,
+     "acceleration": 4,
+     "position": 9,
+     "cmp": 2,
+     "anchor": 2,
+     "event_other": 7
+    },
+    "types_bad": {
+     "sev": 1,
+     "speed": 1,
+     "acceleration": 3,
+     "position": 9,
+     "anchor": 2,
+     "event_other": 6
+    },
+    "words": 214,
+    "n_new_tokens": 348
+   },
+   {
+    "trip": "pvs7",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 31,
+    "n_sup": 15,
+    "n_evt": 14,
+    "wrong_pos": 4,
+    "non_pos": 12,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "unsupported_cause": 1,
+     "severity_mismatch": 1,
+     "event_count": 5,
+     "wrong_position": 4,
+     "overclaimed_hedge": 4,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 6,
+     "sev": 7,
+     "cmp": 2,
+     "position": 10,
+     "anchor": 1,
+     "event_other": 4
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "position": 10,
+     "anchor": 1,
+     "event_other": 3
+    },
+    "words": 180,
+    "n_new_tokens": 279
+   },
+   {
+    "trip": "pvs7",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 34,
+    "n_sup": 18,
+    "n_evt": 13,
+    "wrong_pos": 4,
+    "non_pos": 12,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "event_count": 8,
+     "wrong_position": 4,
+     "number_mismatch": 1,
+     "overclaimed_hedge": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 13
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "position": 13,
+     "acceleration": 1
+    },
+    "words": 202,
+    "n_new_tokens": 338
+   },
+   {
+    "trip": "pvs8",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 47,
+    "n_sup": 25,
+    "n_evt": 21,
+    "wrong_pos": 3,
+    "non_pos": 19,
+    "missing": 2,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "hallucinated_missing": 2,
+     "overclaimed_hedge": 3,
+     "event_count": 12,
+     "wrong_position": 3,
+     "wrong_anchor": 1,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 9,
+     "sev": 11,
+     "cmp": 4,
+     "position": 21,
+     "anchor": 1
+    },
+    "types_bad": {
+     "cmp": 2,
+     "sev": 1,
+     "position": 18,
+     "anchor": 1
+    },
+    "words": 302,
+    "n_new_tokens": 464
+   },
+   {
+    "trip": "pvs8",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 62,
+    "n_sup": 34,
+    "n_evt": 26,
+    "wrong_pos": 6,
+    "non_pos": 22,
+    "missing": 1,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "hallucinated_missing": 1,
+     "number_mismatch": 5,
+     "wrong_position": 6,
+     "event_count": 7,
+     "wrong_anchor": 1,
+     "overclaimed_hedge": 7,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "distance": 11,
+     "duration": 1,
+     "sev": 11,
+     "speed": 1,
+     "acceleration": 7,
+     "position": 21,
+     "cmp": 4,
+     "anchor": 1,
+     "event_other": 5
+    },
+    "types_bad": {
+     "sev": 1,
+     "speed": 1,
+     "acceleration": 4,
+     "position": 15,
+     "anchor": 1,
+     "event_other": 5,
+     "cmp": 1
+    },
+    "words": 365,
+    "n_new_tokens": 598
+   },
+   {
+    "trip": "pvs9",
+    "persona": "commuter",
+    "seed": 0,
+    "n_claims": 36,
+    "n_sup": 19,
+    "n_evt": 16,
+    "wrong_pos": 4,
+    "non_pos": 13,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "unsupported_cause": 1,
+     "event_count": 8,
+     "wrong_position": 4,
+     "overclaimed_hedge": 2,
+     "wrong_anchor": 1,
+     "rest_count": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 2,
+     "position": 16,
+     "anchor": 1,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "position": 14,
+     "anchor": 1,
+     "rest": 1
+    },
+    "words": 234,
+    "n_new_tokens": 354
+   },
+   {
+    "trip": "pvs9",
+    "persona": "sports_car",
+    "seed": 0,
+    "n_claims": 39,
+    "n_sup": 19,
+    "n_evt": 16,
+    "wrong_pos": 4,
+    "non_pos": 16,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 4,
+     "overclaimed_hedge": 3,
+     "event_count": 9,
+     "wrong_position": 4
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 7,
+     "speed": 1,
+     "acceleration": 5,
+     "position": 16,
+     "cmp": 2
+    },
+    "types_bad": {
+     "speed": 1,
+     "acceleration": 3,
+     "position": 16
+    },
+    "words": 236,
+    "n_new_tokens": 396
+   },
+   {
+    "trip": "pvs1",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 33,
+    "n_sup": 16,
+    "n_evt": 16,
+    "wrong_pos": 2,
+    "non_pos": 15,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 2,
+     "event_count": 9,
+     "wrong_position": 2,
+     "misattributed_maneuver": 1,
+     "overclaimed_hedge": 3
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 2,
+     "sev": 6,
+     "anchor": 2,
+     "position": 16
+    },
+    "types_bad": {
+     "anchor": 2,
+     "position": 15
+    },
+    "words": 212,
+    "n_new_tokens": 335
+   },
+   {
+    "trip": "pvs1",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 40,
+    "n_sup": 18,
+    "n_evt": 15,
+    "wrong_pos": 1,
+    "non_pos": 21,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "severity_mismatch": 1,
+     "number_mismatch": 3,
+     "event_count": 8,
+     "wrong_surface": 1,
+     "wrong_map_tag": 1,
+     "overclaimed_hedge": 6,
+     "wrong_position": 1,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 8,
+     "speed": 1,
+     "acceleration": 4,
+     "position": 10,
+     "cmp": 2,
+     "anchor": 2,
+     "event_other": 5
+    },
+    "types_bad": {
+     "sev": 2,
+     "speed": 1,
+     "acceleration": 2,
+     "position": 10,
+     "anchor": 2,
+     "event_other": 5
+    },
+    "words": 200,
+    "n_new_tokens": 338
+   },
+   {
+    "trip": "pvs2",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 50,
+    "n_sup": 25,
+    "n_evt": 24,
+    "wrong_pos": 5,
+    "non_pos": 20,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 2,
+     "wrong_position": 5,
+     "event_count": 11,
+     "overclaimed_hedge": 6,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 10,
+     "sev": 10,
+     "anchor": 2,
+     "position": 19,
+     "event_other": 5,
+     "cmp": 3
+    },
+    "types_bad": {
+     "anchor": 2,
+     "position": 18,
+     "event_other": 4,
+     "cmp": 1
+    },
+    "words": 313,
+    "n_new_tokens": 482
+   },
+   {
+    "trip": "pvs2",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 61,
+    "n_sup": 29,
+    "n_evt": 28,
+    "wrong_pos": 2,
+    "non_pos": 30,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 6,
+     "wrong_anchor": 1,
+     "event_count": 7,
+     "overclaimed_hedge": 15,
+     "comparison_mismatch": 1,
+     "wrong_position": 2
+    },
+    "types_n": {
+     "distance": 10,
+     "duration": 1,
+     "cmp": 5,
+     "sev": 10,
+     "acceleration": 6,
+     "anchor": 1,
+     "position": 10,
+     "event_other": 18
+    },
+    "types_bad": {
+     "acceleration": 6,
+     "anchor": 1,
+     "position": 9,
+     "event_other": 15,
+     "cmp": 1
+    },
+    "words": 277,
+    "n_new_tokens": 460
+   },
+   {
+    "trip": "pvs3",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 31,
+    "n_sup": 19,
+    "n_evt": 12,
+    "wrong_pos": 2,
+    "non_pos": 10,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "event_count": 9,
+     "wrong_position": 2,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 3,
+     "position": 12,
+     "anchor": 1
+    },
+    "types_bad": {
+     "position": 11,
+     "anchor": 1
+    },
+    "words": 189,
+    "n_new_tokens": 295
+   },
+   {
+    "trip": "pvs3",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 34,
+    "n_sup": 16,
+    "n_evt": 14,
+    "wrong_pos": 5,
+    "non_pos": 13,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "number_mismatch": 4,
+     "event_count": 6,
+     "wrong_position": 5,
+     "overclaimed_hedge": 2
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "acceleration": 4,
+     "position": 11,
+     "event_other": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "acceleration": 4,
+     "position": 11,
+     "event_other": 2
+    },
+    "words": 205,
+    "n_new_tokens": 332
+   },
+   {
+    "trip": "pvs4",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 31,
+    "n_sup": 17,
+    "n_evt": 14,
+    "wrong_pos": 2,
+    "non_pos": 12,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "event_count": 5,
+     "wrong_position": 2,
+     "unsupported_cause": 1,
+     "severity_mismatch": 1,
+     "overclaimed_hedge": 4,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 6,
+     "sev": 7,
+     "position": 7,
+     "cmp": 2,
+     "event_other": 7,
+     "anchor": 1
+    },
+    "types_bad": {
+     "position": 7,
+     "cmp": 1,
+     "sev": 1,
+     "event_other": 4,
+     "anchor": 1
+    },
+    "words": 187,
+    "n_new_tokens": 278
+   },
+   {
+    "trip": "pvs4",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 40,
+    "n_sup": 20,
+    "n_evt": 18,
+    "wrong_pos": 3,
+    "non_pos": 17,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 3,
+     "overclaimed_hedge": 2,
+     "event_count": 12,
+     "wrong_position": 3
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 7,
+     "speed": 1,
+     "acceleration": 4,
+     "position": 18,
+     "cmp": 2
+    },
+    "types_bad": {
+     "speed": 1,
+     "position": 17,
+     "acceleration": 2
+    },
+    "words": 226,
+    "n_new_tokens": 396
+   },
+   {
+    "trip": "pvs5",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 55,
+    "n_sup": 35,
+    "n_evt": 28,
+    "wrong_pos": 2,
+    "non_pos": 18,
+    "missing": 2,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "hallucinated_missing": 2,
+     "wrong_anchor": 3,
+     "overclaimed_hedge": 7,
+     "wrong_position": 2,
+     "event_count": 6
+    },
+    "types_n": {
+     "distance": 8,
+     "duration": 1,
+     "sev": 9,
+     "cmp": 3,
+     "event_other": 14,
+     "anchor": 3,
+     "position": 14,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "anchor": 3,
+     "position": 14,
+     "rest": 1
+    },
+    "words": 232,
+    "n_new_tokens": 369
+   },
+   {
+    "trip": "pvs5",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 49,
+    "n_sup": 26,
+    "n_evt": 18,
+    "wrong_pos": 4,
+    "non_pos": 19,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 5,
+     "wrong_position": 4,
+     "overclaimed_hedge": 5,
+     "event_count": 6,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "distance": 9,
+     "duration": 1,
+     "cmp": 4,
+     "sev": 8,
+     "anchor": 1,
+     "acceleration": 5,
+     "event_other": 4,
+     "position": 14,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 2,
+     "anchor": 1,
+     "acceleration": 5,
+     "position": 14,
+     "rest": 1
+    },
+    "words": 270,
+    "n_new_tokens": 453
+   },
+   {
+    "trip": "pvs6",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 34,
+    "n_sup": 19,
+    "n_evt": 14,
+    "wrong_pos": 3,
+    "non_pos": 12,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "event_count": 4,
+     "wrong_position": 3,
+     "wrong_anchor": 2,
+     "overclaimed_hedge": 6
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 3,
+     "position": 7,
+     "anchor": 2,
+     "event_other": 7
+    },
+    "types_bad": {
+     "position": 7,
+     "anchor": 2,
+     "event_other": 6
+    },
+    "words": 199,
+    "n_new_tokens": 294
+   },
+   {
+    "trip": "pvs6",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 37,
+    "n_sup": 14,
+    "n_evt": 15,
+    "wrong_pos": 5,
+    "non_pos": 18,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 5,
+     "event_count": 9,
+     "wrong_position": 5,
+     "severity_mismatch": 1,
+     "overclaimed_hedge": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 2,
+     "sev": 7,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 15,
+     "speed": 1
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 15,
+     "sev": 1,
+     "speed": 1
+    },
+    "words": 245,
+    "n_new_tokens": 391
+   },
+   {
+    "trip": "pvs7",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 32,
+    "n_sup": 14,
+    "n_evt": 15,
+    "wrong_pos": 4,
+    "non_pos": 14,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "unsupported_cause": 1,
+     "severity_mismatch": 1,
+     "event_count": 9,
+     "wrong_position": 4,
+     "overclaimed_hedge": 2,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 2,
+     "position": 15,
+     "anchor": 1
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "position": 15,
+     "anchor": 1
+    },
+    "words": 197,
+    "n_new_tokens": 312
+   },
+   {
+    "trip": "pvs7",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 36,
+    "n_sup": 19,
+    "n_evt": 14,
+    "wrong_pos": 4,
+    "non_pos": 13,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 2,
+     "event_count": 9,
+     "wrong_position": 4
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 14,
+     "speed": 1
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "acceleration": 2,
+     "position": 13
+    },
+    "words": 227,
+    "n_new_tokens": 370
+   },
+   {
+    "trip": "pvs8",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 39,
+    "n_sup": 24,
+    "n_evt": 15,
+    "wrong_pos": 4,
+    "non_pos": 11,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 3,
+     "wrong_position": 4,
+     "event_count": 6,
+     "overclaimed_hedge": 2
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 8,
+     "anchor": 3,
+     "event_other": 3,
+     "position": 12,
+     "rest": 2
+    },
+    "types_bad": {
+     "anchor": 3,
+     "position": 12
+    },
+    "words": 245,
+    "n_new_tokens": 365
+   },
+   {
+    "trip": "pvs8",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 53,
+    "n_sup": 36,
+    "n_evt": 19,
+    "wrong_pos": 1,
+    "non_pos": 16,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 1,
+     "number_mismatch": 4,
+     "overclaimed_hedge": 3,
+     "event_count": 7,
+     "wrong_position": 1,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "distance": 11,
+     "duration": 1,
+     "cmp": 5,
+     "sev": 10,
+     "anchor": 1,
+     "acceleration": 6,
+     "event_other": 4,
+     "position": 15
+    },
+    "types_bad": {
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 11,
+     "cmp": 1
+    },
+    "words": 334,
+    "n_new_tokens": 544
+   },
+   {
+    "trip": "pvs9",
+    "persona": "commuter",
+    "seed": 1,
+    "n_claims": 30,
+    "n_sup": 15,
+    "n_evt": 13,
+    "wrong_pos": 4,
+    "non_pos": 11,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 2,
+     "event_count": 9,
+     "wrong_position": 4
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 2,
+     "sev": 6,
+     "anchor": 2,
+     "position": 13
+    },
+    "types_bad": {
+     "anchor": 2,
+     "position": 13
+    },
+    "words": 200,
+    "n_new_tokens": 307
+   },
+   {
+    "trip": "pvs9",
+    "persona": "sports_car",
+    "seed": 1,
+    "n_claims": 37,
+    "n_sup": 17,
+    "n_evt": 15,
+    "wrong_pos": 5,
+    "non_pos": 15,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 4,
+     "event_count": 9,
+     "wrong_position": 5
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 15
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 14
+    },
+    "words": 236,
+    "n_new_tokens": 383
+   },
+   {
+    "trip": "pvs1",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 35,
+    "n_sup": 18,
+    "n_evt": 17,
+    "wrong_pos": 4,
+    "non_pos": 13,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 1,
+     "event_count": 10,
+     "wrong_position": 4,
+     "overclaimed_hedge": 2
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "position": 17
+    },
+    "types_bad": {
+     "anchor": 1,
+     "position": 16
+    },
+    "words": 242,
+    "n_new_tokens": 376
+   },
+   {
+    "trip": "pvs1",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 38,
+    "n_sup": 19,
+    "n_evt": 15,
+    "wrong_pos": 2,
+    "non_pos": 17,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 2,
+     "event_count": 3,
+     "wrong_position": 2,
+     "overclaimed_hedge": 8,
+     "wrong_surface": 1,
+     "wrong_map_tag": 1
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 7,
+     "anchor": 2,
+     "acceleration": 3,
+     "position": 7,
+     "event_other": 8
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 2,
+     "acceleration": 2,
+     "position": 6,
+     "sev": 1,
+     "event_other": 7
+    },
+    "words": 220,
+    "n_new_tokens": 341
+   },
+   {
+    "trip": "pvs2",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 48,
+    "n_sup": 24,
+    "n_evt": 25,
+    "wrong_pos": 4,
+    "non_pos": 20,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 1,
+     "event_count": 16,
+     "wrong_position": 4,
+     "overclaimed_hedge": 3
+    },
+    "types_n": {
+     "distance": 8,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 8,
+     "anchor": 1,
+     "position": 25,
+     "rest": 2
+    },
+    "types_bad": {
+     "anchor": 1,
+     "position": 23
+    },
+    "words": 362,
+    "n_new_tokens": 541
+   },
+   {
+    "trip": "pvs2",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 62,
+    "n_sup": 35,
+    "n_evt": 27,
+    "wrong_pos": 1,
+    "non_pos": 26,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 5,
+     "event_count": 7,
+     "overclaimed_hedge": 11,
+     "wrong_anchor": 2,
+     "comparison_mismatch": 1,
+     "wrong_position": 1
+    },
+    "types_n": {
+     "distance": 11,
+     "duration": 1,
+     "cmp": 5,
+     "sev": 10,
+     "acceleration": 6,
+     "position": 10,
+     "event_other": 17,
+     "anchor": 2
+    },
+    "types_bad": {
+     "acceleration": 5,
+     "position": 9,
+     "event_other": 10,
+     "anchor": 2,
+     "cmp": 1
+    },
+    "words": 299,
+    "n_new_tokens": 487
+   },
+   {
+    "trip": "pvs3",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 30,
+    "n_sup": 16,
+    "n_evt": 13,
+    "wrong_pos": 5,
+    "non_pos": 9,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "event_count": 8,
+     "wrong_position": 5,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 2,
+     "position": 13,
+     "anchor": 1
+    },
+    "types_bad": {
+     "position": 13,
+     "anchor": 1
+    },
+    "words": 232,
+    "n_new_tokens": 338
+   },
+   {
+    "trip": "pvs3",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 34,
+    "n_sup": 18,
+    "n_evt": 14,
+    "wrong_pos": 4,
+    "non_pos": 12,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "event_count": 9,
+     "wrong_position": 4,
+     "number_mismatch": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 3,
+     "position": 14
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "position": 13,
+     "acceleration": 1
+    },
+    "words": 219,
+    "n_new_tokens": 350
+   },
+   {
+    "trip": "pvs4",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 35,
+    "n_sup": 17,
+    "n_evt": 18,
+    "wrong_pos": 3,
+    "non_pos": 15,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "event_count": 12,
+     "wrong_position": 3,
+     "overclaimed_hedge": 2
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "position": 18
+    },
+    "types_bad": {
+     "cmp": 1,
+     "position": 17
+    },
+    "words": 230,
+    "n_new_tokens": 365
+   },
+   {
+    "trip": "pvs4",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 37,
+    "n_sup": 17,
+    "n_evt": 16,
+    "wrong_pos": 4,
+    "non_pos": 16,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 4,
+     "wrong_anchor": 1,
+     "event_count": 9,
+     "wrong_position": 4,
+     "overclaimed_hedge": 2
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 3,
+     "position": 16
+    },
+    "types_bad": {
+     "distance": 1,
+     "anchor": 1,
+     "acceleration": 3,
+     "position": 15
+    },
+    "words": 202,
+    "n_new_tokens": 350
+   },
+   {
+    "trip": "pvs5",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 41,
+    "n_sup": 22,
+    "n_evt": 17,
+    "wrong_pos": 1,
+    "non_pos": 18,
+    "missing": 2,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "hallucinated_missing": 2,
+     "event_count": 8,
+     "overclaimed_hedge": 6,
+     "wrong_anchor": 2,
+     "wrong_position": 1
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 7,
+     "sev": 9,
+     "cmp": 2,
+     "position": 12,
+     "event_other": 5,
+     "anchor": 2,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "position": 11,
+     "event_other": 3,
+     "anchor": 2,
+     "rest": 1
+    },
+    "words": 252,
+    "n_new_tokens": 375
+   },
+   {
+    "trip": "pvs5",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 50,
+    "n_sup": 27,
+    "n_evt": 18,
+    "wrong_pos": 1,
+    "non_pos": 22,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 6,
+     "overclaimed_hedge": 2,
+     "event_count": 11,
+     "severity_mismatch": 1,
+     "wrong_position": 1
+    },
+    "types_n": {
+     "distance": 9,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 9,
+     "anchor": 1,
+     "acceleration": 5,
+     "event_other": 3,
+     "position": 15,
+     "speed": 1,
+     "rest": 3
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "acceleration": 5,
+     "position": 13,
+     "sev": 1,
+     "speed": 1,
+     "rest": 1
+    },
+    "words": 301,
+    "n_new_tokens": 489
+   },
+   {
+    "trip": "pvs6",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 31,
+    "n_sup": 20,
+    "n_evt": 14,
+    "wrong_pos": 4,
+    "non_pos": 7,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_position": 4,
+     "overclaimed_hedge": 6,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 2,
+     "position": 5,
+     "event_other": 9,
+     "anchor": 1
+    },
+    "types_bad": {
+     "position": 4,
+     "event_other": 6,
+     "anchor": 1
+    },
+    "words": 163,
+    "n_new_tokens": 242
+   },
+   {
+    "trip": "pvs6",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 37,
+    "n_sup": 20,
+    "n_evt": 15,
+    "wrong_pos": 3,
+    "non_pos": 14,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "no_history": 1,
+     "wrong_anchor": 1,
+     "number_mismatch": 4,
+     "wrong_position": 3,
+     "event_count": 8
+    },
+    "types_n": {
+     "distance": 7,
+     "duration": 1,
+     "cmp": 3,
+     "sev": 6,
+     "anchor": 1,
+     "acceleration": 4,
+     "event_other": 4,
+     "position": 11
+    },
+    "types_bad": {
+     "cmp": 1,
+     "anchor": 1,
+     "acceleration": 4,
+     "position": 11
+    },
+    "words": 222,
+    "n_new_tokens": 366
+   },
+   {
+    "trip": "pvs7",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 31,
+    "n_sup": 14,
+    "n_evt": 14,
+    "wrong_pos": 4,
+    "non_pos": 13,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "unsupported_cause": 1,
+     "severity_mismatch": 1,
+     "event_count": 8,
+     "wrong_position": 4,
+     "wrong_anchor": 1,
+     "overclaimed_hedge": 2
+    },
+    "types_n": {
+     "duration": 1,
+     "distance": 6,
+     "sev": 7,
+     "cmp": 2,
+     "position": 12,
+     "anchor": 1,
+     "event_other": 2
+    },
+    "types_bad": {
+     "cmp": 1,
+     "sev": 1,
+     "position": 12,
+     "anchor": 1,
+     "event_other": 2
+    },
+    "words": 205,
+    "n_new_tokens": 312
+   },
+   {
+    "trip": "pvs7",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 35,
+    "n_sup": 16,
+    "n_evt": 16,
+    "wrong_pos": 3,
+    "non_pos": 16,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 4,
+     "event_count": 11,
+     "wrong_position": 3,
+     "overclaimed_hedge": 1
+    },
+    "types_n": {
+     "distance": 4,
+     "duration": 1,
+     "sev": 9,
+     "speed": 1,
+     "acceleration": 4,
+     "position": 16
+    },
+    "types_bad": {
+     "acceleration": 4,
+     "position": 15
+    },
+    "words": 203,
+    "n_new_tokens": 340
+   },
+   {
+    "trip": "pvs8",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 44,
+    "n_sup": 22,
+    "n_evt": 22,
+    "wrong_pos": 3,
+    "non_pos": 19,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "wrong_anchor": 2,
+     "overclaimed_hedge": 17,
+     "wrong_position": 3
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "cmp": 2,
+     "sev": 9,
+     "anchor": 2,
+     "position": 6,
+     "event_other": 16,
+     "rest": 2
+    },
+    "types_bad": {
+     "anchor": 2,
+     "position": 6,
+     "event_other": 14
+    },
+    "words": 250,
+    "n_new_tokens": 352
+   },
+   {
+    "trip": "pvs8",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 54,
+    "n_sup": 30,
+    "n_evt": 21,
+    "wrong_pos": 4,
+    "non_pos": 20,
+    "missing": 1,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 6,
+     "wrong_position": 4,
+     "hallucinated_missing": 1,
+     "overclaimed_hedge": 8,
+     "event_count": 4,
+     "comparison_mismatch": 1
+    },
+    "types_n": {
+     "distance": 10,
+     "duration": 1,
+     "cmp": 4,
+     "sev": 11,
+     "acceleration": 6,
+     "event_other": 10,
+     "position": 11,
+     "speed": 1
+    },
+    "types_bad": {
+     "acceleration": 5,
+     "position": 10,
+     "sev": 1,
+     "speed": 1,
+     "event_other": 6,
+     "cmp": 1
+    },
+    "words": 314,
+    "n_new_tokens": 505
+   },
+   {
+    "trip": "pvs9",
+    "persona": "commuter",
+    "seed": 2,
+    "n_claims": 31,
+    "n_sup": 16,
+    "n_evt": 14,
+    "wrong_pos": 3,
+    "non_pos": 12,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "unsupported_cause": 1,
+     "event_count": 8,
+     "wrong_position": 3,
+     "overclaimed_hedge": 2,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "cmp": 2,
+     "position": 14,
+     "anchor": 1
+    },
+    "types_bad": {
+     "cmp": 1,
+     "position": 13,
+     "anchor": 1
+    },
+    "words": 192,
+    "n_new_tokens": 302
+   },
+   {
+    "trip": "pvs9",
+    "persona": "sports_car",
+    "seed": 2,
+    "n_claims": 39,
+    "n_sup": 17,
+    "n_evt": 16,
+    "wrong_pos": 4,
+    "non_pos": 18,
+    "missing": 0,
+    "accepted": false,
+    "must_missed": 0,
+    "reasons": {
+     "number_mismatch": 5,
+     "overclaimed_hedge": 3,
+     "wrong_position": 4,
+     "event_count": 9,
+     "wrong_anchor": 1
+    },
+    "types_n": {
+     "distance": 6,
+     "duration": 1,
+     "sev": 7,
+     "speed": 1,
+     "acceleration": 5,
+     "position": 16,
+     "cmp": 2,
+     "anchor": 1
+    },
+    "types_bad": {
+     "speed": 1,
+     "acceleration": 4,
+     "position": 16,
+     "anchor": 1
+    },
+    "words": 222,
+    "n_new_tokens": 375
+   }
+  ],
   "B": [
    {
     "trip": "pvs1",
