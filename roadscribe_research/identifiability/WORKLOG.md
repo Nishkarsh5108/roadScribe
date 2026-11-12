@@ -583,7 +583,7 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - The current A run (v2) started at 02:19. The v1 run releases its slot when it ends.
   - The prompted baselines were split into two kernels (`roadscribe-p6-zeroshot` for 3B, `roadscribe-p6-zeroshot-7b`), identical except for the model, so they can run in parallel.
   - `p6_scheduler2.sh` confirms each push with `kernels status`.
-- 02:30: **Per-type contrasts** (exploratory; `eval_p6.py` → `per_type_contrasts_exploratory`; cluster bootstrap over drives). Error rate, C − B:
+- 02:22: **Per-type contrasts** (exploratory; `eval_p6.py` → `per_type_contrasts_exploratory`; cluster bootstrap over drives). Error rate, C − B:
 
   | Type | Difference | 95% CI | Note |
   |---|---|---|---|

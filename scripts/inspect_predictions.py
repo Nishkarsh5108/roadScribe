@@ -34,3 +34,4 @@ for i, p in enumerate(preds):
     print(f"     Narrative: {narrative[:120]}...")
 
 print(f"\nSummary: {valid_plans}/{len(preds)} valid JSON plans ({valid_plans/len(preds)*100:.1f}%)")
+
