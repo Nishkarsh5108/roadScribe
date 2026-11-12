@@ -61,3 +61,5 @@ Thumbs.db
 *.toc
 roadscribe_research/paper/*.log
 roadscribe_research/paper/*.pdf
+roadscribe_research/paper_icdsi/*.log
+roadscribe_research/paper_icdsi/*.pdf
