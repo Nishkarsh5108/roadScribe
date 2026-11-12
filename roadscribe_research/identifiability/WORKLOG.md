@@ -340,3 +340,15 @@ The verifier caught every invented name and map tag. Severity claims are 84% sup
 - The verifier and fallback guarantee holds: no unsupported claim reaches the output.
 - But the fine-tuned model contributes nothing on real trips.
 - The honest headline is the diagnosis: a narrator trained on targets that state non-identifiable values learns to guess them.
+
+### P5: retraining as designed (pre-registered at `5934f72`)
+
+- **D23.** The constructive fix for the zero-acceptance result is to train on the repository's intended tasks (`synth/formats.py`):
+  - PLAN: capsule plus fact index, producing a plan.
+  - REALIZE: grounded frames, producing text.
+
+  At inference the plan is validated, grounded deterministically, and realized by the model. Every target value is then present in the model's input.
+- **D24.** Fixed in the P5 PVS capsules only: they no longer advertise a `map` channel, and the persona in the capsule matches the requested persona. The earlier capsules said `persona=commuter` even for sports_car prompts. The old capsules are kept unchanged for reproducing the earlier runs.
+- **Training set:** 2,561 examples: 1,200 PLAN, 1,200 REALIZE, and 161 frontier-teacher REALIZE. The pre-registration said 196 teacher examples, but only 161 entered the sample, so I am noting the difference.
+  - Before launching, I dry-ran the in-kernel grounding locally: rule plans validate on all 36 PVS prompts.
+- **Kaggle:** private dataset `roadscribe-pgr-v2-inputs`; kernel `roadscribe-pgr-v2` (T4, script), launched about 16:2x. Kernel sources are copied to `scripts/kaggle/` for provenance.
