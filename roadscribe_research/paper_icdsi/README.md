@@ -39,7 +39,9 @@ Result files are in `../identifiability/results/` unless the path says otherwise
 | §6, Table 4 | T, T+V 100%; 300-token row; 1,024 tokens: 0 of 54, 46.2, 48.5% (1,208 of 2,493) | `data/evaluation_summary.json`; `spgr_regen_summary.json`; `x5_slm_failures.json` (claim counts) |
 | §6.1 failure reasons | 470, 261, 132, 163, 47, 41; median 244 words | `x5_slm_failures.json`; `data/models/kaggle_regen/spgr_regen_eval.json` |
 | Table 5, §6.1 audit | 0 of 7,793; 0 of 2,621; 1.7%; 21% lenient | `x8_target_identifiability.json` |
-| §6.2, Table 6 | P6 | `p6_results.json` (`scripts/eval_p6.py`) |
+| §6.2, Table 6 | arms A–C and prompted rows; H1–H4 with CIs; per-type contrasts | `p6_results.json` (`scripts/eval_p6.py`; rows printed by `../identifiability/p6_table.py`) |
+| §6.2 sentence filter 33/41/52%; §6.3 prompted remainders 2.5–6; descriptors 7–10 | | `x9_sentence_filter.json`, `x13_vocabulary_coverage.json` (exploratory) |
+| Table 5 error column | 86 / 98 / 80 / 1.2 / 0% | `x14_per_type_errors.json` |
 | §6.3 P5 | 52%, 40% → 18%, 27 → 1, 69.4% | `p5_summary.json`, `spgr_regen_summary.json`, `x5_slm_failures.json` |
 | §6.3 model plan + template | 28 of 54, 100%, 77% | `x6_slm_plan_template_realize.json` |
 | §6.3 sentence-level fallback | 36%, 12.0 of 22.4; 63%, 20.2 of 23.6 | `x9_sentence_filter.json` (exploratory) |

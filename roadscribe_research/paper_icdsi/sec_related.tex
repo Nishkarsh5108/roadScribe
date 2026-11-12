@@ -15,13 +15,12 @@ Our input-level test is a typed version of this diagnosis, done before training.
 Our controlled experiment holds the targets fixed and changes only whether the input contains the values they state, so that the effect on each value type can be read directly.
 
 \paragraph{Language models over sensor data.}
-Language models have been prompted with raw sensor readings~\cite{xu2024penetrative}, aligned with motion-sensor encoders~\cite{li2025sensorllm,imran2024llasa}, given plots~\cite{yoon2024bymyeyes} and trained on synthetic time-series question answering~\cite{xie2025chatts}.
-They have also been pre-trained on large wearable corpora with captions generated from signal statistics~\cite{zhang2025sensorlm}.
+Language models have been prompted with raw sensor readings~\cite{xu2024penetrative}, aligned with motion-sensor encoders~\cite{li2025sensorllm}, and pre-trained on large wearable corpora with captions generated from signal statistics~\cite{zhang2025sensorlm}.
 Their evaluations measure accuracy, retrieval or judged plausibility.
 Such captions inherit whatever device dependence their statistics carry; our results quantify that dependence for one sensing task.
 
 \paragraph{Vehicle response, calibration and invariance.}
-Road sensing from vehicles goes back to Pothole Patrol and Nericell~\cite{eriksson2008pothole,mohan2008nericell}, and PVS has been used to classify surfaces and quality~\cite{menegazzo2021pvs}.
+Road sensing from vehicles goes back to Pothole Patrol~\cite{eriksson2008pothole}, and PVS has been used to classify surfaces and quality~\cite{menegazzo2021pvs}.
 That the response depends on the vehicle and speed is established~\cite{dodds1973roughness,gonzalez2008roughness}, and crowdsourced methods invert vehicle models to estimate road spectra~\cite{botshekan2020roughness}.
 Response-type roughness meters have long been calibrated per vehicle against reference sections~\cite{sayers1986iri}.
 We do not propose a new roughness estimator or a new calibration. We use paired data to decide which claims a narrator may state, with a two-way fixed-effects model~\cite{abowd1999akm} and an invariance criterion across environments~\cite{peters2016icp}.

@@ -82,6 +82,117 @@
    ]
   ]
  },
+ "P6 arm A": {
+  "narratives": 54,
+  "uncovered_per_narrative": 0.0,
+  "narratives_with_uncovered": 0,
+  "after_sentence_filter_per_narrative": 0.0,
+  "after_sentence_filter_narratives_with_uncovered": 0,
+  "top": []
+ },
+ "P6 arm B": {
+  "narratives": 54,
+  "uncovered_per_narrative": 0.018518518518518517,
+  "narratives_with_uncovered": 1,
+  "after_sentence_filter_per_narrative": 0.0,
+  "after_sentence_filter_narratives_with_uncovered": 0,
+  "top": [
+   [
+    "roughest",
+    1
+   ]
+  ]
+ },
+ "P6 arm C": {
+  "narratives": 54,
+  "uncovered_per_narrative": 0.0,
+  "narratives_with_uncovered": 0,
+  "after_sentence_filter_per_narrative": 0.0,
+  "after_sentence_filter_narratives_with_uncovered": 0,
+  "top": []
+ },
+ "prompted Qwen2.5-3B-Instruct": {
+  "narratives": 54,
+  "uncovered_per_narrative": 10.0,
+  "narratives_with_uncovered": 54,
+  "after_sentence_filter_per_narrative": 6.037037037037037,
+  "after_sentence_filter_narratives_with_uncovered": 53,
+  "top": [
+   [
+    "jolts",
+    121
+   ],
+   [
+    "bumps",
+    118
+   ],
+   [
+    "smooth",
+    70
+   ],
+   [
+    "smoother",
+    58
+   ],
+   [
+    "rougher",
+    46
+   ],
+   [
+    "harsh",
+    28
+   ],
+   [
+    "roughest",
+    22
+   ],
+   [
+    "gravel",
+    18
+   ]
+  ]
+ },
+ "prompted Qwen2.5-7B-Instruct": {
+  "narratives": 54,
+  "uncovered_per_narrative": 7.148148148148148,
+  "narratives_with_uncovered": 54,
+  "after_sentence_filter_per_narrative": 2.537037037037037,
+  "after_sentence_filter_narratives_with_uncovered": 47,
+  "top": [
+   [
+    "bumps",
+    81
+   ],
+   [
+    "smoother",
+    68
+   ],
+   [
+    "smooth",
+    64
+   ],
+   [
+    "roughest",
+    31
+   ],
+   [
+    "jolts",
+    27
+   ],
+   [
+    "rougher",
+    23
+   ],
+   [
+    "bumpier",
+    20
+   ],
+   [
+    "harsh",
+    19
+   ]
+  ]
+ },
  "T, template (sanity)": {
   "narratives": 18,
   "uncovered_per_narrative": 0.0,

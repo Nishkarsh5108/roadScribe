@@ -49,5 +49,25 @@
   "remainder_all_claims_supported": 54,
   "remainder_passes_strict": 54,
   "remainder_misses_must_mention": 0
+ },
+ "prompted Qwen2.5-3B-Instruct": {
+  "narratives": 54,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.45671641791044776,
+  "supported_claims_kept_per_narrative": 0.0,
+  "supported_claims_before_per_narrative": 0.0,
+  "remainder_all_claims_supported": 0,
+  "remainder_passes_strict": 0,
+  "remainder_misses_must_mention": 0
+ },
+ "prompted Qwen2.5-7B-Instruct": {
+  "narratives": 54,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.26420454545454547,
+  "supported_claims_kept_per_narrative": 0.16666666666666666,
+  "supported_claims_before_per_narrative": 2.037037037037037,
+  "remainder_all_claims_supported": 5,
+  "remainder_passes_strict": 5,
+  "remainder_misses_must_mention": 0
  }
 }

@@ -618,3 +618,16 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - Re-pushed: 7B v2 at 03:05, 3B v4 at 03:09.
   - The sampling settings are unchanged, but batch composition changes the random streams; it cannot change what the prompts contain.
 - 03:11: **Paper:** P6 integrated (§6.2, Table 6, contributions, abstract); trimmed to 15 pages.
+- 03:30 / 03:41: **Prompted baselines finished** (no fine-tuning; arm B input; repository realize instruction).
+  - Results:
+
+    | Model | Precision | Accepted | Claims per narrative | Unresolved claims | Unparsed numbers |
+    |---|---|---|---|---|---|
+    | 3B | 0.000 | 0 | 20.2 | 1,021 | 69 |
+    | 7B | 0.045 | 0 | 45.2 | 1,469 | 477 |
+
+    - The 7B model also has 328 overclaimed hedges.
+  - **Interpretation:** they write fluent prose outside the verifier's grammar: claims that name no stretch ("a few bumps along the way"), "kilometers" instead of "km", "smooth". Most claims cannot be attached to a ledger unit and count as unsupported. **Unverifiable, not shown false.**
+  - **X13 rerun, uncovered descriptors per narrative:** 3B 10.0, 7B 7.1; fine-tuned arms 0–0.02; template 0.
+    - After sentence filtering, prompted remainders still hold 6.0 (3B) and 2.5 (7B). **Sentence-level fallback is safe only for text in the verifier's language.**
+  - **Paper:** prompted rows added to Table 6; §6.2 and §6.3 text; trimmed to 15 pages (four marginal citations dropped: LLaSA, ByMyEyes, ChatTS, Nericell).

@@ -4,7 +4,7 @@
 \paragraph{Protocol.}
 Narrators run on the nine PVS drives for two audiences (a commuter and a sports-car driver).
 A model condition has 54 runs: 9 drives $\times$ 2 audiences $\times$ 3 sampling seeds (temperature 0.3, top-$p$ 0.9); deterministic narrators have one run per drive and audience (18).
-Runs use the original ledgers; with the calibrated ledgers of Sect.~\ref{sec:calibration}, the model narrators again had no narrative accepted (0 of 54 each), and the template realizer of model plans had 29 instead of 28.
+Runs use the original ledgers; calibrated ledgers changed acceptance by at most one run.
 
 \begin{table}[t]
 \caption{Narrators on the nine PVS drives. Accepted: every claim supported (otherwise RoadScribe returns the template narrative). Claims and $P_L$ describe the narrator's own text.}
@@ -77,8 +77,7 @@ Types present in two arms fail equally often in both (B and C: speeds 0.00 [$-$0
 Arm A also invented 70 place names; B and C, whose frames show that no name exists, invented none.
 
 Presence is necessary, not sufficient.
-Arm B, with every value in its input, had no narrative accepted: it mis-copied 42\% of the positions and 41\% of the accelerations.
-(Most of its 13\% distance errors are second positions in phrases such as ``the 0.0 and 0.05~km marks'', which the verifier reads as lengths.)
+Arm B, with every value in its input, had no narrative accepted: it mis-copied 42\% of the positions and 41\% of the accelerations (its distance errors are mostly second positions, as in ``the 0.0 and 0.05~km marks'', read by the verifier as lengths).
 Dropping failing sentences keeps 33\%, 41\% and 52\% of the sentences of A, C and B, in the order of what their inputs contain.
 \PSIXZS
 
@@ -106,4 +105,4 @@ RoadScribe's design gives the model only tasks whose outputs its input determine
 Retrained in this form (QLoRA, one epoch on 1{,}849 planning and realization examples; pre-registered as P5), with PVS capsules rebuilt without the spurious map channel, 52\% of the plans passed validation (1 of 54 before), the share of event claims at a wrong position fell from 40\% to 18\%, statements of missing values from 27 to 1, and $P_L$ rose from 48.5\% to 69.4\%.
 The model still copied values imperfectly (boundaries off by 100~m, an event at the ``75.6~km mark'' of a 13.8~km trip), and none of its narratives passed; 104 of its unsupported claims concern a stretch the verifier could not identify, mostly one with mis-copied boundaries, and count as unsupported, a conservative choice.
 When the template realizer verbalized the model's valid plans (exploratory), every one of them, 28 of the 54 runs, gave a verified narrative; the plans shared 77\% of their facts with the rule planner's and never coincided with it, so the model's verified contribution is content selection (whether readers prefer it was not measured).
-\emph{Sentence-level fallback} (exploratory) is a middle ground. Dropping every sentence with an unsupported claim and re-verifying keeps 36\% of the first adapter's sentences and 63\% of the plan--ground--realize model's, and every remainder passes. The coherence of the shortened text was not judged.
+\emph{Sentence-level fallback} (exploratory) is a middle ground. Dropping every sentence with an unsupported claim and re-verifying keeps 36\% of the first adapter's sentences and 63\% of the plan--ground--realize model's, and every remainder passes. This is safe only for text in the verifier's language: remainders of the prompted models' text still hold 2.5--6 unchecked descriptors per narrative. The coherence of the shortened text was not judged.
