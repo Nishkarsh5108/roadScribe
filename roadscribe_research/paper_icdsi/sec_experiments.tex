@@ -20,7 +20,48 @@ We compare three narrators on the nine drives with two audiences (a commuter and
 Claim precision $P_L$ is the share of extracted claims that the verifier finds supported by the ledger.
 Table~\ref{tab:bench} reports the results.
 
-\TBD[: S-PGR paragraph and table rows from the regenerated run.]
+\begin{table}[t]
+\caption{Narrator benchmark on the nine PVS drives with two audiences. ``Accepted'': model narratives that passed verification; otherwise S-PGR returns the template's narrative. The last two columns describe the model's own text, accepted or not; for T and T+V they describe the template text.}
+\label{tab:bench}
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Narrator & narratives & accepted & claims/narr. & $P_L$ \\
+\midrule
+T (template) & 18 & -- & 59.2 & 99.2\% \\
+T+V (varied wording) & 18 & -- & 59.1 & 99.2\% \\
+S-PGR, 300 tokens & 18 & 5 & 2.4\textsuperscript{a} & 100\%\textsuperscript{a} \\
+S-PGR, 1{,}024 tokens & 54 & 0 & 46.2 & 48.1\% \\
+S-PGR as designed & 54 & \TBD & \TBD & \TBD \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+{\footnotesize\textsuperscript{a}\,Accepted outputs only (12 claims in total).}
+\end{table}
+
+\paragraph{The fine-tuned model as first deployed.}
+The model was first run with a budget of 300 new tokens.
+Its plan used most of the budget and the narratives were cut off; the five outputs that passed verification were fragments such as ``Your 10.7 km drive took'', 12 claims in all.
+With 1{,}024 tokens every narrative was complete (median 244 words), and none of the 54 passed verification (95\% interval 0--6.6\%), with the original or the calibrated ledgers: only 48\% of their 2{,}493 claims were supported.
+The verifier and fallback did their job, so no unsupported claim reached the output, but the model contributed nothing.
+
+Three quarters of its event claims were wrong (wrong position in 470 cases, wrong count in 262, a hedge more confident than the evidence in 132), numbers were out of tolerance in 166 claims, and all 47 place names and 41 map tags were invented; the verifier caught each of these.
+The training data explains the failure.
+The model had been fine-tuned to write a plan that cites ledger facts, followed by the full narrative, from the capsule alone.
+But the capsule lists how many events a stretch has, not where they are, and the fact identifiers were not in the prompt at all.
+Of the 7{,}793 event positions stated in the training targets, 8.7\% occur in the corresponding capsule, as do 0.7\% of the stated speeds and 5\% of the accelerations.
+The model was trained to state values that are not identifiable from its input, and on real trips it guessed them.
+The synthetic training capsules also always carried street names and map tags; the PVS capsules carry neither, while still listing a map channel, and the model filled the gap.
+
+\subsection{Training the narrator as designed}
+\label{sec:pgr}
+RoadScribe's design separates the steps: the planner sees the capsule together with the index of ledger facts and returns a plan over fact identifiers; deterministic code grounds the plan into frames that contain the values; and the realizer writes text from the frames.
+In this setting every value a target states is present in the model's input.
+We retrained the model this way (QLoRA, one epoch on 1{,}200 planning and 1{,}361 realization examples, loss on the output tokens only), rebuilt the PVS capsules without the spurious map channel, and ran plan, validation, grounding and realization on the same drives.
+\TBD[: P5 results: plan validity, acceptance, claim precision, error breakdown, original vs calibrated ledgers.]
 
 \paragraph{Grounding against labelled bumps.}
 Ledger agreement says nothing about the road itself, so we also score event mentions against the 60 labelled speed bumps, within each drive.
@@ -46,11 +87,11 @@ The speed-decoupled road value is no more vehicle-invariant than the felt value 
 \setlength{\tabcolsep}{3.5pt}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Claim & $\kappa$ & all three agree & pairs differ & vehicle share \\
+Claim & $\kappa$ & all agree & pairs differ & vehicle share \\
 \midrule
-Felt ($a_v$) & 0.66 [0.53, 0.72] & 9.7\% & 66\% & 18.8\% \\
-Road ($\tilde a_w$, Eq.~\ref{eq:dec}, $\gamma=0.35$) & 0.72 [0.60, 0.76] & 4.5\% & 76\% & 18.2\% [14.3, 27.5] \\
-Road, calibrated (Eq.~\ref{eq:cal}) & 0.96 & 64.8\% & 24\% & 0.0\% \\
+Felt, $a_v$ & 0.66 [0.53, 0.72] & 9.7\% & 66\% & 18.8\% \\
+Road, Eq.~\eqref{eq:dec} & 0.72 [0.60, 0.76] & 4.5\% & 76\% & 18.2\% [14.3, 27.5] \\
+Road, Eq.~\eqref{eq:cal} & 0.96 & 64.8\% & 24\% & 0.0\% \\
 \bottomrule
 \end{tabular}
 \end{table}
