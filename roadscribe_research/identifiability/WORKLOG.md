@@ -645,3 +645,4 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
 - 04:03: **P8 greedy finished** (`p8_eval.py` → `results/p8_results.json`).
   - Arm B with greedy decoding (18 runs): precision 0.763 vs 0.762 sampled; difference +0.001 [−0.038, 0.035]. Accepted 0. Position errors 39%, acceleration errors 43%.
   - The prediction held: decoding does not explain the copying errors.
+- 04:21: Paper: added 'What a narrator may state' (the policy implied by both tests) to §7; still 15 pages.

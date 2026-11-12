@@ -6,6 +6,16 @@ On PVS, RoadScribe's verifier and fallback guarantee that every narrative agrees
 Uncalibrated, however, a perfectly faithful narrator contradicts another vehicle's narrator about the same street at most places. Conversely, the verifier made the model's failures safe without making the model useful.
 Both problems were visible before deployment: one in paired recordings, the other in the training set.
 
+\paragraph{What a narrator may state.}
+On PVS the two tests give a simple policy:
+\begin{itemize}
+\item ride classes, which are worded as vehicle-specific, may be stated for any vehicle;
+\item road classes only for vehicles calibrated on shared roads;
+\item ``rough because of speed'' only with a within-place elasticity;
+\item event positions only hedged, as single-pass observations;
+\item values in model-written sentences only if code, not the model, wrote them.
+\end{itemize}
+
 \paragraph{What the calibration needs.}
 For agreement between vehicles, one gain per vehicle was enough. It could be estimated from about a kilometre of road that the vehicles had all driven, a condition that fleets and repeated commutes meet.
 A vehicle without such data should be described only by ride statements, which are honest about depending on the vehicle.
