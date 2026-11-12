@@ -583,3 +583,13 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - The current A run (v2) started at 02:19. The v1 run releases its slot when it ends.
   - The prompted baselines were split into two kernels (`roadscribe-p6-zeroshot` for 3B, `roadscribe-p6-zeroshot-7b`), identical except for the model, so they can run in parallel.
   - `p6_scheduler2.sh` confirms each push with `kernels status`.
+- 02:30: **Per-type contrasts** (exploratory; `eval_p6.py` → `per_type_contrasts_exploratory`; cluster bootstrap over drives). Error rate, C − B:
+
+  | Type | Difference | 95% CI | Note |
+  |---|---|---|---|
+  | Positions | +0.40 | [0.26, 0.56] | the only type C lacks |
+  | Speeds | 0.00 | [−0.01, 0.01] | |
+  | Accelerations | −0.01 | [−0.09, 0.09] | |
+  | Distances | −0.11 | [−0.20, −0.02] | see below |
+
+  - B's distance errors come mostly from "the 0.0 and 0.05 km marks", where the verifier reads the second position as a length. This is a verifier extraction quirk. It is not fixed for P6, since D27 fixed the verifier; it is reported in the paper.

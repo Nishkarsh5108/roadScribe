@@ -172,6 +172,16 @@ def main():
         b = boot(per["B"], per["C"], prec)
         h["P6-H4"] = dict(prediction="precision B > C", **b, holds=b["diff"] > 0)
     out["hypotheses"] = h
+    # exploratory: per value type, error-rate differences between arms (cluster bootstrap over drives)
+    def type_err(t):
+        def f(per):
+            n = sum(p["types_n"].get(t, 0) for p in per)
+            return sum(p["types_bad"].get(t, 0) for p in per) / n if n else float("nan")
+        return f
+    out["per_type_contrasts_exploratory"] = {
+        f"{t}: {x} - {y}": boot(per[x], per[y], type_err(t))
+        for t in ("position", "speed", "acceleration", "distance")
+        for x, y in (("A", "B"), ("C", "B"), ("A", "C")) if {x, y} <= set(per)}
     out["per_narrative"] = per
     path = repo_root / "roadscribe_research/identifiability/results/p6_results.json"
     path.write_text(json.dumps(out, indent=1, default=float), encoding="utf-8")
