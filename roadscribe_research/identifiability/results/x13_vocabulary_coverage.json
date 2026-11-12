@@ -1,0 +1,93 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "descriptors": [
+  "smooth",
+  "smoother",
+  "smoothest",
+  "bumpier",
+  "bumpiest",
+  "rougher",
+  "roughest",
+  "potholed",
+  "cracked",
+  "cracks",
+  "uneven",
+  "gravel",
+  "paved",
+  "harsh",
+  "jarring",
+  "shaky",
+  "patchy",
+  "broken",
+  "worn",
+  "damaged",
+  "speed bump",
+  "speed hump",
+  "rutted",
+  "ruts",
+  "corrugated",
+  "washboard",
+  "loose",
+  "slippery",
+  "wet",
+  "traffic",
+  "congested",
+  "busy",
+  "steep",
+  "hill",
+  "hilly",
+  "curvy",
+  "winding",
+  "junction",
+  "roundabout",
+  "intersection",
+  "roadworks",
+  "construction",
+  "dangerous",
+  "safe",
+  "unsafe",
+  "pleasant",
+  "bumps",
+  "jolts",
+  "vibration",
+  "vibrations",
+  "jarring",
+  "stable",
+  "steady",
+  "quiet"
+ ],
+ "S-PGR (1,024 tokens)": {
+  "narratives": 54,
+  "uncovered_per_narrative": 0.05555555555555555,
+  "narratives_with_uncovered": 3,
+  "after_sentence_filter_per_narrative": 0.05555555555555555,
+  "after_sentence_filter_narratives_with_uncovered": 3,
+  "top": [
+   [
+    "jolts",
+    3
+   ]
+  ]
+ },
+ "P5 realizer": {
+  "narratives": 28,
+  "uncovered_per_narrative": 0.17857142857142858,
+  "narratives_with_uncovered": 4,
+  "after_sentence_filter_per_narrative": 0.14285714285714285,
+  "after_sentence_filter_narratives_with_uncovered": 3,
+  "top": [
+   [
+    "bumps",
+    5
+   ]
+  ]
+ },
+ "T, template (sanity)": {
+  "narratives": 18,
+  "uncovered_per_narrative": 0.0,
+  "narratives_with_uncovered": 0,
+  "after_sentence_filter_per_narrative": 0.0,
+  "after_sentence_filter_narratives_with_uncovered": 0,
+  "top": []
+ }
+}
