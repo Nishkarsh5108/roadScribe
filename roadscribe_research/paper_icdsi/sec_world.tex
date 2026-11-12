@@ -6,7 +6,7 @@
 The Passive Vehicular Sensors (PVS) dataset~\cite{menegazzo2021pvs} has nine trips in which three vehicle--driver pairs each drove the same three routes (10.7, 11.6 and 13.8~km).
 Each vehicle carries a left and a right logger, each with IMU modules on the dashboard and above and below the suspension and its own GNSS receiver; every sample is labelled with speed bumps, surface type and the road quality of each side (good, regular, bad).
 We use the left logger's dashboard module, the closest proxy for a phone in a holder (the modules are not phones), and the left-side quality label; the right logger provides the noise floor and a replication.
-Each trip's GNSS fixes are matched in time order to the first vehicle's track within a forward window (median distance 1.5--3.8~m; 97.9--99.3\% of samples matched), and routes are cut into 100~m stretches.
+Each trip's GNSS fixes are matched in time order to the first vehicle's track within a forward window (median distance of the other vehicles' fixes 1.5--3.8~m; 97.9--99.3\% of samples matched), and routes are cut into 100~m stretches.
 A place enters the primary analysis if all three vehicles drove it at a mean speed of at least 5~m\,s$^{-1}$, RoadScribe's floor for road values: 310 of the 361 places.
 The quality labels agree across the three trips of a route (weighted $\kappa=0.93$), so they serve as a vehicle-independent reference.
 
@@ -25,7 +25,7 @@ Intervals come from a block bootstrap (2{,}000 resamples) of contiguous 1~km blo
 \toprule
 ID & Committed & Question & Outcome \\
 \midrule
-P1 & 11-12 00:21 \texttt{6a135d8} & Are ride and road classes vehicle-invariant? & Road not invariant (held); 2 secondary not held \\
+P1 & 11-12 00:21 \texttt{6a135d8} & Are ride and road classes vehicle-invariant? & Main (road not invariant) held; 2 of 5 others not \\
 P2 & 11-12 00:27 \texttt{624fee0} & Does a spectral vehicle model (Eq.~\ref{eq:scr}) remove the vehicle share? & 3 of 4 held; speed dependence not reduced \\
 P3 & 11-12 00:31 \texttt{081c9dc} & Does it predict an unseen vehicle's ride better than gains? & Neither held \\
 P4 & 11-12 14:56 \texttt{265e705} & Does calibration on shared roads (Eq.~\ref{eq:cal}) restore agreement? & All 4 held \\
@@ -40,7 +40,7 @@ P7 & 11-13 00:43 \texttt{5891276} & Noise floor, data efficiency, held-out accur
 \label{sec:invariance}
 Ride classes \emph{should} differ between vehicles; road classes are worded as properties of the road (``the surface is in fair condition'') and should agree.
 They do not (Table~\ref{tab:invariance}): the road class differs between two vehicles at the same place in 76\% of pairs, all three agree at 4.5\% of places, and the vehicle accounts for 18.2\% of the variance of the log road value net of place and log speed.
-Shuffling vehicle labels within places gives 0.06\% (99th percentile 0.27\%, 1{,}000 shuffles), and only 2.1\% of the variance is a place-by-vehicle interaction: the vehicles differ mainly by a constant factor.
+Shuffling vehicle labels within places gives 0.06\% (99th percentile 0.27\%, 1{,}000 shuffles), and the residual, which contains any place-by-vehicle interaction, is only 2.1\% of the variance: the vehicles differ mainly by a constant factor.
 The two dashboard modules of the \emph{same} vehicle on the \emph{same} pass agree at $\kappa=0.98$, never differ by more than one class, and the side explains 0.03\% of the variance, so cross-vehicle disagreement is not measurement noise.
 The right logger replicates the cross-vehicle result (vehicle share 17.8\%, $\kappa=0.72$).
 The signature depends on the mount (exploratory): 2.9\% above the suspension ($\kappa=0.86$), 11.8\% below it ($\kappa=0.60$), so the dashboard is the worst of the three.
