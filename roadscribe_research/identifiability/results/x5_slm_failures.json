@@ -1,0 +1,91 @@
+{
+ "label": "EXPLORATORY",
+ "claims_by_kind": {
+  "NUM": 303,
+  "RANGE": 285,
+  "SEV": 493,
+  "CMP": 102,
+  "EVT": 1161,
+  "ANCHOR": 88,
+  "UNPARSED": 40,
+  "REST": 21
+ },
+ "unsupported_by_kind": {
+  "EVT": 867,
+  "ANCHOR": 88,
+  "CMP": 41,
+  "NUM": 163,
+  "SEV": 81,
+  "UNPARSED": 40,
+  "REST": 15
+ },
+ "unsupported_by_reason": {
+  "wrong_position": 470,
+  "event_count": 262,
+  "number_mismatch": 166,
+  "overclaimed_hedge": 132,
+  "wrong_anchor": 47,
+  "wrong_surface": 42,
+  "wrong_map_tag": 41,
+  "unparsed_number": 40,
+  "hallucinated_missing": 27,
+  "severity_mismatch": 22,
+  "comparison_mismatch": 17,
+  "unsupported_cause": 13,
+  "misattributed_maneuver": 9,
+  "rest_count": 6,
+  "no_history": 1
+ },
+ "place_names_not_in_capsule": 47,
+ "of_which_not_checked_by_verifier": 0,
+ "examples": [
+  [
+   "three bumps",
+   "wrong_position"
+  ],
+  [
+   "a jolt",
+   "overclaimed_hedge"
+  ],
+  [
+   "near Retail Park",
+   "wrong_anchor"
+  ],
+  [
+   "four sharp bumps",
+   "event_count"
+  ],
+  [
+   "roughest stretch",
+   "comparison_mismatch"
+  ],
+  [
+   "0.78 m/s\u00b2",
+   "number_mismatch"
+  ],
+  [
+   "rides like asphalt",
+   "wrong_surface"
+  ],
+  [
+   "the map lists it as dirt",
+   "wrong_map_tag"
+  ],
+  [
+   "A jolt",
+   "misattributed_maneuver"
+  ],
+  [
+   "in fair condition",
+   "severity_mismatch"
+  ],
+  [
+   "because of speed",
+   "unsupported_cause"
+  ],
+  [
+   "because of speed",
+   "hallucinated_missing"
+  ]
+ ]
+}

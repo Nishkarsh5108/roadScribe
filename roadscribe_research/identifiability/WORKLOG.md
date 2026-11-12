@@ -303,3 +303,40 @@ The user reviewed the night branch, asked to push it, and decided to submit to t
 **Caveat.** Calibration identifies the gains of *these* three vehicles from roads they shared. A vehicle that never shared a road with others gets no calibration, and its road values stay unidentified. That is the identifiability point, and the paper must say it.
 
 - 15:2x: Pushed the Kaggle dataset `roadscribe-regen-inputs`, with v2 adding the calibrated capsules, and the kernel `roadscribe-spgr-regen` (T4, script). Both are private.
+
+### S-PGR regeneration (Kaggle T4, 16:08; `data/models/kaggle_regen/`, `scripts/eval_spgr_regen.py`)
+
+**Run:** 108 generations (9 trips × 2 personas × 3 seeds × {original, calibrated} capsules), `max_new_tokens = 1024`, 55 min on the GPU. 12 generations still hit the budget. Median narrative length 244 words (before: 5–21 words).
+
+**Acceptance: 0 of 54 in each condition** (Wilson 95% CI 0–6.6%).
+- All 54 plans parse as JSON, but only 1 (original) and 2 (calibrated) pass `validate_plan`.
+- Each condition has 27 hallucinated-missing claims.
+- S-PGR is therefore identical to T. Its "non-inferiority" (difference 0, CI [0, 0]) is vacuous; the paper must say **H1 is untestable**, not confirmed.
+- **Raw SLM claim precision is 48%** (1,198 of 2,493 claims in the original condition; 47.7% calibrated), with 46 claims per narrative against T's 59. Every narrative has at least one unsupported claim.
+
+**Why they fail** (`x5_slm_failures.py`, exploratory). Of 1,295 unsupported claims, 867 are events (75% of all event claims):
+
+| Reason | Count |
+|---|---|
+| Wrong position | 470 |
+| Wrong event count | 262 |
+| Over-confident hedge | 132 |
+| Number out of tolerance | 166 |
+| Invented place names (e.g. "near Retail Park") | 47 of 47 |
+| Invented map tags | 41 of 41 |
+
+The verifier caught every invented name and map tag. Severity claims are 84% supported.
+
+**Cause 1: the training data teaches unidentifiable claims.**
+- 2,284 of 2,696 training targets state event positions ("around the 1.2 km mark").
+- Of 7,793 position mentions, only 602 (7.7%) appear anywhere in the input capsule; the capsule gives event counts and confidences, not positions.
+- The model was trained to state values its input does not contain, the same identifiability failure as the road claims, one level up. This is the known "divergent reference" problem of data-to-text.
+
+**Cause 2: synthetic-to-real shift and an input bug.**
+- Synthetic capsules always have street names and map tags.
+- The PVS capsules have neither, but still list `ch=acc,gyro,gps,map` (map coverage is 0). The model fills the gaps with invented names and tags.
+
+**What it means for the paper**
+- The verifier and fallback guarantee holds: no unsupported claim reaches the output.
+- But the fine-tuned model contributes nothing on real trips.
+- The honest headline is the diagnosis: a narrator trained on targets that state non-identifiable values learns to guess them.
