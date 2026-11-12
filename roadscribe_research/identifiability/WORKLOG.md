@@ -642,3 +642,6 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - A second epoch raises it by more than 0.05 but accepts at most 10% of narratives.
     - In both, position errors stay above 20%.
   - Not pre-registered as a hypothesis test; reported as exploratory.
+- 04:03: **P8 greedy finished** (`p8_eval.py` → `results/p8_results.json`).
+  - Arm B with greedy decoding (18 runs): precision 0.763 vs 0.762 sampled; difference +0.001 [−0.038, 0.035]. Accepted 0. Position errors 39%, acceleration errors 43%.
+  - The prediction held: decoding does not explain the copying errors.

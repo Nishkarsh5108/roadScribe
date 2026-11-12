@@ -1,0 +1,178 @@
+{
+ "label": "EXPLORATORY (declared in WORKLOG before running)",
+ "arms": {
+  "B (P6)": {
+   "n": 54,
+   "claims": 2206,
+   "supported": 1681,
+   "precision": 0.7620126926563917,
+   "evt_claims": 876,
+   "wrong_position": 269,
+   "wrong_position_share": 0.3070776255707763,
+   "non_position_errors": 256,
+   "non_position_per_narrative": 4.7407407407407405,
+   "hallucinated_missing": 6,
+   "accepted": 0,
+   "claims_per_narrative": 40.851851851851855,
+   "words_per_narrative": 297.25925925925924,
+   "must_mention_missed": 0,
+   "hit_token_limit": 1,
+   "reasons": {
+    "unparsed_number": 48,
+    "number_mismatch": 115,
+    "wrong_position": 269,
+    "severity_mismatch": 22,
+    "hallucinated_missing": 6,
+    "comparison_mismatch": 7,
+    "unsupported_cause": 1,
+    "event_count": 15,
+    "overclaimed_hedge": 11,
+    "misattributed_maneuver": 23,
+    "rest_count": 6,
+    "unknown_range": 2
+   },
+   "by_value_type": {
+    "acceleration": {
+     "claims": 151,
+     "unsupported": 62,
+     "error_rate": 0.4105960264900662
+    },
+    "cmp": {
+     "claims": 152,
+     "unsupported": 9,
+     "error_rate": 0.05921052631578947
+    },
+    "distance": {
+     "claims": 422,
+     "unsupported": 54,
+     "error_rate": 0.12796208530805686
+    },
+    "duration": {
+     "claims": 54,
+     "unsupported": 0,
+     "error_rate": 0.0
+    },
+    "event_other": {
+     "claims": 132,
+     "unsupported": 3,
+     "error_rate": 0.022727272727272728
+    },
+    "position": {
+     "claims": 744,
+     "unsupported": 311,
+     "error_rate": 0.41801075268817206
+    },
+    "rest": {
+     "claims": 29,
+     "unsupported": 13,
+     "error_rate": 0.4482758620689655
+    },
+    "sev": {
+     "claims": 439,
+     "unsupported": 24,
+     "error_rate": 0.05466970387243736
+    },
+    "speed": {
+     "claims": 35,
+     "unsupported": 1,
+     "error_rate": 0.02857142857142857
+    },
+    "unparsed": {
+     "claims": 48,
+     "unsupported": 48,
+     "error_rate": 1.0
+    }
+   }
+  },
+  "B greedy": {
+   "n": 18,
+   "claims": 739,
+   "supported": 564,
+   "precision": 0.7631935047361299,
+   "evt_claims": 298,
+   "wrong_position": 82,
+   "wrong_position_share": 0.2751677852348993,
+   "non_position_errors": 93,
+   "non_position_per_narrative": 5.166666666666667,
+   "hallucinated_missing": 2,
+   "accepted": 0,
+   "claims_per_narrative": 41.05555555555556,
+   "words_per_narrative": 301.1111111111111,
+   "must_mention_missed": 0,
+   "hit_token_limit": 0,
+   "reasons": {
+    "unparsed_number": 14,
+    "number_mismatch": 41,
+    "wrong_position": 82,
+    "overclaimed_hedge": 7,
+    "misattributed_maneuver": 7,
+    "severity_mismatch": 9,
+    "unknown_range": 1,
+    "event_count": 8,
+    "hallucinated_missing": 2,
+    "rest_count": 2,
+    "comparison_mismatch": 2
+   },
+   "by_value_type": {
+    "acceleration": {
+     "claims": 51,
+     "unsupported": 22,
+     "error_rate": 0.43137254901960786
+    },
+    "cmp": {
+     "claims": 50,
+     "unsupported": 2,
+     "error_rate": 0.04
+    },
+    "distance": {
+     "claims": 142,
+     "unsupported": 20,
+     "error_rate": 0.14084507042253522
+    },
+    "duration": {
+     "claims": 18,
+     "unsupported": 0,
+     "error_rate": 0.0
+    },
+    "event_other": {
+     "claims": 42,
+     "unsupported": 1,
+     "error_rate": 0.023809523809523808
+    },
+    "position": {
+     "claims": 256,
+     "unsupported": 100,
+     "error_rate": 0.390625
+    },
+    "rest": {
+     "claims": 12,
+     "unsupported": 7,
+     "error_rate": 0.5833333333333334
+    },
+    "sev": {
+     "claims": 144,
+     "unsupported": 9,
+     "error_rate": 0.0625
+    },
+    "speed": {
+     "claims": 10,
+     "unsupported": 0,
+     "error_rate": 0.0
+    },
+    "unparsed": {
+     "claims": 14,
+     "unsupported": 14,
+     "error_rate": 1.0
+    }
+   }
+  }
+ },
+ "precision B greedy - B (P6)": {
+  "diff": 0.0011808120797381916,
+  "ci95": [
+   -0.038122486054975965,
+   0.034758915130796694
+  ],
+  "p_le_0": 0.4593
+ }
+}
