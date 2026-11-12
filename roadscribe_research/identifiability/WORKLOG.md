@@ -617,4 +617,4 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - Fix: batch 2 with a per-prompt fallback on OOM, plus `expandable_segments`.
   - Re-pushed: 7B v2 at 03:05, 3B v4 at 03:09.
   - The sampling settings are unchanged, but batch composition changes the random streams; it cannot change what the prompts contain.
-- 03:15: **Paper:** P6 integrated (§6.2, Table 6, contributions, abstract); trimmed to 15 pages.
+- 03:11: **Paper:** P6 integrated (§6.2, Table 6, contributions, abstract); trimmed to 15 pages.
