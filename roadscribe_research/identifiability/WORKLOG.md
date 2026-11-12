@@ -472,8 +472,8 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - Exploratory addition: per-type error rates in `eval_p6.py` (`by_value_type`), so that error can be read against identifiability, type by type and arm by arm.
   - The paper's "8.7% of positions" becomes "none of the 7,793 positions", with the lenient upper bound given.
 - Frontier teacher model: the project's training notebook (`kaggle_staging/kernel/roadscribe_3b_qlora.ipynb`) records the 196 teacher narratives as "frontier Opus teacher examples". The card in the repo says only "frontier-llm". The paper names Claude Opus (Anthropic); the user should confirm the version.
-- 00:43: PREREG_P7 committed (`1da084e`, amended only to correct its header time from a guessed 01:15 to 00:43). It covers the noise floor, data efficiency, held-out correctness and the speed floor. Three timestamps in this log were also guesses and were corrected to the commit clock (they are marked "about").
-- 00:47–00:52: **P7 results** (`p7_review_checks.py`, `results/p7_results.json`). All six pre-registered hypotheses hold.
+- 00:43: PREREG_P7 committed (`5891276`; it replaced `1da084e`, amended only to correct the header time from a guessed 01:15 to 00:43, before any P7 code existed). It covers the noise floor, data efficiency, held-out correctness and the speed floor. Three timestamps in this log were also guesses and were corrected to the commit clock (they are marked "about").
+- 00:44–00:47 (commit `cf220d6`): **P7 results** (`p7_review_checks.py`, `results/p7_results.json`). All six pre-registered hypotheses hold.
   - **H1, noise floor.**
     - Left vs right dashboard module, same vehicle, same pass: κ_road = 0.979 [0.965, 0.985] over 930 (trip, place) pairs.
     - The two modules differ by one class in 7.8% of pairs and never by two. Side share of log a_dec: 0.03%.
@@ -529,7 +529,7 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - γ̂ on all routes 0.86 [0.68, 1.02], which excludes the theoretical 0.5
     - All-three-equal: calibrated 64.8% [58.7, 70.9], uncalibrated 4.5% [2.6, 6.7]
     - Bootstrap: 2,000 resamples of contiguous 10-place blocks within routes (12, 10 and 10 blocks).
-- About 00:55–01:05: **Exploratory checks requested by the review** (none pre-registered; labelled exploratory in the paper).
+- 00:48–00:51 (commit `4bba6d3`): **Exploratory checks requested by the review** (none pre-registered; labelled exploratory in the paper).
   - **E6, sentence-level fallback** (`x9_sentence_filter.py`). Every sentence holding an unsupported claim is dropped and the rest re-verified (up to three rounds).
     - S-PGR regen (54): 36% of sentences kept, with 12.0 of the 22.4 supported claims per narrative. The remainder passes strict verification in 54 of 54; whole-narrative acceptance was 0.
     - P5 realizer (28 narratives with valid plans): 63% of sentences kept, with 20.2 of 23.6 supported claims. The remainder passes in 28 of 28.
