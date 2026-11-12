@@ -1,0 +1,49 @@
+% System section (Springer LNCS version). Describes only what is implemented in roadscribe/.
+\section{RoadScribe}
+\label{sec:system}
+
+RoadScribe turns one recorded trip into a short narrative (Fig.~\ref{fig:arch}).
+Three principles shape the design:
+every number and place in the text must trace to a fact in a ledger;
+the language model chooses and phrases content but never supplies a value;
+and when its output fails verification, a deterministic template narrator replaces it.
+
+\begin{figure}[t]
+\centering
+\input{fig_arch}
+\caption{RoadScribe. Values flow from the sensors through Layers~1--3 into the claim ledger; the language model writes a plan and a narrative over ledger facts, and a verifier either accepts the narrative or falls back to the template narrator. The calibration block (dashed) is the remedy studied in Sect.~\ref{sec:ident}.}
+\label{fig:arch}
+\end{figure}
+
+\subsection{Layer 1: vibration measures}
+The IMU gives specific force $\mathbf f^b$ in the sensor frame at $f_s=100$~Hz and GNSS gives speed at 1~Hz.
+The mount rotation $\mathbf R_{vb}$ is estimated without fixtures: the up axis is the geometric median of quasi-static gravity samples (Weiszfeld iteration with the Vardi--Zhang correction~\cite{vardi2000l1median}), and the remaining yaw is the closed-form orthogonal Procrustes fit~\cite{schonemann1966procrustes} of the levelled horizontal acceleration to GNSS longitudinal and centripetal acceleration.
+The gravity-free vehicle-frame acceleration is $\mathbf a^v=\mathbf R_{vb}\mathbf f^b-g\mathbf e_z$.
+ISO~2631-1~\cite{iso2631} weightings ($W_k$ vertical, $W_d$ horizontal) are applied exactly in the frequency domain, which is possible because narratives are written after the trip.
+For a stretch $u$ the weighted RMS values give the \emph{felt} vibration $a_v=\sqrt{a_{wx}^2+a_{wy}^2+a_{wz}^2}$, and the original design defines a speed-decoupled \emph{road} value
+\begin{equation}
+\tilde a_{w}=a_{wz}\,(v_{\mathrm{ref}}/\bar v)^{\gamma},\qquad v_{\mathrm{ref}}=10~\mathrm{m\,s^{-1}},
+\label{eq:dec}
+\end{equation}
+reported only for $\bar v\ge5~\mathrm{m\,s^{-1}}$.
+The elasticity $\gamma$ follows from road spectra of the form $G_d(n)\propto n^{-w}$~\cite{iso8608,dodds1973roughness}: the RMS response of a fixed vehicle scales as $\bar v^{(w-1)/2}$, so $\gamma=(w-1)/2$.
+Both values are mapped to the six comfort classes of ISO~2631-1 Annex~C with single cut-points $(0.315, 0.561, 0.894, 1.414, 2.236)~\mathrm{m\,s^{-2}}$.
+Impulsive events are detected with the Teager--Kaiser energy operator~\cite{kaiser1990tkeo} on the 4--25~Hz vertical band against a robust running threshold, and labelled with their maneuver context from GNSS and the gyroscope.
+
+\subsection{Layer 2: segmentation}
+Features are resampled on a 5~m along-track grid and the trip is segmented by penalized change-point detection~\cite{killick2012pelt},
+$\min_{\tau}\sum_i C(\mathbf y_{\tau_{i-1}+1:\tau_i})+\sum_i\beta(\tau_i)$,
+with a Gaussian mean-shift cost.
+The design lowers the penalty $\beta(\tau)$ near map transitions.
+With a location-dependent penalty the textbook PELT pruning test is not exact; the correct test is $G(t)+C(\mathbf y_{t+1:s})\ge G(s)$ with $G(t)=F(t)+\beta(t)$, a direct generalization of PELT's argument~\cite{killick2012pelt}.
+In 300 random series the textbook test returned a sub-optimal partition in 136, while the corrected test matched exhaustive optimal partitioning in all of them.
+Map matching is not implemented in the version evaluated here, so on PVS the penalty is constant and the segmentation is plain PELT.
+Short segments are merged, and each resulting road unit carries its Layer~1 measures and events.
+
+\subsection{Layer 3: ledger, capsule and generation}
+Units and events are compiled into a ledger of typed facts: severity classes (felt and road), measured values with tolerances, events with position and confidence, place anchors, comparisons, and \emph{missing} facts that record why a value is unavailable (e.g.\ speed too low to separate road from speed).
+A capsule serializes the ledger within a token budget; units are chosen by an exact multiple-choice knapsack over salience.
+The small language model (Qwen2.5-3B-Instruct~\cite{qwen25} with a QLoRA adapter~\cite{dettmers2023qlora}) receives the capsule and an audience (persona) and writes a plan over ledger identifiers followed by the narrative.
+A closed-vocabulary verifier extracts every claim from the narrative and checks it against the ledger: numbers within tolerance, severity words within their comfort band, events matched to ledger events, no value stated for a missing field.
+If the plan does not parse or any claim fails, the system returns the template narrator's text for the same capsule; this is a run-time-assurance pattern in the sense of the Simplex architecture~\cite{sha2001simplex}.
+The adapter was fine-tuned on 2{,}696 synthetic capsule--narrative pairs whose narratives come from the template narrator (2{,}500) and from a frontier model writing in the verifier's lexicon (196).

@@ -1,0 +1,44 @@
+\section{When Is a Road Claim Identifiable?}
+\label{sec:ident}
+
+A verifier can only confirm that a sentence agrees with the ledger.
+Whether the ledger value is a property of the \emph{road} depends on what the data can separate.
+For a linear vehicle with vertical transfer function $H_c$ driving at speed $v$ over a place $p$ whose elevation spectrum is $\Phi_p(n)$ ($n$ in cycles per metre), the vertical acceleration spectrum is~\cite{dodds1973roughness,gonzalez2008roughness}
+\begin{equation}
+S(f)=|H_c(f)|^2\,\Phi_p(f/v)/v,
+\qquad
+\log S(f)=A_c(f)+B_p(f/v)-\log v ,
+\label{eq:scr}
+\end{equation}
+with $A_c=\log|H_c|^2$ and $B_p=\log\Phi_p$.
+Three consequences follow.
+
+\emph{One vehicle, one pass.}
+At a single speed, any function can be moved between $A_c$ and $B_p$: the data fix only their sum.
+``This road is rough'' and ``this vehicle transmits a lot'' are then indistinguishable.
+This is the indeterminacy known from separating spectra shifted by different velocities in astronomy~\cite{simon1994disentangling,bedell2019wobble}; we use it as a criterion for claims, not as a new result.
+
+\emph{Several vehicles on the same places.}
+If vehicles share places, the place term cancels in their differences, so the \emph{relative} channels $A_c-A_{c'}$ are identified; the common part is identified (up to a constant) only if the same places are also driven at different speeds.
+On synthetic data with three channels and thirty road segments, a penalized Whittle fit~\cite{pawitan1994whittle} of Eq.~\eqref{eq:scr} recovered the channel differences to within 0.02 log units in both cases, but the common channel only with speed diversity (error 0.010--0.023 versus 0.67--1.09 log units over three seeds).
+
+\emph{Speed.}
+For the band-integrated road value of Eq.~\eqref{eq:dec},
+\begin{equation}
+\log a_{wz,cp}=\alpha_p+g_c+\gamma\log\bar v_{cp}+\varepsilon_{cp},
+\label{eq:fe}
+\end{equation}
+with a place effect $\alpha_p$ and a vehicle gain $g_c$.
+The elasticity $\gamma$ is identified by speed variation \emph{within} places.
+Estimated across places within one trip, it also absorbs how drivers choose speed on different roads.
+
+\paragraph{Criterion and remedy.}
+We call a road claim \emph{identifiable} from the narrator's input if its value is fixed by the data when the nuisances that can change (vehicle, speed) change.
+A narrator that states a non-identifiable value as fact is guessing even if every sentence passes the verifier, because the ledger stores the same confounded value.
+Equations~\eqref{eq:scr}--\eqref{eq:fe} also give the remedy for a fleet: estimate $\hat g_c$ and $\hat\gamma$ on places that several vehicles have driven, with place and vehicle fixed effects, and report
+\begin{equation}
+\tilde a_{\mathrm{cal}}=a_{wz}\,(v_{\mathrm{ref}}/\bar v)^{\hat\gamma}\,e^{-\hat g_c}.
+\label{eq:cal}
+\end{equation}
+This makes road claims comparable across calibrated vehicles.
+For a vehicle that has never shared a road with others, the road value remains unidentified, and the honest output is a statement about how the ride felt.

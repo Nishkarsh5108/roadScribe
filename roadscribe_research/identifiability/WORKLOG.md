@@ -249,3 +249,33 @@ p = 0.001, the minimum possible with 1,000 permutations. **The vehicle signature
 - The identifiability *question* survives intact. The decisive facts in P1 (the 18% vehicle share and the sign-flipped speed elasticity) need no spectral model at all.
 
 **Note on RoadScribe's own γ:** the 0.32–0.36 reported on 2026-11-01 was fitted with groups defined by segment or trip. Per P1 that estimate is contaminated by endogenous speed. The `[placeholder]` tag on `SpeedConfig.gamma` was well deserved.
+
+---
+
+## Session of 2026-11-12, afternoon: the paper for DTU (branch `paper/icdsi-2027`)
+
+The user reviewed the night branch, asked to push it, and decided to submit to the DTU conference in February. They provided Kaggle access and 200 GB on D:.
+
+- 14:5x: **Pushed** `night/2026-11-12-identifiability` to origin.
+- **D18, venue facts (checked on the official site, icdsi.co.in).** ICDSI-2027 is run by DTU's IT department, 4–5 Feb 2027, hybrid, with Springer Scopus-indexed proceedings "subject to approval".
+  - Submission deadline: **8 Nov 2026** (revised from 30 Sep). Notification 30 Nov; camera-ready and registration 15 Dec.
+  - The author guidelines say "Papers must be electronically submitted before the deadline expires without exception".
+  - The "last week of November" date came from the Gemini session, which presented the camera-ready date as the submission window.
+  - I told the user immediately and asked them to check the CMT portal or contact the organisers. I kept working, because the paper is needed for any venue.
+  - Format: the Springer conference proceedings template (llncs). No page limit is stated; I target about 12–14 pages.
+- **D19.** New branch `paper/icdsi-2027` from the night branch. The new paper lives in `roadscribe_research/paper_icdsi/` (llncs). The old ACM draft in `paper/` is kept untouched.
+- **D20, scope.**
+  - The paper is RoadScribe plus the identifiability study. Its contribution is the claim-level identifiability criterion and its measurement, with calibration as the remedy.
+  - **QA (E1) and unseen audiences (E2) are out of scope.** The model was never trained on QA, the question bank is designer-written, and an honest E1 would need driver-elicited questions. Running them now would not test what the old draft claimed.
+  - **The 28-driver study and on-device timing are out of scope** for this paper.
+- **D21.** Added `SpeedConfig.vehicle_gain_log`, defaulting to 0 (old behaviour), so the calibrated road value of P4 runs through the real pipeline. Config tests pass.
+- 14:56: **Commit `265e705`, PREREG_P4.md** (calibrated road claims), before P4 ran.
+- **D22, Kaggle plan.** The adapter (120 MB) and the capsules (original and calibrated) are uploaded as a private dataset `roadscribe-regen-inputs`. A script kernel regenerates the S-PGR narratives with `max_new_tokens = 1024`, the only intended change. Everything else matches the 2026-11-10 run: same model, adapter, prompts and sampling (T = 0.3, top-p 0.9). Three seeds per trip and persona, for both capsule sets.
+  - The evaluator `scripts/eval_spgr_regen.py` keeps the old acceptance rule.
+  - It adds validity checks with the repository's plan validator. The earlier "plan validity" only meant the plan parsed as JSON.
+  - It runs H1 with the paper's own analysis, a cluster bootstrap over drives, which had been claimed before but never run.
+- **Implementation facts the paper must state** (checked in code):
+  - Map matching and OSM are not implemented (`arbitrate.py` comment), so on PVS the PELT penalty is constant.
+  - The `p_defect` calibrator was never trained on PVS. Events take prior confidences, which is why the must-mention set is empty.
+  - Generation was never grammar-constrained (plain `generate`).
+  - The "seat-rail validation" in the old draft was never done.
