@@ -1,23 +1,22 @@
 % Architecture figure (TikZ). Needs \usetikzlibrary{positioning,arrows.meta,fit}.
 \begin{tikzpicture}[
   font=\scriptsize,
-  box/.style={draw, rounded corners=2pt, align=center, minimum height=1.05cm, text width=2.05cm, inner sep=2pt},
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=1.05cm, text width=2.15cm, inner sep=2pt},
   arr/.style={-{Stealth[length=2mm]}, thick},
-  node distance=0.32cm and 0.32cm]
+  node distance=0.35cm and 0.35cm]
 \node[box] (sens) {IMU 100~Hz\\GNSS 1~Hz};
-\node[box, right=of sens] (l1) {\textbf{Layer 1}\\mount, ISO 2631\\felt / road value\\events};
+\node[box, right=of sens] (l1) {\textbf{Layer 1}\\mount, ISO 2631-1\\felt / road value\\events};
 \node[box, right=of l1] (l2) {\textbf{Layer 2}\\5~m grid\\PELT segments\\road units};
 \node[box, right=of l2] (l3) {\textbf{Layer 3}\\claim ledger\\token-budgeted\\capsule};
-\node[box, below=0.55cm of l3] (slm) {SLM\\plan + narrative};
-\node[box, left=of slm] (ver) {verifier\\(claims vs.\ ledger)};
-\node[box, left=of ver] (out) {narrative};
-\node[box, below=0.55cm of l1, dashed] (cal) {calibration on\\shared roads:\\vehicle gain, $\hat\gamma$};
+\node[box, above=0.4cm of l1, dashed] (cal) {calibration on shared\\roads: gain $\hat g_c$, $\hat\gamma$};
+\node[box, below=0.55cm of l3] (slm) {small LM\\plan + narrative};
+\node[box, below=0.55cm of l2] (ver) {verifier\\every claim\\vs.\ ledger};
+\node[box, below=0.55cm of l1] (out) {narrative: SLM text\\if verified, else\\template narrator};
 \draw[arr] (sens) -- (l1);
 \draw[arr] (l1) -- (l2);
 \draw[arr] (l2) -- (l3);
 \draw[arr] (l3) -- (slm);
 \draw[arr] (slm) -- (ver);
-\draw[arr] (ver) -- node[above]{pass} (out);
+\draw[arr] (ver) -- (out);
 \draw[arr, dashed] (cal) -- (l1);
-\draw[arr] (l3.south west) ++(0.15,0) |- ++(-1.1,-0.25) -| node[pos=0.25, right, align=left]{template\\fallback} (ver.north);
 \end{tikzpicture}

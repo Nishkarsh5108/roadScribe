@@ -1,0 +1,11 @@
+{
+ "trip_id": "pvs5",
+ "route_id": "B",
+ "vehicle_id": 2,
+ "calibration": {
+  "gamma": 0.8665757848326371,
+  "vehicle_gain_log": -0.34791167057753897
+ },
+ "capsule_text": "TRIP pvs5 | 22.3 min | 11.5 km | persona=commuter | ch=acc,gyro,gps,map | hist=none\nU2 0.4-2.5km - | felt 3 SHOCK | bump x14\nU3 2.5-5.8km - | felt 1 SHOCK | bump x19; jolt x9; artifact x2\nU4 5.8-7.2km - | felt 3 SHOCK | bump x1\nU5 7.2-11.5km - | felt 1 SHOCK | jolt x2; bump x7\nREST 1 unit, 0.4 km, surface -, felt 1-1, 7 events",
+ "capsule_tokens": 142
+}

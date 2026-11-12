@@ -1,0 +1,90 @@
+{
+ "calibration": {
+  "A": {
+   "gamma": 0.8656574482599412,
+   "gains": {
+    "1": 0.04697140321179973,
+    "2": -0.365577609264465,
+    "3": 0.3186062060526652
+   }
+  },
+  "B": {
+   "gamma": 0.8665757848326371,
+   "gains": {
+    "1": 0.031068149120036043,
+    "2": -0.34791167057753897,
+    "3": 0.3168435214575029
+   }
+  },
+  "C": {
+   "gamma": 0.8832697641223195,
+   "gains": {
+    "1": 0.03414392759810982,
+    "2": -0.3551626997809558,
+    "3": 0.32101877218284597
+   }
+  }
+ },
+ "uncalibrated": {
+  "kappa": 0.7178901912904432,
+  "all_three_equal": 0.04516129032258064,
+  "pairs_differ": 0.7645161290322581,
+  "spearman": 0.7626279888112696,
+  "vehicle_share": 0.18174762002251155,
+  "within_slope": 0.5091630932098394,
+  "lovo_acc": 0.9086021505376344
+ },
+ "calibrated": {
+  "kappa": 0.9576733140775958,
+  "all_three_equal": 0.6483870967741936,
+  "pairs_differ": 0.23548387096774193,
+  "spearman": 0.805227472072651,
+  "vehicle_share": 4.581170608659934e-06,
+  "within_slope": -0.038013717585378214,
+  "lovo_acc": 0.9849462365591398
+ },
+ "ci95": {
+  "kappa_cal_minus_uncal": [
+   0.20085368325365682,
+   0.3259487853488015
+  ],
+  "vehicle_share_cal": [
+   2.4391469850665346e-06,
+   0.00044156126815612457
+  ]
+ },
+ "narratives": {
+  "road_claims": {
+   "pairs": 756,
+   "differ": 172,
+   "distinct_road_claims": 28,
+   "narratives_with_road_claim": 16,
+   "differ_rate": 0.2275132275132275
+  },
+  "speed_attribution": {
+   "pairs": 756,
+   "disagree": 146,
+   "disagree_rate": 0.1931216931216931
+  }
+ },
+ "narratives_uncalibrated_x2": {
+  "road_claims": {
+   "pairs": 507,
+   "differ": 404,
+   "differ2": 0,
+   "differ_rate": 0.796844181459566,
+   "differ2_rate": 0.0
+  },
+  "speed_attribution": {
+   "pairs": 507,
+   "disagree": 146,
+   "disagree_rate": 0.2879684418145957
+  }
+ },
+ "verdicts": {
+  "P4_H1": true,
+  "P4_H2": true,
+  "P4_H3": true,
+  "P4_H4": true
+ }
+}

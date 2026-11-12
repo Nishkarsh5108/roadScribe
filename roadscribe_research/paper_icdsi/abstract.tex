@@ -1,0 +1,9 @@
+\begin{abstract}
+A trip narrator built on vehicle vibration can check every sentence against its measurements and still be wrong about the road, because the vibration a stretch produces depends on the vehicle and on speed.
+We present RoadScribe, which turns IMU and GNSS recordings into narratives: it computes ISO~2631-1 vibration measures, segments the trip, compiles a ledger of typed facts, and lets a small language model write a narrative that a verifier checks claim by claim, falling back to a template narrator.
+We then ask when a road claim is identifiable from such data.
+On the PVS dataset, where three vehicles drove the same three routes, RoadScribe's per-stretch road class differed between two vehicles in 76\% of comparisons, and the vehicle explained 18\% of the variance of the road value (0.06\% under a label-shuffling placebo).
+A speed elasticity estimated across places had the wrong sign ($-0.64$ versus $+0.86$ within places).
+\TBD[: calibration result and SLM result.]
+\keywords{Trip narration \and Vehicle vibration \and Identifiability \and Data-to-text \and Small language models \and Road monitoring}
+\end{abstract}

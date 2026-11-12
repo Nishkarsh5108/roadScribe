@@ -1,0 +1,11 @@
+{
+ "trip_id": "pvs4",
+ "route_id": "A",
+ "vehicle_id": 2,
+ "calibration": {
+  "gamma": 0.8656574482599412,
+  "vehicle_gain_log": -0.365577609264465
+ },
+ "capsule_text": "TRIP pvs4 | 22.1 min | 13.8 km | persona=commuter | ch=acc,gyro,gps,map | hist=none\nU1 0.0-4.3km - | felt 1 SHOCK | bump x14; jolt x4\nU2 4.3-9.4km - | felt 3 SHOCK | bump x6; jolt x1\nU3 9.4-13.8km - | felt 1 SHOCK | bump x7; jolt x1",
+ "capsule_tokens": 102
+}

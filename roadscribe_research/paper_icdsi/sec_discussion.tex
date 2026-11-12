@@ -1,0 +1,22 @@
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+\paragraph{What verification does and does not guarantee.}
+RoadScribe's verifier and template fallback guarantee that the narrative agrees with the ledger.
+The cross-vehicle study shows that this is a weaker property than it appears: the ledger's road values carry an 18\% vehicle signature and a speed dependence that a single trip cannot remove, so a narrator can be perfectly faithful to its ledger and still contradict another vehicle's narrative about the same street.
+The remedy we found effective is simple and needs no new model: estimate a gain per vehicle and the speed elasticity on places that several vehicles have driven, and state road claims only for calibrated vehicles.
+A spectral factorization of the vehicle response~\cite{pawitan1994whittle} did not improve on this scalar calibration on PVS.
+
+\paragraph{Limitations.}
+PVS has three vehicle--driver pairs and one pass per vehicle and route, so vehicle and driver are confounded and measurement noise cannot be separated from the place-by-vehicle interaction.
+The sensors are fixed modules, not phones; the size of the vehicle signature depends on placement and may differ for phones in holders.
+Map matching is not implemented, so the map-informed part of the segmentation was not exercised.
+The language model was fine-tuned on template-generated narratives and therefore imitates the template; we did not evaluate question answering or audiences unseen in training, which require questions elicited from drivers and human judgements of audience fit.
+On-device latency and energy were not measured.
+
+\section{Conclusion}
+\label{sec:conclusion}
+A narrator that checks every sentence against a ledger is only as trustworthy as the ledger is identifiable.
+On a public dataset with three vehicles driving the same roads, RoadScribe's road class for a stretch differed between two vehicles in 76\% of comparisons, because the vibration a stretch produces depends on the vehicle and on speed in ways a single trip cannot separate.
+Calibrating each vehicle on shared roads, with the speed effect estimated within places, is the remedy, and narrators should state road properties only when such calibration exists.
+Code, pre-registrations and all analysis scripts are in the project repository.

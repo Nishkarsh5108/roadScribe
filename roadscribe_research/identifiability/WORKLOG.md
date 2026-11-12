@@ -279,3 +279,27 @@ The user reviewed the night branch, asked to push it, and decided to submit to t
   - The `p_defect` calibrator was never trained on PVS. Events take prior confidences, which is why the must-mention set is empty.
   - Generation was never grammar-constrained (plain `generate`).
   - The "seat-rail validation" in the old draft was never done.
+
+### P4 results (`results/p4_results.json`; pre-registered at `265e705`)
+
+**Calibration (leave one route out).** γ̂ = 0.866 / 0.867 / 0.883 for held-out routes A / B / C. Vehicle gains in log units are about (+0.03 to +0.05, −0.35 to −0.37, +0.32), and they are stable across held-out routes.
+
+**Stretch level, 310 places**
+
+| Measure | Uncalibrated | Calibrated |
+|---|---|---|
+| κ_road | 0.718 | **0.958** (difference CI [0.201, 0.326]) |
+| All three vehicles agree | 4.5% | **64.8%** |
+| Pairs that differ | 76.5% | 23.5% |
+| Spearman | 0.763 | 0.805 |
+| Vehicle share | 18.2% | about 0 (CI up to 0.04%) |
+| Within-place speed slope | 0.51 | **−0.04** |
+| LOVO accuracy on video quality | 90.9% | **98.5%** |
+
+**Narrative level (template narrator, calibrated ledgers).** Road-claim stretch pairs that disagree: **22.8%** (172 of 756, from 28 distinct claims in 16 of 18 narratives). Uncalibrated, X2 gave 79.7% (404 of 507, from 24 claims). Speed-attribution disagreement: 19.3% vs 28.8%.
+
+**Verdicts:** P4-H1, H2, H3 and H4 **all passed**.
+
+**Caveat.** Calibration identifies the gains of *these* three vehicles from roads they shared. A vehicle that never shared a road with others gets no calibration, and its road values stay unidentified. That is the identifiability point, and the paper must say it.
+
+- 15:2x: Pushed the Kaggle dataset `roadscribe-regen-inputs`, with v2 adding the calibrated capsules, and the kernel `roadscribe-spgr-regen` (T4, script). Both are private.
