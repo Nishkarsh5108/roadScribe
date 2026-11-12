@@ -1,23 +1,43 @@
 \section{Introduction}
 \label{sec:intro}
 
-Vehicles and the phones in them can sense how a road shakes them, and road-monitoring work has used this for two decades to detect potholes, classify surfaces and estimate roughness~\cite{eriksson2008pothole,mohan2008nericell,menegazzo2021pvs}.
-Drivers, passengers and fleet operators ask questions in language rather than in roughness indices: which part of the route was rough, whether a jolt came from the road or from the driving, whether the map is wrong about a surface.
-Language models are a natural interface for such questions, and recent systems describe sensor data in text~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
-For a road description to be useful it must be true, and two kinds of truth are at stake.
-The first is \emph{faithfulness to the measurements}: a narrative must not invent values or events.
-Data-to-text research has long addressed this with explicit content plans and claim checking~\cite{gatt2018survey,moryossef2019step,wiseman2017challenges}.
-The second is less often asked: \emph{is the measured quantity a property of the road at all?}
-The vibration a stretch produces depends on the vehicle and on how fast it was driven.
-A narrator that says ``this stretch is rough'' on the basis of one vehicle's pass may be describing the vehicle.
+Language models are increasingly asked to describe sensor data in words: activity from wearables, driving from phones, machines from their vibration~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
+For such text to be trusted, its claims must be checked.
+The data-to-text answer is to compile the measurements into facts, generate text from them, and verify every claim against the facts, falling back to a deterministic narrator when verification fails~\cite{wiseman2017challenges,moryossef2019step,jhamtani2021truce}.
+A system built this way is \emph{faithful}: it never says what its facts do not say~\cite{maynez2020faithfulness}.
 
-This paper studies both questions with RoadScribe, a narrator for road trips recorded with an IMU and GNSS.
-RoadScribe computes ISO~2631-1 vibration measures, segments the trip into road units, compiles a ledger of typed facts, and lets a small language model write a narrative that a verifier checks claim by claim against the ledger, with a template narrator as fallback.
-We then ask whether the road claims in its ledger are identifiable from a single trip.
+This paper is about what faithfulness leaves open.
+A verifier compares a sentence with a value, but it cannot tell whether the value determines what the sentence asserts.
+We call a claim \emph{identifiable} when it does, and we study two ways in which it can fail.
+\begin{itemize}
+\item \emph{World level.} The value is not a property of the world the sentence talks about.
+The vibration a car records on a road depends on the car and on its speed.
+``The surface is in fair condition'' can agree perfectly with one car's ledger and contradict another car's ledger for the same street.
+\item \emph{Input level.} A fine-tuned narrator is trained on targets that state values its input does not contain.
+It then learns to produce such values without evidence.
+The verifier rejects the output, which is safe, but the model contributes nothing.
+\end{itemize}
+
+We study both in RoadScribe, a verified narrator that turns IMU and GNSS recordings of car trips into narratives.
+We use the Passive Vehicular Sensors (PVS) dataset, in which three vehicles drove the same three routes, and a 3B-parameter language model fine-tuned under controlled conditions.
 
 \paragraph{Contributions.}
-\begin{itemize}
-\item A verified narration pipeline (Sect.~\ref{sec:system}) and a benchmark of a fine-tuned 3B-parameter model against template narrators on nine real trips (Sect.~\ref{sec:bench}--\ref{sec:pgr}). Trained on targets that stated values its input did not contain, the model passed verification in none of 108 narratives; trained so that its input held every value it had to state, its share of unsupported claims fell from 52\% to 30\%, and verified narratives appeared when code, not the model, wrote the values.
-\item A criterion for when a road claim is identifiable from a narrator's input, based on a standard source--channel model of vehicle vibration, and its consequences for single trips, fleets and speed (Sect.~\ref{sec:ident}).
-\item A pre-registered cross-vehicle study on the PVS dataset~\cite{menegazzo2021pvs} (Sect.~\ref{sec:invariance}--\ref{sec:calibration}). RoadScribe's road claims are not vehicle-invariant: the road class of a stretch differs between two vehicles in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value. A speed elasticity estimated across places has the wrong sign. Calibrating each vehicle on roads it shared with the others raises cross-vehicle agreement of the road class from $\kappa=0.72$ to $0.96$ and cuts contradictory road claims in the narratives from 80\% to 23\% of co-located comparisons.
-\end{itemize}
+\begin{enumerate}
+\item \emph{Two-level claim identifiability with an operational test for each level} (Sect.~\ref{sec:ident}).
+At the world level, the test compares the agreement of claims across conditions (vehicles) with a same-condition noise floor and a label-shuffling placebo.
+At the input level, a typed audit measures whether each value the training targets state is present in the model's input.
+Both tests are cheap, independent of the model, and applicable to other sensor-to-text systems.
+\item \emph{World-level evidence, pre-registered} (Sect.~\ref{sec:world}).
+RoadScribe's road class differs between two vehicles at the same place in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value (0.06\% under the placebo). Two sensors in the same vehicle agree at $\kappa=0.98$.
+A speed elasticity estimated across places has the wrong sign.
+One gain per vehicle, estimated on about a kilometre of shared road, raises cross-vehicle agreement from $\kappa=0.72$ to $0.96$. It also raises the accuracy of road-quality labels on held-out routes and vehicles from 90.5\% to 98.3\%. The result replicates on a second logger.
+\item \emph{Input-level evidence from a controlled experiment, pre-registered} (Sect.~\ref{sec:input}).
+\PSIXCONTRIB
+\item \emph{A design consequence.}
+When the model only selects content and code writes the values, every valid model plan yields a verified narrative. When the model writes the values, none does.
+\end{enumerate}
+
+\paragraph{Scope.}
+We propose no new roughness estimator, language model or verifier, and per-vehicle calibration itself is established practice~\cite{sayers1986iri}.
+Our claims concern which statements a sensor-to-text system may make and how to test this before deployment.
+They rest on one public dataset with three vehicle--driver pairs and one pass per route, on fixed sensor modules rather than phones, and on a synthetic training corpus.

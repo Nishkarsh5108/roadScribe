@@ -1,44 +1,41 @@
-\section{When Is a Road Claim Identifiable?}
+\section{Claim Identifiability}
 \label{sec:ident}
 
-A verifier can only confirm that a sentence agrees with the ledger.
-Whether the ledger value is a property of the \emph{road} depends on what the data can separate.
-For a linear vehicle with vertical transfer function $H_c$ driving at speed $v$ over a place $p$ whose elevation spectrum is $\Phi_p(n)$ ($n$ in cycles per metre), the vertical acceleration spectrum is~\cite{dodds1973roughness,gonzalez2008roughness}
+\paragraph{Setting.}
+A sensor-to-text system observes a recording $x$ of a world state $s$ (the road) under nuisance conditions $e$ (vehicle, speed, mount), computes ledger values $\phi(x)$, and states claims about them, for example the class $k(\phi(x))$ of a stretch.
+A verifier that checks claims against $\phi(x)$ establishes \emph{faithfulness}~\cite{maynez2020faithfulness}, not that the claim is true of $s$.
+We distinguish two ways in which a faithful claim can still be unfounded.
+
+\paragraph{World level.}
+A claim type is \emph{identifiable from the recording} if $k(\phi(x(s,e)))=k(\phi(x(s,e')))$, up to measurement noise, for the conditions $e,e'$ met in deployment.
+\emph{Test:} on paired recordings of the same states under different conditions (several vehicles on the same places), compare the cross-condition agreement $\kappa_{\text{cross}}$ of the claimed classes with a \emph{noise floor} $\kappa_{\text{floor}}$, the agreement of two sensors under the \emph{same} condition, and compare the share of variance of $\log\phi$ explained by the condition (net of place and speed) with a placebo that shuffles condition labels within places.
+A claim type is admissible when $\kappa_{\text{cross}}$ is close to $\kappa_{\text{floor}}$, with the tolerance fixed in advance.
+This is an invariance test across environments in the sense of~\cite{peters2016icp}, applied to what a narrator may say.
+
+Why vibration claims can fail it is standard.
+For a linear vehicle with transfer function $H_c$ at speed $v$ over a place with elevation spectrum $\Phi_p(n)$ ($n$ in cycles/m), the vertical acceleration spectrum satisfies~\cite{dodds1973roughness,gonzalez2008roughness}
 \begin{equation}
-S(f)=|H_c(f)|^2\,\Phi_p(f/v)/v,
-\qquad
-\log S(f)=A_c(f)+B_p(f/v)-\log v ,
+\log S(f)=A_c(f)+B_p(f/v)-\log v,\qquad A_c=\log|H_c|^2,\ B_p=\log\Phi_p .
 \label{eq:scr}
 \end{equation}
-with $A_c=\log|H_c|^2$ and $B_p=\log\Phi_p$.
-Three consequences follow.
-
-\emph{One vehicle, one pass.}
-At a single speed, any function can be moved between $A_c$ and $B_p$: the data fix only their sum.
-``This road is rough'' and ``this vehicle transmits a lot'' are then indistinguishable.
-This is the indeterminacy known from separating spectra shifted by different velocities in astronomy~\cite{simon1994disentangling,bedell2019wobble}; we use it as a criterion for claims, not as a new result.
-
-\emph{Several vehicles on the same places.}
-If vehicles share places, the place term cancels in their differences, so the \emph{relative} channels $A_c-A_{c'}$ are identified; the common part is identified (up to a constant) only if the same places are also driven at different speeds.
-On synthetic data with three channels and thirty road segments, a penalized Whittle fit~\cite{pawitan1994whittle} of Eq.~\eqref{eq:scr} recovered the channel differences to within 0.025 log units (RMS) in both cases, but the common channel only with speed diversity (error 0.010--0.023 versus 0.67--1.09 log units over three seeds).
-
-\emph{Speed.}
-For the band-integrated road value of Eq.~\eqref{eq:dec},
+One vehicle at one speed fixes only $A_c+B_p$, so ``this road is rough'' and ``this vehicle transmits a lot'' are indistinguishable; vehicles that share places identify the differences $A_c-A_{c'}$, and the common part only if the same places are also driven at different speeds.
+(In a simulation with three channels and thirty segments, a penalized Whittle fit~\cite{pawitan1994whittle} recovered the channel differences to within 0.025 log units, but the common channel only with speed diversity: error 0.010--0.023 against 0.67--1.09.)
+For a band-integrated value this gives a two-way fixed-effects model, as used to separate worker and firm effects in matched data~\cite{abowd1999akm},
 \begin{equation}
 \log a_{wz,cp}=\alpha_p+g_c+\gamma\log\bar v_{cp}+\varepsilon_{cp},
 \label{eq:fe}
 \end{equation}
-with a place effect $\alpha_p$ and a vehicle gain $g_c$.
-The elasticity $\gamma$ is identified by speed variation \emph{within} places.
-Estimated across places within one trip, it also absorbs how drivers choose speed on different roads.
-
-\paragraph{Criterion and remedy.}
-We call a road claim \emph{identifiable} from the narrator's input if its value is fixed by the data when the nuisances that can change (vehicle, speed) change.
-A narrator that states a non-identifiable value as fact is guessing even if every sentence passes the verifier, because the ledger stores the same confounded value.
-Equations~\eqref{eq:scr}--\eqref{eq:fe} also give the remedy for a fleet: estimate $\hat g_c$ and $\hat\gamma$ on places that several vehicles have driven, with place and vehicle fixed effects, and report
+with place effect $\alpha_p$, vehicle gain $g_c$ and speed elasticity $\gamma$.
+The gains are identified by shared places and $\gamma$ by speed variation \emph{within} places; estimated across places, $\gamma$ also absorbs how drivers choose speed on different roads.
+The remedy is calibration on shared roads, long practised for response-type roughness meters~\cite{sayers1986iri}:
 \begin{equation}
-\tilde a_{\mathrm{cal}}=a_{wz}\,(v_{\mathrm{ref}}/\bar v)^{\hat\gamma}\,e^{-\hat g_c}.
+\tilde a_{\mathrm{cal}}=a_{wz}\,(v_{\mathrm{ref}}/\bar v)^{\hat\gamma}\,e^{-\hat g_c},\qquad v_{\mathrm{ref}}=10~\mathrm{m\,s^{-1}}.
 \label{eq:cal}
 \end{equation}
-This makes road claims comparable across calibrated vehicles.
-For a vehicle that has never shared a road with others, the road value remains unidentified, and the honest output is a statement about how the ride felt.
+For a vehicle that has never shared a road with others, the honest output is a statement about the ride, not the road.
+
+\paragraph{Input level.}
+A fine-tuned narrator learns a map from inputs $z$ to targets $y$. A value stated in $y$ is \emph{identifiable from the input} if it is a function of $z$; if the targets state values that $z$ lacks, training rewards producing values without evidence~\cite{dhingra2019parent,gekhman2024newknowledge}.
+\emph{Test:} a typed audit of the training set that measures, for each value type the targets state (event positions, speeds, accelerations, distances, durations), the share of stated values that $z$ contains as a field of the same type, after rounding to the stated precision.
+The prediction is per type: where the share is low, the model's claims of that type will be wrong at test time, whatever the verifier then does.
+Both tests are cheap and model-independent; the first needs paired recordings, the second only the training set.

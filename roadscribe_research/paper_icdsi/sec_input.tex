@@ -1,0 +1,75 @@
+\section{Input Level: What the Narrator Was Trained to State}
+\label{sec:input}
+
+\paragraph{Protocol.}
+Narrators run on the nine PVS drives for two audiences (a commuter and a sports-car driver).
+A model condition has 54 runs: 9 drives $\times$ 2 audiences $\times$ 3 sampling seeds (temperature 0.3, top-$p$ 0.9); deterministic narrators have one run per drive and audience (18).
+Runs use the original ledgers; with the calibrated ledgers of Sect.~\ref{sec:calibration}, the model narrators again had no narrative accepted (0 of 54 each), and the template realizer of model plans had 29 instead of 28.
+
+\begin{table}[t]
+\caption{Narrators on the nine PVS drives. Accepted: every claim supported (otherwise RoadScribe returns the template narrative). Claims and $P_L$ describe the narrator's own text.}
+\label{tab:bench}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Narrator & runs & accepted & claims/run & $P_L$ \\
+\midrule
+T, template & 18 & 18 & 59.2 & 100\% \\
+T+V, template with wording variants & 18 & 18 & 59.1 & 100\% \\
+Model, capsule $\to$ plan and text, 300 tokens & 18 & 5\textsuperscript{a} & 2.4\textsuperscript{a} & 100\%\textsuperscript{a} \\
+Model, capsule $\to$ plan and text, 1{,}024 tokens & 54 & 0 & 46.2 & 48.5\% \\
+Model, plan--ground--realize (P5) & 54 & 0 & 34.0\textsuperscript{b} & 69.4\% \\
+Model plan, template realizer (exploratory) & 54 & 28 & 52.4\textsuperscript{b} & 100\% \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+{\scriptsize\textsuperscript{a}\,Accepted fragments only (12 claims in all). \textsuperscript{b}\,Over the 28 runs with a valid plan.}
+\end{table}
+
+\subsection{The model as first trained}
+\label{sec:bench}
+The first adapter was fine-tuned on 2{,}696 synthetic pairs, a capsule as input and a plan over fact identifiers followed by the narrative as target; the narratives came from the template narrator (2{,}500) and from a frontier model \TBD[: teacher model name and version] writing in the verifier's lexicon (196).
+With 300 new tokens the plan used most of the budget, and the five outputs that passed were fragments such as ``Your 10.7~km drive took'' (Table~\ref{tab:bench}).
+With 1{,}024 tokens every narrative was complete (median 244 words) and none of the 54 passed (95\% interval 0--6.6\%): only 48.5\% of their 2{,}493 claims were supported.
+Event claims failed most (470 at a wrong position, 261 with a wrong count, 132 hedged more confidently than the detector), 163 numbers were out of tolerance, and all 47 place names and 41 map tags were invented.
+
+The input-level audit (Table~\ref{tab:audit}) explains these errors.
+None of the 7{,}793 event positions and none of the 2{,}621 speeds stated in the training targets appear in the capsule, which lists how many events a stretch has but not where; only 1.7\% of the accelerations do, and the plans' fact identifiers were not in the input at all.
+Distances and durations, which the capsule contains, almost always do.
+(A lenient match that accepts any number in the input after unit conversion finds 21\% of the positions, mostly by coincidence.)
+The model was trained to state values its input does not determine, and on real trips it guessed them; the synthetic capsules also always carried street names and map tags, which the PVS capsules lack, and the model filled that gap too.
+
+\begin{table}[t]
+\caption{Input-level audit: share of the values stated in the training targets that the input contains as a field of the same type (rounded to the stated precision). Original: the first adapter's 2{,}696 records (mentions counted there). A--C: the arms of the controlled experiment (same 1{,}200 targets).}
+\label{tab:audit}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lrcccc@{}}
+\toprule
+Value type & mentions & original & A: capsule & B: + frames & C: B, no positions \\
+\midrule
+Event position & 7{,}793 & 0\% & 0\% & 100\% & 0\% \\
+Speed & 2{,}621 & 0\% & 0\% & 100\% & 100\% \\
+Acceleration & 5{,}533 & 1.7\% & 1.7\% & 100\% & 100\% \\
+Distance & 15{,}887 & 98.2\% & 97.8\% & 100\% & 100\% \\
+Duration & 1{,}956 & 100\% & 100\% & 100\% & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{A controlled test}
+\label{sec:p6}
+\PSIXTEXT
+
+\subsection{Giving the model only identifiable tasks}
+\label{sec:pgr}
+RoadScribe's design gives the model only tasks whose outputs its input determines: the planner sees the capsule with the index of ledger facts and returns fact identifiers, code grounds them into frames, and the realizer writes from frames that contain every value it states.
+Retrained in this form (QLoRA, one epoch on 1{,}849 planning and realization examples; pre-registered as P5), with PVS capsules rebuilt without the spurious map channel, 52\% of the plans passed validation (1 of 54 before), the share of event claims at a wrong position fell from 40\% to 18\%, statements of missing values from 27 to 1, and $P_L$ rose from 48.5\% to 69.4\%.
+The model still copied values imperfectly (boundaries off by 100~m, an event at the ``75.6~km mark'' of a 13.8~km trip), and none of its narratives passed.
+When the template realizer verbalized the model's valid plans (exploratory), every one of them, 28 of the 54 runs, gave a verified narrative; the plans shared 77\% of their facts with the rule planner's and never coincided with it, so the model's verified contribution is content selection (whether readers prefer it was not measured).
+\emph{Sentence-level fallback} (exploratory) is a middle ground: dropping every sentence with an unsupported claim and re-verifying keeps 36\% of the first adapter's sentences (12.0 of 22.4 supported claims per narrative) and 63\% of the plan--ground--realize model's (20.2 of 23.6), and every remainder passes; coherence of the shortened text was not judged.
+Finally, ledger agreement says nothing about grounding in the road: the template's event mentions recall 84\% of the 60 labelled bumps, but mostly by naming whole stretches, and the same intervals placed at random recall 98\%.

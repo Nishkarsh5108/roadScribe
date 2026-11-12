@@ -5,13 +5,13 @@
   arr/.style={-{Stealth[length=2mm]}, thick},
   node distance=0.35cm and 0.35cm]
 \node[box] (sens) {IMU 100~Hz\\GNSS 1~Hz};
-\node[box, right=of sens] (l1) {\textbf{Layer 1}\\mount, ISO 2631-1\\felt / road value\\events};
-\node[box, right=of l1] (l2) {\textbf{Layer 2}\\5~m grid\\PELT segments\\road units};
+\node[box, right=of sens] (l1) {\textbf{Layer 1}\\mount, ISO 2631-1\\ride / road value\\events};
+\node[box, right=of l1] (l2) {\textbf{Layer 2}\\5~m grid\\PELT\\road units};
 \node[box, right=of l2] (l3) {\textbf{Layer 3}\\claim ledger\\token-budgeted\\capsule};
 \node[box, above=0.4cm of l1, dashed] (cal) {calibration on shared\\roads: gain $\hat g_c$, $\hat\gamma$};
-\node[box, below=0.55cm of l3] (slm) {small LM\\plan + narrative};
+\node[box, below=0.55cm of l3] (slm) {plan (rules or LM)\\ground (code)\\realize (rules or LM)};
 \node[box, below=0.55cm of l2] (ver) {verifier\\every claim\\vs.\ ledger};
-\node[box, below=0.55cm of l1] (out) {narrative: SLM text\\if verified, else\\template narrator};
+\node[box, below=0.55cm of l1] (out) {narrative: model text\\if verified, else\\template narrative};
 \draw[arr] (sens) -- (l1);
 \draw[arr] (l1) -- (l2);
 \draw[arr] (l2) -- (l3);

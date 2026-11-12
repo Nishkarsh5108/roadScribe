@@ -3,16 +3,24 @@
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb}
 \usepackage{booktabs}
+\usepackage{array}
 \usepackage{tikz}
 \usetikzlibrary{positioning,arrows.meta,fit}
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=*}
 \providecommand{\TBD}[1][]{\textcolor{red}{[TBD#1]}}
+% Results of the controlled input-level experiment (P6); filled from roadscribe_research/identifiability/results/p6_results.json
+\newcommand{\PSIXOUTCOME}{\TBD}
+\newcommand{\PSIXCONTRIB}{\TBD}
+\newcommand{\PSIXTEXT}{\TBD}
+\newcommand{\PSIXABS}{\TBD}
 
 \begin{document}
 
-\title{Whose Road Is Rough? Verified Trip Narratives from Vehicle Vibration and the Identifiability of Road Claims}
-\titlerunning{Whose Road Is Rough?}
+\title{Verified Is Not True: Two Levels of Claim Identifiability in Sensor-to-Text Narration}
+\titlerunning{Verified Is Not True}
 \author{Nishkarsh Singhal\inst{1} \and Geetanjali Bhola\inst{1}}
 \authorrunning{N. Singhal and G. Bhola}
 \institute{Faculty of Technology, University of Delhi, New Delhi, India}
@@ -23,9 +31,10 @@
 
 \input{sec_intro}
 \input{sec_related}
-\input{sec_system}
 \input{sec_ident}
-\input{sec_experiments}
+\input{sec_system}
+\input{sec_world}
+\input{sec_input}
 \input{sec_discussion}
 
 \bibliographystyle{splncs04}

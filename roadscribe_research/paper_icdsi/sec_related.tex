@@ -1,19 +1,33 @@
 \section{Related Work}
 \label{sec:related}
 
-\paragraph{Road sensing from vehicles.}
-Phones and in-vehicle units have been used to detect potholes and braking since Pothole Patrol and Nericell~\cite{eriksson2008pothole,mohan2008nericell}, and to classify surfaces or regress roughness from vibration, for example on the PVS dataset used here~\cite{menegazzo2021pvs}.
-That the measured response depends on the vehicle and on speed is well established: road spectra and vehicle response are linked through the vehicle's transfer function~\cite{dodds1973roughness,gonzalez2008roughness}, and crowdsourced methods estimate road roughness spectra from phone acceleration by inverting a vehicle model~\cite{botshekan2020roughness}.
-We do not propose a new roughness estimator.
-We ask which of these quantities a \emph{narrator} may state as a fact about the road.
+\paragraph{Faithfulness and its checks.}
+Faithfulness to the source and factuality with respect to the world are distinct properties of generated text~\cite{maynez2020faithfulness,ji2023hallucination}.
+Data-to-text work measures faithfulness by extracting records from the text and checking them against the input table~\cite{wiseman2017challenges}. It separates content planning from realization to control it~\cite{moryossef2019step,gatt2018survey}, and checks captions of time series with executable programs~\cite{jhamtani2021truce}. Factuality can be scored per atomic claim~\cite{min2023factscore}.
+RoadScribe's verifier and template fallback belong to this line.
+In sensor-to-text generation, the gap between the two properties takes a specific form: the source is itself a measurement, and its value can depend on the device and on how it was used.
+Our world-level test asks whether the source value is a property of the world, a question that checks of text against source cannot answer.
+
+\paragraph{Unsupported targets and hallucination.}
+References that state facts absent from the input (\emph{divergent references}) are a known source of hallucination in data-to-text generation.
+Proposed remedies include:
+\begin{itemize}
+\item metrics that account for them~\cite{dhingra2019parent};
+\item cleaning or re-annotating the data so that inputs and texts match~\cite{dusek2019semantic,nie2019simple};
+\item training that controls how far outputs may go beyond the input~\cite{filippova2020controlled}.
+\end{itemize}
+Fine-tuning a language model on facts it cannot know from pre-training likewise increases hallucination~\cite{gekhman2024newknowledge}.
+Our input-level test is a typed version of this diagnosis, done before training.
+Our controlled experiment holds the targets fixed and changes only whether the input contains the values they state, so that the effect on each value type can be read directly.
 
 \paragraph{Language models over sensor data.}
-LLMs have been prompted with raw sensor readings~\cite{xu2024penetrative}, aligned with motion-sensor encoders~\cite{li2025sensorllm,imran2024llasa}, given plots~\cite{yoon2024bymyeyes}, trained on synthetic time-series question answering~\cite{xie2025chatts}, and pre-trained on tens of millions of hours of wearable data paired with captions generated from statistics~\cite{zhang2025sensorlm}.
-Their evaluation measures accuracy, retrieval or judged plausibility; the claims in their text are not checked against the measurements, and none of them asks whether a stated quantity can be determined from the input at all.
+Language models have been prompted with raw sensor readings~\cite{xu2024penetrative}, aligned with motion-sensor encoders~\cite{li2025sensorllm,imran2024llasa}, given plots~\cite{yoon2024bymyeyes} and trained on synthetic time-series question answering~\cite{xie2025chatts}.
+They have also been pre-trained on large wearable corpora with captions generated from signal statistics~\cite{zhang2025sensorlm}.
+Their evaluations measure accuracy, retrieval or judged plausibility.
+Such captions inherit whatever device dependence their statistics carry; our results quantify that dependence for one sensing task.
 
-\paragraph{Faithful data-to-text.}
-Separating content planning from realization is established in data-to-text generation~\cite{gatt2018survey,moryossef2019step}, and so is measuring precision by extracting records from generated text and checking them against the source table~\cite{wiseman2017challenges}.
-Truth-conditional captioning checks time-series captions with executable programs~\cite{jhamtani2021truce}, and factuality can be scored per atomic claim~\cite{min2023factscore}.
-Sensor-to-text systems with audience-specific output go back to BabyTalk~\cite{portet2009babytalk}, and driver-feedback systems turn telematics into text with rules and, more recently, LLM-written tips~\cite{braun2018saferdrive,baig2022drivingbeacon,thompson2026localising}.
-RoadScribe's verifier and template fallback follow this tradition.
-Our contribution is the observation that verification against a ledger cannot catch claims whose ledger value is not identifiable, and a measurement of how often this happens for road claims.
+\paragraph{Vehicle response, calibration and invariance.}
+Road sensing from vehicles goes back to Pothole Patrol and Nericell~\cite{eriksson2008pothole,mohan2008nericell}, and PVS has been used to classify surfaces and quality~\cite{menegazzo2021pvs}.
+That the response depends on the vehicle and speed is established~\cite{dodds1973roughness,gonzalez2008roughness}, and crowdsourced methods invert vehicle models to estimate road spectra~\cite{botshekan2020roughness}.
+Response-type roughness meters have long been calibrated per vehicle against reference sections~\cite{sayers1986iri}.
+We do not propose a new roughness estimator or a new calibration. We use paired data to decide which claims a narrator may state, with a two-way fixed-effects model~\cite{abowd1999akm} and an invariance criterion across environments~\cite{peters2016icp}.

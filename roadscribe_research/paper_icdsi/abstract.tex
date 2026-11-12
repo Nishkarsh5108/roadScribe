@@ -1,11 +1,15 @@
 \begin{abstract}
-A trip narrator built on vehicle vibration can check every sentence against its measurements and still be wrong about the road, because the vibration a stretch produces depends on the vehicle and on speed.
-We present RoadScribe, which turns IMU and GNSS recordings into narratives: it computes ISO~2631-1 vibration measures, segments the trip, compiles a ledger of typed facts, and lets a small language model write a narrative that a verifier checks claim by claim, falling back to a template narrator.
-We then ask when a road claim is identifiable from such data.
-On the PVS dataset, where three vehicles drove the same three routes, RoadScribe's per-stretch road class differed between two vehicles in 76\% of comparisons, and the vehicle explained 18\% of the variance of the road value (0.06\% under a label-shuffling placebo).
-A speed elasticity estimated across places had the wrong sign ($-0.64$ versus $+0.86$ within places).
-Calibrating each vehicle on roads it shared with the others, with the speed effect estimated within places, raised cross-vehicle agreement of the road class from $\kappa=0.72$ to $0.96$ and cut contradictory road claims in the narratives from 80\% to 23\% of co-located comparisons.
-The same lens explains a negative result for the language model: fine-tuned on targets that stated values absent from its input (91\% of event positions), it passed verification in none of 108 narratives; retrained so that its input contained every value it had to state, its claim precision rose from 48\% to 70\%, and verified narratives (43\%) appeared only when deterministic code wrote the values.
-A narrator should state road properties only when such calibration exists.
-\keywords{Trip narration \and Vehicle vibration \and Identifiability \and Data-to-text \and Small language models \and Road monitoring}
+Sensor-to-text systems can verify every generated claim against the facts they computed. We argue that this establishes faithfulness, not truth, whenever a claim is not \emph{identifiable}.
+At the world level, a computed value may depend on nuisances that one recording cannot separate, such as the vehicle and its speed.
+At the input level, a fine-tuned model's training targets may state values that its input does not contain.
+We give a cheap operational test for each level:
+(i) cross-condition agreement against a same-condition noise floor, with a placebo;
+(ii) a typed audit of whether each target value is present in the input.
+We apply both to RoadScribe, a verified narrator of vehicle vibration.
+On the PVS dataset, where three vehicles drove the same routes, the road class of a stretch differed between two vehicles in 76\% of comparisons, while two sensors in the same vehicle agreed at $\kappa=0.98$.
+The vehicle explained 18\% of the variance (0.06\% under a placebo), and a speed elasticity estimated across places had the wrong sign.
+A per-vehicle gain estimated on about one kilometre of shared road raised cross-vehicle agreement from $\kappa=0.72$ to $0.96$ and held-out accuracy on road-quality labels from 90.5\% to 98.3\%.
+\PSIXABS
+A narrator should state only claims that pass both tests.
+\keywords{Data-to-text \and Faithfulness \and Identifiability \and Hallucination \and Vehicle vibration \and Small language models}
 \end{abstract}

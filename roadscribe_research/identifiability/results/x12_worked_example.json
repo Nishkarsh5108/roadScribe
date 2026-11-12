@@ -1,0 +1,47 @@
+{
+ "place": "A:107",
+ "gt_quality": 0.0,
+ "gt_surface": "asphalt",
+ "gamma_hat": 0.8656574482599412,
+ "rows": [
+  {
+   "vehicle": 1,
+   "v_mean_mps": 18.6,
+   "a_wz": 0.524,
+   "a_dec": 0.422,
+   "road_class": 1,
+   "wording": "the surface is in good condition",
+   "gain_log": 0.047,
+   "a_cal": 0.292,
+   "cal_class": 0,
+   "cal_wording": "the surface is in excellent condition"
+  },
+  {
+   "vehicle": 2,
+   "v_mean_mps": 20.7,
+   "a_wz": 0.384,
+   "a_dec": 0.298,
+   "road_class": 0,
+   "wording": "the surface is in excellent condition",
+   "gain_log": -0.366,
+   "a_cal": 0.294,
+   "cal_class": 0,
+   "cal_wording": "the surface is in excellent condition"
+  },
+  {
+   "vehicle": 3,
+   "v_mean_mps": 23.3,
+   "a_wz": 0.79,
+   "a_dec": 0.588,
+   "road_class": 2,
+   "wording": "the surface is in fair condition",
+   "gain_log": 0.319,
+   "a_cal": 0.276,
+   "cal_class": 0,
+   "cal_wording": "the surface is in excellent condition"
+  }
+ ],
+ "n_places": 310,
+ "n_three_classes_then_agree": 70,
+ "n_any_disagreement_uncal": 296
+}
