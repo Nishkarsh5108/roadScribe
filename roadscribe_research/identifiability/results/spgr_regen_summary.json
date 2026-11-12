@@ -15,8 +15,8 @@
   "slm_words_per_accepted": NaN,
   "template_claims_per_narrative": 59.166666666666664,
   "P_L_slm_accepted": NaN,
-  "P_L_spgr": 0.9915492957746479,
-  "P_L_T": 0.9915492957746479,
+  "P_L_spgr": 1.0,
+  "P_L_T": 1.0,
   "diff_spgr_minus_T": 0.0,
   "diff_ci95_cluster_bootstrap_drives": [
    0.0,
@@ -42,8 +42,8 @@
   "slm_words_per_accepted": NaN,
   "template_claims_per_narrative": 59.27777777777778,
   "P_L_slm_accepted": NaN,
-  "P_L_spgr": 0.9915651358950328,
-  "P_L_T": 0.9915651358950328,
+  "P_L_spgr": 1.0,
+  "P_L_T": 1.0,
   "diff_spgr_minus_T": 0.0,
   "diff_ci95_cluster_bootstrap_drives": [
    0.0,

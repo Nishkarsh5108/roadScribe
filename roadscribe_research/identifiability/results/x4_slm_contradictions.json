@@ -1,0 +1,17 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "orig": {
+  "pairs": 0,
+  "differ": 0,
+  "accepted_narratives": 0,
+  "road_claims": 0,
+  "differ_rate": 0.0
+ },
+ "cal": {
+  "pairs": 0,
+  "differ": 0,
+  "accepted_narratives": 0,
+  "road_claims": 0,
+  "differ_rate": 0.0
+ }
+}

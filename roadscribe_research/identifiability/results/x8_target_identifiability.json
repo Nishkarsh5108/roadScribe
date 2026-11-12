@@ -1,0 +1,176 @@
+{
+ "label": "EXPLORATORY (added after the simulated review, 2026-11-13)",
+ "rules": "Input-level identifiability audit of training targets (added 2026-11-13 after the simulated review).\n\nFor every value a training target states, is the value present in the model's input?\nValue types parsed from the target: event position (\"the 1.2 km mark\"), speed (km/h), acceleration (m/s2),\ndistance (km, not a position) and duration (min).\n\nTwo matching rules, both reported:\n  typed    the input holds a field of the same type whose value rounds to the stated value\n           (capsule: extents and lengths in km, duration in min, peak exposure \"mm\"; frames: s, s0, s1,\n           length, duration, a_v, mtvv, speed). Capsules hold no event positions or speeds, so for them\n           those types are 0 by construction.\n  lenient  any number in the input, as is, /1000 or x3.6, rounds to the stated value (an upper bound\n           that also counts coincidences; the earlier, unscripted audit used a rule like this).\nTolerance: half a unit of the last digit the target shows.\n\n",
+ "original_training_set": {
+  "records": 2696,
+  "position": {
+   "mentions": 7793,
+   "typed": 0,
+   "typed_share": 0.0,
+   "lenient": 1633,
+   "lenient_share": 0.20954702938534583
+  },
+  "speed": {
+   "mentions": 2621,
+   "typed": 0,
+   "typed_share": 0.0,
+   "lenient": 293,
+   "lenient_share": 0.11178939336131248
+  },
+  "acceleration": {
+   "mentions": 5533,
+   "typed": 94,
+   "typed_share": 0.016988975239472258,
+   "lenient": 761,
+   "lenient_share": 0.13753840592806796
+  },
+  "distance": {
+   "mentions": 15887,
+   "typed": 15600,
+   "typed_share": 0.9819349153395859,
+   "lenient": 15643,
+   "lenient_share": 0.9846415308113552
+  },
+  "duration": {
+   "mentions": 1956,
+   "typed": 1956,
+   "typed_share": 1.0,
+   "lenient": 1956,
+   "lenient_share": 1.0
+  },
+  "all_values": {
+   "mentions": 33790,
+   "typed_share": 0.5223438887244747,
+   "lenient_share": 0.6003551346552234
+  }
+ },
+ "p6_arm_A": {
+  "records": 1200,
+  "position": {
+   "mentions": 3259,
+   "typed": 0,
+   "typed_share": 0.0,
+   "lenient": 669,
+   "lenient_share": 0.20527769254372508
+  },
+  "speed": {
+   "mentions": 946,
+   "typed": 0,
+   "typed_share": 0.0,
+   "lenient": 119,
+   "lenient_share": 0.12579281183932348
+  },
+  "acceleration": {
+   "mentions": 2515,
+   "typed": 44,
+   "typed_share": 0.01749502982107356,
+   "lenient": 339,
+   "lenient_share": 0.13479125248508947
+  },
+  "distance": {
+   "mentions": 6823,
+   "typed": 6676,
+   "typed_share": 0.9784552249743514,
+   "lenient": 6697,
+   "lenient_share": 0.9815330499780155
+  },
+  "duration": {
+   "mentions": 908,
+   "typed": 908,
+   "typed_share": 1.0,
+   "lenient": 908,
+   "lenient_share": 1.0
+  },
+  "all_values": {
+   "mentions": 14451,
+   "typed_share": 0.5278527437547574,
+   "lenient_share": 0.6042488409106637
+  }
+ },
+ "p6_arm_B": {
+  "records": 1200,
+  "position": {
+   "mentions": 3259,
+   "typed": 3259,
+   "typed_share": 1.0,
+   "lenient": 3259,
+   "lenient_share": 1.0
+  },
+  "speed": {
+   "mentions": 946,
+   "typed": 946,
+   "typed_share": 1.0,
+   "lenient": 946,
+   "lenient_share": 1.0
+  },
+  "acceleration": {
+   "mentions": 2515,
+   "typed": 2515,
+   "typed_share": 1.0,
+   "lenient": 2515,
+   "lenient_share": 1.0
+  },
+  "distance": {
+   "mentions": 6823,
+   "typed": 6823,
+   "typed_share": 1.0,
+   "lenient": 6823,
+   "lenient_share": 1.0
+  },
+  "duration": {
+   "mentions": 908,
+   "typed": 908,
+   "typed_share": 1.0,
+   "lenient": 908,
+   "lenient_share": 1.0
+  },
+  "all_values": {
+   "mentions": 14451,
+   "typed_share": 1.0,
+   "lenient_share": 1.0
+  }
+ },
+ "p6_arm_C": {
+  "records": 1200,
+  "position": {
+   "mentions": 3259,
+   "typed": 0,
+   "typed_share": 0.0,
+   "lenient": 1297,
+   "lenient_share": 0.3979748389076404
+  },
+  "speed": {
+   "mentions": 946,
+   "typed": 946,
+   "typed_share": 1.0,
+   "lenient": 946,
+   "lenient_share": 1.0
+  },
+  "acceleration": {
+   "mentions": 2515,
+   "typed": 2515,
+   "typed_share": 1.0,
+   "lenient": 2515,
+   "lenient_share": 1.0
+  },
+  "distance": {
+   "mentions": 6823,
+   "typed": 6823,
+   "typed_share": 1.0,
+   "lenient": 6823,
+   "lenient_share": 1.0
+  },
+  "duration": {
+   "mentions": 908,
+   "typed": 908,
+   "typed_share": 1.0,
+   "lenient": 908,
+   "lenient_share": 1.0
+  },
+  "all_values": {
+   "mentions": 14451,
+   "typed_share": 0.7744792747906719,
+   "lenient_share": 0.8642308490761885
+  }
+ }
+}

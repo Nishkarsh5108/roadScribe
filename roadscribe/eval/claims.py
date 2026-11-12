@@ -224,6 +224,15 @@ def verify_text(
     ``omit`` list). ``must_mention_events`` are event ids that must be matched
     by some mention (events below the mention threshold are exempt).
     """
+    if omitted_units is None and _REST.search(text):
+        # A REST sentence ("the other N stretches") summarises the units the narrative does not
+        # describe. Without a plan, infer them from the text: every ledger unit that no sentence
+        # or claim refers to. (Before 2026-11-13 this defaulted to the empty set, so every REST
+        # sentence failed; WORKLOG D26.)
+        first = verify_text(text, ledger, omitted_units=[], must_mention_events=must_mention_events,
+                            cmp_margin=cmp_margin, v_ref=v_ref)
+        described = {u for _, _, u in first.sentence_units} | {c.unit_id for c in first.claims}
+        omitted_units = [u for u in LedgerView(ledger).units if u not in described]
     C = _Ctx(ledger, cmp_margin, v_ref)
     L = C.L
     omitted = list(omitted_units) if omitted_units is not None else None

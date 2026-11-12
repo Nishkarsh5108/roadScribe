@@ -96,6 +96,15 @@ def test_must_mention_and_rest(ledger):
     assert "event_count" in bad2.reasons  # U3 holds a mentionable jolt
 
 
+def test_rest_units_inferred_without_plan(ledger):
+    # without omitted_units, the REST sentence summarises the units no other sentence describes (D26)
+    def n_units_ok(text):
+        rep = check(text, ledger)
+        return [c.supported for c in rep.claims if c.kind == "REST" and c.key == "n_units"]
+    assert n_units_ok("Road A felt comfortable. The other three stretches were calm.") == [True]
+    assert n_units_ok("Road A felt comfortable. The other two stretches were calm.") == [False]
+
+
 @pytest.mark.parametrize("words", ["seven", "long", "the"])
 def test_rest_count_slot_never_crashes(ledger, words):
     # a count above six or a word outside the lexicon fails the REST claim; it must not raise

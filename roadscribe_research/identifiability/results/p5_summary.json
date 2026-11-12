@@ -11,7 +11,7 @@
    0.06641586678100189
   ],
   "realized": 28,
-  "raw_precision": 0.6950578338590957,
+  "raw_precision": 0.694006309148265,
   "claims_per_realized": 33.964285714285715,
   "words_per_realized": 242.78571428571428,
   "wrong_position_share_of_event_claims": 0.17906976744186046,
@@ -19,20 +19,20 @@
   "unsupported_by_reason": {
    "unresolved": 104,
    "wrong_position": 77,
-   "number_mismatch": 24,
    "unknown_range": 24,
+   "number_mismatch": 23,
    "misattributed_maneuver": 18,
    "unparsed_number": 12,
-   "event_count": 11,
+   "event_count": 10,
    "overclaimed_hedge": 6,
    "comparison_mismatch": 5,
-   "rest_count": 5,
+   "severity_mismatch": 5,
+   "rest_count": 4,
    "unsupported_cause": 2,
-   "hallucinated_missing": 1,
-   "severity_mismatch": 1
+   "hallucinated_missing": 1
   },
   "template_claims_per_narrative": 59.166666666666664,
-  "template_precision": 0.9915492957746479
+  "template_precision": 1.0
  },
  "cal": {
   "n": 54,
@@ -46,7 +46,7 @@
    0.06641586678100189
   ],
   "realized": 29,
-  "raw_precision": 0.6720977596741344,
+  "raw_precision": 0.6670061099796334,
   "claims_per_realized": 33.86206896551724,
   "words_per_realized": 240.3793103448276,
   "wrong_position_share_of_event_claims": 0.18202247191011237,
@@ -61,13 +61,14 @@
    "event_count": 9,
    "comparison_mismatch": 8,
    "rest_count": 6,
+   "severity_mismatch": 5,
    "unparsed_number": 4,
    "hallucinated_missing": 3,
    "fabricated_absence": 1,
    "wrong_map_tag": 1
   },
   "template_claims_per_narrative": 59.27777777777778,
-  "template_precision": 0.9915651358950328
+  "template_precision": 1.0
  },
  "verdicts_orig": {
   "P5_H1": true,

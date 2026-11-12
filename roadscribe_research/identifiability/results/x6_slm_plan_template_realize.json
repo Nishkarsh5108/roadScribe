@@ -3,10 +3,10 @@
  "orig": {
   "n": 54,
   "valid_plans": 28,
-  "accepted": 23,
-  "acceptance_of_all": 0.42592592592592593,
-  "acceptance_of_valid": 0.8214285714285714,
-  "precision": 0.9918256130790191,
+  "accepted": 28,
+  "acceptance_of_all": 0.5185185185185185,
+  "acceptance_of_valid": 1.0,
+  "precision": 1.0,
   "claims_per": 52.42857142857143,
   "mean_fact_jaccard_vs_rule_plan": 0.7707363979526157,
   "identical_fact_sets": 0
@@ -14,10 +14,10 @@
  "cal": {
   "n": 54,
   "valid_plans": 29,
-  "accepted": 23,
-  "acceptance_of_all": 0.42592592592592593,
-  "acceptance_of_valid": 0.7931034482758621,
-  "precision": 0.9900924702774109,
+  "accepted": 29,
+  "acceptance_of_all": 0.5370370370370371,
+  "acceptance_of_valid": 1.0,
+  "precision": 1.0,
   "claims_per": 52.206896551724135,
   "mean_fact_jaccard_vs_rule_plan": 0.7809004933610588,
   "identical_fact_sets": 0

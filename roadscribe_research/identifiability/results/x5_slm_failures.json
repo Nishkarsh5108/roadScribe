@@ -17,12 +17,12 @@
   "NUM": 163,
   "SEV": 81,
   "UNPARSED": 40,
-  "REST": 15
+  "REST": 5
  },
  "unsupported_by_reason": {
   "wrong_position": 470,
-  "event_count": 262,
-  "number_mismatch": 166,
+  "event_count": 261,
+  "number_mismatch": 163,
   "overclaimed_hedge": 132,
   "wrong_anchor": 47,
   "wrong_surface": 42,
@@ -33,7 +33,6 @@
   "comparison_mismatch": 17,
   "unsupported_cause": 13,
   "misattributed_maneuver": 9,
-  "rest_count": 6,
   "no_history": 1
  },
  "place_names_not_in_capsule": 47,

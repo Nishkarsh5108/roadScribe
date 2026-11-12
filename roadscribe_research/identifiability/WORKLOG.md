@@ -433,3 +433,42 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
 
 ### Action log (night of 2026-11-13)
 - 00:21: Scheduled a one-shot "continue" for 04:20 (CronCreate, session-only).
+- 00:23: PREREG_P6 committed (`0bda5ac`). The P6 inputs were built (1,200 records, identical across arms) and uploaded as the private dataset `roadscribe-p6-inputs`. Arms B and C were pushed to Kaggle; A and the zero-shot kernel are queued behind the two-GPU limit (`kaggle_staging/p6_scheduler.sh`).
+- 00:30: **D26, E5 root cause: a verifier bug, not a template failure.**
+  - A REST sentence ("the other 8 stretches ... 8 lower-priority events") is checked against the units it summarises.
+  - `verify_text` takes them as `omitted_units`, but no caller ever passed them, and the default was the *empty set*. Every REST sentence therefore failed on count, events and length.
+  - Fix in `roadscribe/eval/claims.py`: when no omitted set is given, infer it from the text as the ledger units that no sentence or claim refers to. This needs no plan, so it applies equally to free-text model output.
+  - Check: with the fix, template narratives pass strict verification on 72 of 72 PVS inputs (orig and cal, with and without variation). The inferred set agrees with the plan's `omit` list on every one.
+  - `scripts/run_full_evaluation.py` rerun: P_L of T and T+V goes from 99.15% to 100%, and the 300-token S-PGR row (template fallback) from 98.9% to 100%. Nothing else in `data/evaluation_summary.json` changed. Every downstream script that verifies narratives is being rerun.
+  - Consequence for the paper: the template fallback really is fully verified on PVS. The "22% of drives" failure in the review was this bug.
+- 00:40: **D27, P6 operational definitions, fixed before any P6 output exists** (`scripts/eval_p6.py`):
+  - **Precision:** pooled supported ÷ extracted claims over the arm's 54 narratives.
+  - **Wrong-position share (H2):** EVT claims failing as `wrong_position` ÷ all EVT claims.
+  - **Non-position errors (H3):** unsupported claims with any other reason, per narrative.
+  - **Acceptance:** strict pass with at least one claim.
+  - **Ratios for H2 and H3:** cluster-bootstrap CIs over drives.
+  - **Verifier:** the D26 verifier for every arm.
+- 01:05: **D26 reruns** (all with the fixed verifier; diffs checked file by file):
+  - **Template narrator:** P_L 99.15% → 100% on every evaluation that uses it (`run_full_evaluation`, regen, P5).
+  - **X6, model plan + template wording:** accepted 23 → 28 of 54 (orig) and 23 → 29 (cal). Every valid plan now yields a verified narrative (100% of valid plans), at 100% precision. Fact Jaccard with the rule plan: 0.78.
+  - **P5 raw precision:** 69.5% → 69.4% (orig) and 67.2% → 66.7% (cal). The inferred REST set now catches five severity ranges that were previously unchecked.
+  - **Regen raw precision:** 48.1%, unchanged.
+  - **X5 failure counts:** REST 15 → 5; number mismatch 166 → 163; event count 262 → 261.
+  - Committed summaries were refreshed from the eval files: `p5_summary.json`, `spgr_regen_summary.json`.
+  - New test: `tests/test_claims.py::test_rest_units_inferred_without_plan`. The suite passes (222).
+- 01:10: **D28, scripted training-target audit** (`x8_target_identifiability.py`, `results/x8_target_identifiability.json`).
+  - The earlier audit was never scripted, and its two runs gave 7.7% and 8.7% for positions with different matching rules.
+  - It is replaced by a committed script with two rules. Typed: the input holds a field of the same type that rounds to the stated value. Lenient: any number, possibly unit-converted.
+  - **Original training set (2,696 records):**
+    - Positions: 0 of 7,793 typed (21% lenient, which are coincidences).
+    - Speeds: 0 of 2,621.
+    - Accelerations: 1.7% of 5,533.
+    - Distances: 98%. Durations: 100%.
+  - **P6 arms** (same 1,200 targets):
+    - A matches the original.
+    - B: 100% for every type.
+    - C: 100% except positions (0%).
+  - P6 therefore manipulates per-type identifiability cleanly.
+  - Exploratory addition: per-type error rates in `eval_p6.py` (`by_value_type`), so that error can be read against identifiability, type by type and arm by arm.
+  - The paper's "8.7% of positions" becomes "none of the 7,793 positions", with the lenient upper bound given.
+- Frontier teacher model: the project's training notebook (`kaggle_staging/kernel/roadscribe_3b_qlora.ipynb`) records the 196 teacher narratives as "frontier Opus teacher examples". The card in the repo says only "frontier-llm". The paper names Claude Opus (Anthropic); the user should confirm the version.
