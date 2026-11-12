@@ -1,0 +1,23 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "S-PGR (1,024 tokens)": {
+  "narratives": 54,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.3560344827586207,
+  "supported_claims_kept_per_narrative": 11.962962962962964,
+  "supported_claims_before_per_narrative": 22.37037037037037,
+  "remainder_all_claims_supported": 54,
+  "remainder_passes_strict": 54,
+  "remainder_misses_must_mention": 0
+ },
+ "P5 realizer": {
+  "narratives": 28,
+  "passed_whole": 0,
+  "sentences_kept_share": 0.633276740237691,
+  "supported_claims_kept_per_narrative": 20.178571428571427,
+  "supported_claims_before_per_narrative": 23.571428571428573,
+  "remainder_all_claims_supported": 28,
+  "remainder_passes_strict": 28,
+  "remainder_misses_must_mention": 0
+ }
+}

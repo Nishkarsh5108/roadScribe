@@ -1,0 +1,34 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "tolerance_m": 50.0,
+ "events_total": 357,
+ "events_mentionable": 348,
+ "precision_mentionable_vs_bumps": 0.1724137931034483,
+ "recall_bumps_by_mentionable": 0.5666666666666667,
+ "bumps": 60,
+ "bumps_matched": 34,
+ "by_confidence": {
+  "[0.40, 0.60]": {
+   "n": 50,
+   "precision": 0.72
+  },
+  "[0.60, 0.85]": {
+   "n": 298,
+   "precision": 0.08053691275167785
+  },
+  "[0.85, 1.00]": {
+   "n": 0,
+   "precision": null
+  }
+ },
+ "by_type": {
+  "bump": {
+   "n": 298,
+   "precision": 0.08053691275167785
+  },
+  "jolt": {
+   "n": 50,
+   "precision": 0.72
+  }
+ }
+}

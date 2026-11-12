@@ -529,3 +529,16 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - γ̂ on all routes 0.86 [0.68, 1.02], which excludes the theoretical 0.5
     - All-three-equal: calibrated 64.8% [58.7, 70.9], uncalibrated 4.5% [2.6, 6.7]
     - Bootstrap: 2,000 resamples of contiguous 10-place blocks within routes (12, 10 and 10 blocks).
+- About 00:55–01:05: **Exploratory checks requested by the review** (none pre-registered; labelled exploratory in the paper).
+  - **E6, sentence-level fallback** (`x9_sentence_filter.py`). Every sentence holding an unsupported claim is dropped and the rest re-verified (up to three rounds).
+    - S-PGR regen (54): 36% of sentences kept, with 12.0 of the 22.4 supported claims per narrative. The remainder passes strict verification in 54 of 54; whole-narrative acceptance was 0.
+    - P5 realizer (28 narratives with valid plans): 63% of sentences kept, with 20.2 of 23.6 supported claims. The remainder passes in 28 of 28.
+    - Caveat: PVS has no must-mention events, so dropped sentences are never flagged as omissions. Coherence of the shortened text was not judged.
+  - **E8, event-detector precision** (`x10_event_precision.py`).
+    - Of 348 mentionable detections, 17% lie within 50 m of a labelled speed bump. This is a lower bound, because PVS labels nothing else. Recall is 34 of 60 bumps.
+    - By type: "jolt" detections (p 0.4–0.6, n = 50) are at labelled bumps 72% of the time; "bump" detections (p 0.6–0.85, n = 298) only 8%. **The detector's confidence is not calibrated to speed bumps.**
+  - **E8b, label-free test: cross-vehicle event reproducibility** (`x11_event_reproducibility.py`). This is the world-level test applied to event claims.
+    - Of 337 mentionable events on the common route coordinate, 52.8% have an event in **both** other vehicles within 50 m, and 76.6% in at least one.
+    - Chance under a global circular shift: 4.3% (both) and 32.9% (at least one). Under a local 100–500 m shift, which keeps the density of rough stretches: 6.8% and 38.4%.
+    - Near labelled bumps 77.6% are reproduced by both; elsewhere 46.7%.
+    - **Most detections are place-bound road features that PVS does not label. About half are not reproduced by both other vehicles**, so an event claim from one pass is unconfirmed about half the time.

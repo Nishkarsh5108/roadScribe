@@ -1,0 +1,35 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "tolerance_m": 50.0,
+ "all": {
+  "n": 337,
+  "reproduced_by_any_other": 0.7655786350148368,
+  "reproduced_by_both_others": 0.5281899109792285
+ },
+ "near_labelled_bump": {
+  "n": 67,
+  "reproduced_by_any_other": 0.8656716417910447,
+  "reproduced_by_both_others": 0.7761194029850746
+ },
+ "not_near_bump": {
+  "n": 270,
+  "reproduced_by_any_other": 0.7407407407407407,
+  "reproduced_by_both_others": 0.4666666666666667
+ },
+ "by_kind": {
+  "ambiguous": {
+   "n": 50,
+   "reproduced_by_any_other": 0.86,
+   "reproduced_by_both_others": 0.8
+  },
+  "defect": {
+   "n": 287,
+   "reproduced_by_any_other": 0.7491289198606271,
+   "reproduced_by_both_others": 0.4808362369337979
+  }
+ },
+ "chance_any": 0.32908011869436204,
+ "chance_both": 0.042581602373887244,
+ "local_shift_100_500m_any": 0.3839762611275964,
+ "local_shift_100_500m_both": 0.06824925816023739
+}
