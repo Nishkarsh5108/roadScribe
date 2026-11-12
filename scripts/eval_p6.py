@@ -36,8 +36,7 @@ def load_outputs():
         f = P6 / arm / f"p6_{arm}.json"
         if f.exists():
             runs[arm] = json.loads(f.read_text(encoding="utf-8"))
-    f = P6 / "zs" / "p6_zeroshot.json"
-    if f.exists():
+    for f in sorted(P6.glob("zs*/p6_zeroshot*.json")):
         for r in json.loads(f.read_text(encoding="utf-8")):
             runs.setdefault("zs-" + r["model"].split("-")[1], []).append(r)
     return runs

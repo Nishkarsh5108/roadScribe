@@ -562,3 +562,24 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - New sections: claim identifiability (§3), testbed (§4), world level (§5), input level (§6).
   - P6 text is a red placeholder until results arrive.
   - The frontier teacher model is a red TBD for the user to fill. It cannot be verified from the repository: the training notebook says "Opus", the card says "frontier-llm".
+- 02:06 / 02:19: **P6 arms C and B finished** (Kaggle T4).
+  - Both kept 1,200 of 1,200 records; mean 1,335 tokens (C) and 1,387 (B).
+  - Training: 75 min (C) and 80 min (B); mean training loss 0.415 (C) and 0.389 (B).
+  - Partial results (D27 verifier and definitions):
+
+    | Arm | Precision | Wrong-position share of event claims | Non-position errors per narrative | Accepted | Claims per narrative |
+    |---|---|---|---|---|---|
+    | B | 0.762 | 0.307 | 4.74 | 0 | 40.9 |
+    | C | 0.608 | 0.771 | 3.15 | 0 | 37.4 |
+
+  - Error rate per value type, B vs C:
+    - Positions 42% vs 82%; the value is present only in B.
+    - Speeds 3% vs 3%; present in both.
+    - Accelerations 41% vs 41%; present in both, so equal presence gives equal error.
+    - Distances 13% vs 1.9%; B is worse. Possibly event positions in B's frames are confused with stretch boundaries; to examine.
+  - Verdicts wait for arm A.
+- 02:20: **Scheduler incident.** The first scheduler's push-success check (`tail -1` of the push output) missed a successful push of arm A at 02:06, and it pushed A again at 02:19.
+  - Kaggle now runs both versions, holding both GPU slots. The CLI has no cancel.
+  - The current A run (v2) started at 02:19. The v1 run releases its slot when it ends.
+  - The prompted baselines were split into two kernels (`roadscribe-p6-zeroshot` for 3B, `roadscribe-p6-zeroshot-7b`), identical except for the model, so they can run in parallel.
+  - `p6_scheduler2.sh` confirms each push with `kernels status`.

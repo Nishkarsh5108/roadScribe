@@ -39,8 +39,7 @@ def sources() -> dict:
         if f.exists():
             out[f"P6 arm {arm}"] = [dict(key=r["key"], trip=r["trip_id"], text=r["narrative"].strip())
                                     for r in json.loads(f.read_text(encoding="utf-8"))]
-    f = p6 / "zs" / "p6_zeroshot.json"
-    if f.exists():
+    for f in sorted(p6.glob("zs*/p6_zeroshot*.json")):
         for r in json.loads(f.read_text(encoding="utf-8")):
             out.setdefault("prompted " + r["model"].split("/")[-1], []).append(
                 dict(key=r["key"], trip=r["trip_id"], text=r["narrative"].strip()))
