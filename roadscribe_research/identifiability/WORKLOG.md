@@ -631,7 +631,7 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - **X13 rerun, uncovered descriptors per narrative:** 3B 10.0, 7B 7.1; fine-tuned arms 0–0.02; template 0.
     - After sentence filtering, prompted remainders still hold 6.0 (3B) and 2.5 (7B). **Sentence-level fallback is safe only for text in the verifier's language.**
   - **Paper:** prompted rows added to Table 6; §6.2 and §6.3 text; trimmed to 15 pages (four marginal citations dropped: LLaSA, ByMyEyes, ChatTS, Nericell).
-- 03:47: **P8, exploratory follow-up, declared before running.**
+- 03:46: **P8, exploratory follow-up, declared before running.**
   - Question: arm B had every value in its input but mis-copied 42% of positions and 41% of accelerations. Is that a matter of decoding or of training length?
   - Two Kaggle runs on arm B's saved adapter (dataset `roadscribe-p6-lora-b`):
     - (a) **greedy:** greedy decoding, one run per PVS input (18);

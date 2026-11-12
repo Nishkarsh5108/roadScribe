@@ -53,12 +53,21 @@ The work is on the local branch `night/2026-11-12-identifiability`: 12 commits, 
 |---|---|
 | `WORKLOG.md` | Chronological log: every decision, action, result and correction |
 | `PHASES.md` | The plan, gate outcomes, Phase 3 data sources |
-| `PREREG_P1.md`, `PREREG_P2.md`, `PREREG_P3.md` | Pre-registrations (commit times are authoritative) |
+| `PREREG_P1.md` … `PREREG_P7.md` | Pre-registrations (commit times are authoritative) |
 | `CLAIM_TAXONOMY.md` | Invariant, covariant and non-identifiable road claims |
-| `p1_cross_vehicle.py`, `p2_channel_calibration.py`, `p3_counterfactual.py` | Pre-registered analyses |
-| `x1_placements.py`, `x2_narrative_contradictions.py`, `x3_robustness.py`, `p2_exploratory_decomposition.py` | Exploratory analyses |
+| `p1_cross_vehicle.py`, `p2_channel_calibration.py`, `p3_counterfactual.py`, `p4_calibrated_claims.py` | Pre-registered world-level analyses (P1–P4) |
+| `p7_review_checks.py` | P7: noise floor (left vs right logger), right-logger replication, data efficiency, route-and-vehicle held-out accuracy, speed floor, calibration ablation, missing CIs |
+| `../../scripts/eval_pgr_v2.py`, `../../scripts/eval_p6.py`, `p6_table.py` | P5 and P6 (input level) evaluators; `p6_table.py` prints the paper's Table 6 rows |
+| `x1`–`x6`, `p2_exploratory_decomposition.py` | Exploratory analyses from 2026-11-12 |
+| `x8_target_identifiability.py` | Typed audit: which target values are present in the training input |
+| `x9_sentence_filter.py`, `x13_vocabulary_coverage.py` | Sentence-level fallback; descriptors the closed-vocabulary verifier does not see |
+| `x10_event_precision.py`, `x11_event_reproducibility.py` | Event detector vs labelled bumps; cross-vehicle event reproducibility |
+| `x12_worked_example.py`, `x14_per_type_errors.py` | Paper Table 3; per-type error of the earlier models |
+| `p8_eval.py` | P8 (exploratory): arm B with greedy decoding and a second epoch |
 | `fig_speed_elasticity.py` → `results/p1_speed_elasticity_flip.png` | Figure: pooled vs within-place elasticity |
-| `results/*.json` | All numbers quoted here. The stretch CSVs are gitignored; the scripts regenerate them |
+| `results/*.json` | All numbers. The stretch CSVs are gitignored; the scripts regenerate them |
+
+The Kaggle kernels for the language-model runs (P5, P6, P8) are copied in `../../scripts/kaggle/` and staged outside the repo; their outputs are in `data/models/` (gitignored). The paper's number-to-source map is `../paper_icdsi/README.md`.
 
 Code added to the package: `roadscribe/paired/` (route alignment, stretch features, agreement statistics), `roadscribe/scr/` (Whittle SCR fit), `roadscribe/eval/metrics.py::anomaly_grounding_by_recording`. Tests: `tests/test_paired.py`, `tests/test_scr.py`, and new cases in `tests/test_metrics.py`.
 
