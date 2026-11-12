@@ -39,24 +39,25 @@ Event claims failed most (470 at a wrong position, 261 with a wrong count, 132 h
 The input-level audit (Table~\ref{tab:audit}) explains these errors.
 None of the 7{,}793 event positions and none of the 2{,}621 speeds stated in the training targets appear in the capsule, which lists how many events a stretch has but not where; only 1.7\% of the accelerations do, and the plans' fact identifiers were not in the input at all.
 Distances and durations, which the capsule contains, almost always do.
+On PVS the model's errors follow the audit type by type: 86\%, 98\% and 80\% of its position, speed and acceleration claims are wrong, against 1.2\% of its distances and none of its durations.
 (A lenient match that accepts any number in the input after unit conversion finds 21\% of the positions, mostly by coincidence.)
 The model was trained to state values its input does not determine, and on real trips it guessed them; the synthetic capsules also always carried street names and map tags, which the PVS capsules lack, and the model filled that gap too.
 
 \begin{table}[t]
-\caption{Input-level audit: share of the values stated in the training targets that the input contains as a field of the same type (rounded to the stated precision). Original: the first adapter's 2{,}696 records (mentions counted there). A--C: the arms of the controlled experiment (same 1{,}200 targets).}
+\caption{Input-level audit: share of the values stated in the training targets that the input contains as a field of the same type (rounded to the stated precision). Original: the first adapter's 2{,}696 records (mentions counted there); error: share of that model's claims of the type on PVS (1{,}024 tokens) that the verifier rejects. A--C: the arms of the controlled experiment (same 1{,}200 targets).}
 \label{tab:audit}
 \centering
 \scriptsize
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{@{}lrcccc@{}}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{@{}lrccccc@{}}
 \toprule
-Value type & mentions & original & A: capsule & B: + frames & C: B, no positions \\
+Value type & mentions & original & error & A: capsule & B: + frames & C: B, no positions \\
 \midrule
-Event position & 7{,}793 & 0\% & 0\% & 100\% & 0\% \\
-Speed & 2{,}621 & 0\% & 0\% & 100\% & 100\% \\
-Acceleration & 5{,}533 & 1.7\% & 1.7\% & 100\% & 100\% \\
-Distance & 15{,}887 & 98.2\% & 97.8\% & 100\% & 100\% \\
-Duration & 1{,}956 & 100\% & 100\% & 100\% & 100\% \\
+Event position & 7{,}793 & 0\% & 86\% & 0\% & 100\% & 0\% \\
+Speed & 2{,}621 & 0\% & 98\% & 0\% & 100\% & 100\% \\
+Acceleration & 5{,}533 & 1.7\% & 80\% & 1.7\% & 100\% & 100\% \\
+Distance & 15{,}887 & 98.2\% & 1.2\% & 97.8\% & 100\% & 100\% \\
+Duration & 1{,}956 & 100\% & 0\% & 100\% & 100\% & 100\% \\
 \bottomrule
 \end{tabular}
 \end{table}

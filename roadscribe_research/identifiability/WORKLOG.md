@@ -542,3 +542,23 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - Chance under a global circular shift: 4.3% (both) and 32.9% (at least one). Under a local 100–500 m shift, which keeps the density of rough stretches: 6.8% and 38.4%.
     - Near labelled bumps 77.6% are reproduced by both; elsewhere 46.7%.
     - **Most detections are place-bound road features that PVS does not label. About half are not reproduced by both other vehicles**, so an event claim from one pass is unconfirmed about half the time.
+- 01:05: **X14, per-type error of the earlier models** (`x14_per_type_errors.py`, exploratory). Value types use the `eval_p6.py` mapping.
+  - **First adapter (1,024 tokens)**, error rate vs presence in its training input:
+
+    | Type | Error | Present in input | Claims |
+    |---|---|---|---|
+    | Positions | 86% | 0% | 892 |
+    | Speeds | 98% | 0% | 44 |
+    | Accelerations | 80% | 1.7% | 146 |
+    | Distances | 1.2% | 98% | 347 |
+    | Durations | 0% | 100% | 54 |
+
+    The audit predicts the error type by type. Added to the paper's Table 5.
+  - **P5 realizer:** positions 41%, distances 22%, durations 0%. Values present in frames are still mis-copied (stretch boundaries off by 100 m). Presence is necessary but not sufficient, which is what P6 tests causally.
+- 01:04: **X13, vocabulary coverage** (`x13_vocabulary_coverage.py`). Descriptors outside the verifier lexicon that no claim span covers:
+  - first adapter 0.06 per narrative; P5 0.18; template 0;
+  - the fine-tuned models imitate the lexicon. To be rerun on the prompted baselines.
+- 00:58–01:03: **Paper rewritten** (`e5bf7a1`). New title "Verified Is Not True: Two Levels of Claim Identifiability in Sensor-to-Text Narration".
+  - New sections: claim identifiability (§3), testbed (§4), world level (§5), input level (§6).
+  - P6 text is a red placeholder until results arrive.
+  - The frontier teacher model is a red TBD for the user to fill. It cannot be verified from the repository: the training notebook says "Opus", the card says "frontier-llm".

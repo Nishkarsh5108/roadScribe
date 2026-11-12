@@ -1,0 +1,107 @@
+{
+ "label": "EXPLORATORY, not pre-registered",
+ "S-PGR (1,024 tokens)": {
+  "acceleration": {
+   "claims": 146,
+   "unsupported": 116,
+   "error_rate": 0.7945205479452054
+  },
+  "anchor": {
+   "claims": 88,
+   "unsupported": 88,
+   "error_rate": 1.0
+  },
+  "cmp": {
+   "claims": 102,
+   "unsupported": 41,
+   "error_rate": 0.4019607843137255
+  },
+  "distance": {
+   "claims": 347,
+   "unsupported": 4,
+   "error_rate": 0.011527377521613832
+  },
+  "duration": {
+   "claims": 54,
+   "unsupported": 0,
+   "error_rate": 0.0
+  },
+  "event_other": {
+   "claims": 269,
+   "unsupported": 97,
+   "error_rate": 0.36059479553903345
+  },
+  "position": {
+   "claims": 892,
+   "unsupported": 770,
+   "error_rate": 0.8632286995515696
+  },
+  "rest": {
+   "claims": 18,
+   "unsupported": 5,
+   "error_rate": 0.2777777777777778
+  },
+  "sev": {
+   "claims": 493,
+   "unsupported": 81,
+   "error_rate": 0.1643002028397566
+  },
+  "speed": {
+   "claims": 44,
+   "unsupported": 43,
+   "error_rate": 0.9772727272727273
+  },
+  "unparsed": {
+   "claims": 40,
+   "unsupported": 40,
+   "error_rate": 1.0
+  }
+ },
+ "P5 realizer": {
+  "acceleration": {
+   "claims": 13,
+   "unsupported": 7,
+   "error_rate": 0.5384615384615384
+  },
+  "cmp": {
+   "claims": 61,
+   "unsupported": 19,
+   "error_rate": 0.3114754098360656
+  },
+  "distance": {
+   "claims": 198,
+   "unsupported": 43,
+   "error_rate": 0.21717171717171718
+  },
+  "duration": {
+   "claims": 28,
+   "unsupported": 0,
+   "error_rate": 0.0
+  },
+  "event_other": {
+   "claims": 69,
+   "unsupported": 17,
+   "error_rate": 0.2463768115942029
+  },
+  "position": {
+   "claims": 361,
+   "unsupported": 147,
+   "error_rate": 0.407202216066482
+  },
+  "rest": {
+   "claims": 15,
+   "unsupported": 12,
+   "error_rate": 0.8
+  },
+  "sev": {
+   "claims": 194,
+   "unsupported": 34,
+   "error_rate": 0.17525773195876287
+  },
+  "unparsed": {
+   "claims": 12,
+   "unsupported": 12,
+   "error_rate": 1.0
+  }
+ }
+}
