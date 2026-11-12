@@ -5,7 +5,7 @@ We then ask when a road claim is identifiable from such data.
 On the PVS dataset, where three vehicles drove the same three routes, RoadScribe's per-stretch road class differed between two vehicles in 76\% of comparisons, and the vehicle explained 18\% of the variance of the road value (0.06\% under a label-shuffling placebo).
 A speed elasticity estimated across places had the wrong sign ($-0.64$ versus $+0.86$ within places).
 Calibrating each vehicle on roads it shared with the others, with the speed effect estimated within places, raised cross-vehicle agreement of the road class from $\kappa=0.72$ to $0.96$ and cut contradictory road claims in the narratives from 80\% to 23\% of co-located comparisons.
-\TBD[: SLM result.]
+The same lens explains a negative result for the language model: fine-tuned on targets that stated values absent from its input (91\% of event positions), it passed verification in none of 108 narratives; retrained so that its input contained every value it had to state, its claim precision rose from 48\% to 70\%, and verified narratives (43\%) appeared only when deterministic code wrote the values.
 A narrator should state road properties only when such calibration exists.
 \keywords{Trip narration \and Vehicle vibration \and Identifiability \and Data-to-text \and Small language models \and Road monitoring}
 \end{abstract}

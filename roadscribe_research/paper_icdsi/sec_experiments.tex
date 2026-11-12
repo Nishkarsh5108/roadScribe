@@ -34,7 +34,8 @@ T (template) & 18 & -- & 59.2 & 99.2\% \\
 T+V (varied wording) & 18 & -- & 59.1 & 99.2\% \\
 S-PGR, 300 tokens & 18 & 5 & 2.4\textsuperscript{a} & 100\%\textsuperscript{a} \\
 S-PGR, 1{,}024 tokens & 54 & 0 & 46.2 & 48.1\% \\
-S-PGR as designed & 54 & \TBD & \TBD & \TBD \\
+S-PGR as designed & 54 & 0 & 34.0 & 69.5\% \\
+Model plan, template wording & 54 & 23 & 52.4 & 99.2\% \\
 \bottomrule
 \end{tabular}
 
@@ -60,8 +61,14 @@ The synthetic training capsules also always carried street names and map tags; t
 \label{sec:pgr}
 RoadScribe's design separates the steps: the planner sees the capsule together with the index of ledger facts and returns a plan over fact identifiers; deterministic code grounds the plan into frames that contain the values; and the realizer writes text from the frames.
 In this setting every value a target states is present in the model's input.
-We retrained the model this way (QLoRA, one epoch on 1{,}200 planning and 1{,}361 realization examples, loss on the output tokens only), rebuilt the PVS capsules without the spurious map channel, and ran plan, validation, grounding and realization on the same drives.
-\TBD[: P5 results: plan validity, acceptance, claim precision, error breakdown, original vs calibrated ledgers.]
+We retrained the model this way (QLoRA, one epoch on 1{,}849 planning and realization examples of at most 2{,}048 tokens, loss on the output tokens only), rebuilt the PVS capsules without the spurious map channel, and ran plan, validation, grounding and realization on the same drives.
+
+The behaviour changed in the predicted direction (pre-registered).
+Of the 54 plans, 52\% passed validation (previously 1), the share of event claims at a wrong position fell from 40\% to 18\%, statements about missing values fell from 27 to 1, and claim precision rose from 48\% to 70\%.
+The model still copied values from the frames imperfectly---stretch boundaries off by 100~m, an event at the ``75.6~km mark'' of a 13.8~km trip, repeated sentences---and with about 34 claims per narrative none of its narratives passed verification, with either ledger; the pre-registered thresholds for acceptance (30\%) and precision (0.90) were missed.
+When deterministic code wrote the text instead (an exploratory variant in which the template realizer verbalizes the model's valid plans), 23 of 54 runs (43\%) produced a verified narrative, with 99.2\% claim precision; the template's own narratives pass the same strict verifier in 78\% of cases.
+The model's plans shared 77\% of their facts with the rule planner's on average and never coincided with them, so in this configuration the model's verified contribution is content selection.
+Whether its selection serves readers better than the rule planner's was not measured.
 
 \paragraph{Grounding against labelled bumps.}
 Ledger agreement says nothing about the road itself, so we also score event mentions against the 60 labelled speed bumps, within each drive.

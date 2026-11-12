@@ -17,7 +17,7 @@ We then ask whether the road claims in its ledger are identifiable from a single
 
 \paragraph{Contributions.}
 \begin{itemize}
-\item A verified narration pipeline (Sect.~\ref{sec:system}) and an honest benchmark of a fine-tuned 3B-parameter model against template narrators on nine real trips (Sect.~\ref{sec:bench}). \TBD[: one-line result of the regenerated S-PGR run.]
+\item A verified narration pipeline (Sect.~\ref{sec:system}) and a benchmark of a fine-tuned 3B-parameter model against template narrators on nine real trips (Sect.~\ref{sec:bench}--\ref{sec:pgr}). Trained on targets that stated values its input did not contain, the model passed verification in none of 108 narratives; trained so that its input held every value it had to state, its share of unsupported claims fell from 52\% to 30\%, and verified narratives appeared when code, not the model, wrote the values.
 \item A criterion for when a road claim is identifiable from a narrator's input, based on a standard source--channel model of vehicle vibration, and its consequences for single trips, fleets and speed (Sect.~\ref{sec:ident}).
 \item A pre-registered cross-vehicle study on the PVS dataset~\cite{menegazzo2021pvs} (Sect.~\ref{sec:invariance}--\ref{sec:calibration}). RoadScribe's road claims are not vehicle-invariant: the road class of a stretch differs between two vehicles in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value. A speed elasticity estimated across places has the wrong sign. Calibrating each vehicle on roads it shared with the others raises cross-vehicle agreement of the road class from $\kappa=0.72$ to $0.96$ and cuts contradictory road claims in the narratives from 80\% to 23\% of co-located comparisons.
 \end{itemize}

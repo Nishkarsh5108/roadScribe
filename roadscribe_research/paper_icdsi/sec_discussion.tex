@@ -7,11 +7,16 @@ The cross-vehicle study shows that this is a weaker property than it appears: th
 The remedy we found effective is simple and needs no new model: estimate a gain per vehicle and the speed elasticity on places that several vehicles have driven, and state road claims only for calibrated vehicles.
 A spectral factorization of the vehicle response~\cite{pawitan1994whittle} did not improve on this scalar calibration on PVS.
 
+\paragraph{The same lesson for training data.}
+The language model failed for the same reason one level up: its training targets stated positions, speeds and fact identifiers that its input did not contain, so it learned to produce them without evidence.
+Making every target value available in the input reduced its errors substantially but did not make its own wording verifiable; letting code write the values did.
+For small models in this setting, we read this as an argument for keeping value-bearing text deterministic and using the model for selection and phrasing around it.
+
 \paragraph{Limitations.}
 PVS has three vehicle--driver pairs and one pass per vehicle and route, so vehicle and driver are confounded and measurement noise cannot be separated from the place-by-vehicle interaction.
 The sensors are fixed modules, not phones; the size of the vehicle signature depends on placement and may differ for phones in holders.
 Map matching is not implemented, so the map-informed part of the segmentation was not exercised.
-The language model was fine-tuned on template-generated narratives and therefore imitates the template; we did not evaluate question answering or audiences unseen in training, which require questions elicited from drivers and human judgements of audience fit.
+The language model was fine-tuned on synthetic, template-generated narratives (one epoch on 1{,}849 examples in the final run), so it imitates the template; we did not test longer training, larger models or sentence-level fallback, and we did not evaluate question answering, audiences unseen in training or reader preferences, which require questions elicited from drivers and human judgements.
 On-device latency and energy were not measured.
 
 \section{Conclusion}

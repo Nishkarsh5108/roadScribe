@@ -1,0 +1,56 @@
+{
+ "orig": {
+  "n_generations": 54,
+  "hit_budget": 6,
+  "plan_parses": 54,
+  "plan_valid_per_validator": 1,
+  "verifier_passed": 0,
+  "accepted": 0,
+  "acceptance_rate": 0.0,
+  "acceptance_ci95": [
+   6.938893903907228e-18,
+   0.06641586678100189
+  ],
+  "slm_claims_per_accepted": NaN,
+  "slm_words_per_accepted": NaN,
+  "template_claims_per_narrative": 59.166666666666664,
+  "P_L_slm_accepted": NaN,
+  "P_L_spgr": 0.9915492957746479,
+  "P_L_T": 0.9915492957746479,
+  "diff_spgr_minus_T": 0.0,
+  "diff_ci95_cluster_bootstrap_drives": [
+   0.0,
+   0.0
+  ],
+  "H1_noninferior_2pt": true,
+  "hallucinated_missing": 27,
+  "must_mention_nonempty_trips": []
+ },
+ "cal": {
+  "n_generations": 54,
+  "hit_budget": 6,
+  "plan_parses": 54,
+  "plan_valid_per_validator": 2,
+  "verifier_passed": 0,
+  "accepted": 0,
+  "acceptance_rate": 0.0,
+  "acceptance_ci95": [
+   6.938893903907228e-18,
+   0.06641586678100189
+  ],
+  "slm_claims_per_accepted": NaN,
+  "slm_words_per_accepted": NaN,
+  "template_claims_per_narrative": 59.27777777777778,
+  "P_L_slm_accepted": NaN,
+  "P_L_spgr": 0.9915651358950328,
+  "P_L_T": 0.9915651358950328,
+  "diff_spgr_minus_T": 0.0,
+  "diff_ci95_cluster_bootstrap_drives": [
+   0.0,
+   0.0
+  ],
+  "H1_noninferior_2pt": true,
+  "hallucinated_missing": 27,
+  "must_mention_nonempty_trips": []
+ }
+}

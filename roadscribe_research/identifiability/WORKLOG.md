@@ -355,3 +355,27 @@ The verifier caught every invented name and map tag. Severity claims are 84% sup
 - **D25, integrity near-miss.** While shortening the paper's Table 2, I typed a 95% CI for the calibrated κ ([0.92, 0.97]) that was never computed; P4 bootstrapped only the *difference*. I caught it within the same minute and removed it before any commit. Rule reinforced: a number enters the paper only if it is in a results file, and `paper_icdsi/README.md` maps each number to its source.
 - Paper sections 5.2 and 5.3 now report the deployed SLM honestly: 0 of 54 accepted at 1,024 tokens, 48% raw precision, the failure breakdown, and the training-data diagnosis. The P5 slot is still pending. The paper is 13 pages and compiles clean.
 - **Evaluator check for P5.** I ran `scripts/eval_pgr_v2.py` on stand-in results whose narratives are template output (rule plan, grounded, realized with T+V). **Even the template passes the strict verifier in only 14 of 18 narratives (78%)**, because its own claim precision is 99.2%, not 100%. That is the realistic ceiling for model-written acceptance under this verifier, and the paper should report it. In the original evaluation T was never put through the acceptance rule, so this was never visible.
+
+### P5 results (Kaggle T4 run finished about 19:20; local summary `results/p5_summary.json`)
+
+**Training.** 1,849 of 2,561 examples kept under the pre-registered 2,048-token cap; mean length 1,312 tokens. Training took 6,734 s; final loss 0.342.
+
+**Original ledgers (verdicts):**
+
+| Hypothesis | Prediction | Result | Previous run | Verdict |
+|---|---|---|---|---|
+| H1 | plan validity ≥ 50% | **51.9%** | 1 of 54 | **Pass** |
+| H2 | acceptance ≥ 30% | **0 of 54** | 0 of 54 | **Fail** |
+| H3 | raw claim precision ≥ 0.90 | **0.695** | 0.481 | **Fail** |
+| H4 | wrong-position share of event claims < 40% | **17.9%** | 40.5% | **Pass** |
+
+- Hallucinated-missing claims: 1 (previously 27).
+- Calibrated ledgers: plan validity 53.7%, acceptance 0 of 54, precision 0.672.
+- **Why narratives still fail:** the model copies values from the frames imperfectly. Stretch boundaries are off by 0.1 km ("4.3 to 9.3" for 4.3–9.4); one event sits at the "75.6 km mark" on a 13.8 km trip; some sentences are repeated. A wrong stretch reference turns everything said about that stretch into "unresolved" claims (104), which is a cascade, not a verifier blind spot. I checked examples by hand.
+- **X6, exploratory** (`x6_slm_plan_template_realize.py`): the model's valid plans realized by the deterministic template realizer.
+  - 23 of 54 runs accepted (43%), which is 82% of the valid plans; precision 99.2%; 52.4 claims per narrative.
+  - The template's own pass rate under the strict verifier is 78%.
+  - Fact overlap with the rule planner's plan: Jaccard 0.77, and never identical, so the model makes different selections.
+  - **Whether its selections are better is not measured.**
+
+**Paper (14 pages, compiles clean, no placeholders).** Sections 5.2–5.3 have the full SLM story, the table has two new rows, and the abstract, introduction and discussion are updated. I corrected one overstatement ("halved the error rate" became "52% to 30%").
