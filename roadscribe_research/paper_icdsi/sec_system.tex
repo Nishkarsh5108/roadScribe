@@ -1,30 +1,55 @@
-% System section (Springer LNCS version). Describes only what is implemented in roadscribe/.
+% System section. Describes only what is implemented in roadscribe/.
 \section{Testbed: RoadScribe}
 \label{sec:system}
 
-RoadScribe turns one recorded trip into a short narrative for a stated audience (Fig.~\ref{fig:arch}); every number and place in the text must trace to a fact in a ledger.
+RoadScribe turns one recorded trip into a short narrative for a stated audience (Fig.~\ref{fig:arch}). Every number and place in the text must trace to a fact in a ledger.
 
-\begin{figure}[t]
+\begin{figure*}[t]
 \centering
 \input{fig_arch}
-\caption{RoadScribe. A planner selects ledger facts, code grounds them into frames that hold the values, and a realizer writes text; the verifier accepts it or falls back to the template narrative. The dashed block is the world-level remedy of Sect.~\ref{sec:ident}.}
+\caption{RoadScribe. A planner selects ledger facts, code grounds them into frames that hold the values, and a realizer writes text. The verifier accepts the text or falls back to the template narrative. The dashed block is the world-level remedy of Section~\ref{sec:ident}.}
 \label{fig:arch}
-\end{figure}
+\end{figure*}
 
-\paragraph{Layer 1: vibration measures.}
-The inertial measurement unit (IMU) gives specific force at 100~Hz and the global navigation satellite system (GNSS) receiver gives speed at 1~Hz.
-After estimating the mount rotation from gravity and GNSS acceleration~\cite{vardi2000l1median,schonemann1966procrustes}, ISO~2631-1 weightings~\cite{iso2631} ($W_k$ vertical, $W_d$ horizontal) give, per stretch, the \emph{ride value} $a_v=(a_{wx}^2+a_{wy}^2+a_{wz}^2)^{1/2}$ and the \emph{road value} $\tilde a_w=a_{wz}(v_{\mathrm{ref}}/\bar v)^{\gamma}$, reported only for $\bar v\ge5$~m\,s$^{-1}$.
-The exponent follows from road spectra $G_d(n)\propto n^{-w}$~\cite{iso8608}: a fixed vehicle's RMS response scales as $\bar v^{(w-1)/2}$, so $\gamma=0.5$ for the nominal $w=2$; RoadScribe's configuration uses $\gamma=0.35$, estimated across places on the PVS trips during development (Sect.~\ref{sec:speed}).
-Both values are mapped to the six comfort classes of ISO~2631-1 Annex~C (cut-points 0.315, 0.561, 0.894, 1.414, 2.236~m\,s$^{-2}$): \emph{ride classes} and \emph{road classes}, the latter speed-normalized comfort classes, not a pavement condition index.
+\paragraph*{Layer 1: vibration measures}
+The inertial measurement unit (IMU) gives specific force at 100~Hz, and the GNSS receiver gives speed at 1~Hz.
+The mount rotation is estimated from gravity and GNSS acceleration~\cite{vardi2000l1median,schonemann1966procrustes}. ISO~2631-1 weightings~\cite{iso2631} ($W_k$ vertical, $W_d$ horizontal) then give two values per stretch:
+\begin{itemize}
+\item the \emph{ride value} $a_v=(a_{wx}^2+a_{wy}^2+a_{wz}^2)^{1/2}$;
+\item the \emph{road value} $\tilde a_w=a_{wz}(v_{\mathrm{ref}}/\bar v)^{\gamma}$, reported only for $\bar v\ge5$~m\,s$^{-1}$.
+\end{itemize}
+The exponent follows from road spectra $G_d(n)\propto n^{-w}$~\cite{iso8608}: a fixed vehicle's RMS response scales as $\bar v^{(w-1)/2}$, so $\gamma=0.5$ for the nominal $w=2$. RoadScribe's configuration uses $\gamma=0.35$, estimated across places on the PVS trips during development (Section~\ref{sec:speed}).
+Both values are mapped to the six comfort classes of ISO~2631-1 Annex~C (cut-points 0.315, 0.561, 0.894, 1.414 and 2.236~m\,s$^{-2}$). The resulting \emph{ride classes} and \emph{road classes} are comfort classes; the road classes are speed-normalized, and neither is a pavement condition index.
 Impulsive events are detected with the Teager--Kaiser energy operator~\cite{kaiser1990tkeo} on the 4--25~Hz vertical band and tagged with their maneuver context.
 
-\paragraph{Layers 2--3: units, ledger, generation, verification.}
-The trip is segmented on a 5~m grid by penalized change-point detection (PELT~\cite{killick2012pelt}) into road units.
-A \emph{ledger} holds typed facts about units and events: ride and road classes, values with tolerances, events with position and detector confidence, comparisons, and \emph{missing} facts that say why a value is unavailable.
+\paragraph*{Layers 2--3: units, ledger, generation, verification}
+The trip is segmented on a 5~m grid into road units by penalized change-point detection (PELT~\cite{killick2012pelt}).
+A \emph{ledger} holds typed facts about units and events:
+\begin{itemize}
+\item ride and road classes;
+\item values with tolerances;
+\item events with position and detector confidence;
+\item comparisons;
+\item \emph{missing} facts that say why a value is unavailable.
+\end{itemize}
 A \emph{capsule} serializes the ledger within a token budget.
-Generation follows a plan--ground--realize scheme: a planner returns a plan over fact identifiers, code grounds it into \emph{frames} that hold the values, and a realizer writes the text.
-The \emph{template narrator} (T) does all three steps with rules (T+V: with sampled wording variants); a small language model (Qwen2.5-3B-Instruct~\cite{qwen25} with QLoRA~\cite{dettmers2023qlora}) can take the planner or realizer role, or write plan and text directly.
-A closed-vocabulary verifier extracts every claim and checks it against the ledger: numbers within tolerance, class wording within its class, events in type, position and count, hedges no more confident than the detector, no value for a missing field, and summaries of ``the other $N$ stretches'' against the units the narrative does not describe.
-\emph{Ledger precision} $P_L$ is the share of extracted claims that are supported; a narrative is \emph{accepted} if all are.
+Generation follows a plan--ground--realize scheme:
+\begin{itemize}
+\item a planner returns a plan over fact identifiers;
+\item code grounds the plan into \emph{frames} that hold the values;
+\item a realizer writes the text.
+\end{itemize}
+The \emph{template narrator} (T) does all three steps with rules; T+V is the same narrator with sampled wording variants. A small language model (Qwen2.5-3B-Instruct~\cite{qwen25} with QLoRA~\cite{dettmers2023qlora}) can take the planner role, the realizer role, or write plan and text directly.
+
+A closed-vocabulary verifier extracts every claim and checks it against the ledger:
+\begin{itemize}
+\item numbers within tolerance;
+\item class wording within its class;
+\item events in type, position and count;
+\item hedges no more confident than the detector;
+\item no value for a missing field;
+\item summaries of ``the other $N$ stretches'' against the units the narrative does not describe.
+\end{itemize}
+\emph{Ledger precision} $P_L$ is the share of extracted claims that are supported, and a narrative is \emph{accepted} if all of them are.
 Otherwise the template narrative is returned, a run-time assurance pattern in the sense of the Simplex architecture~\cite{sha2001simplex}.
-On every PVS drive the template narrative itself passes the verifier (Table~\ref{tab:bench}), so what reaches the reader agrees with the ledger; whether the ledger agrees with the road is the world-level question.
+On every PVS drive the template narrative itself passes the verifier (Table~\ref{tab:bench}), so what reaches the reader agrees with the ledger. Whether the ledger agrees with the road is the world-level question.

@@ -1,26 +1,33 @@
 \section{Input Level: What the Narrator Was Trained to State}
 \label{sec:input}
 
-\paragraph{Protocol.}
-Narrators run on the nine PVS drives for two audiences (a commuter and a sports-car driver).
-A model condition has 54 runs: 9 drives $\times$ 2 audiences $\times$ 3 sampling seeds (temperature 0.3, top-$p$ 0.9); deterministic narrators have one run per drive and audience (18).
+\paragraph*{Protocol}
+Narrators run on the nine PVS drives for two audiences: a commuter and a sports-car driver.
+A model condition has 54 runs: 9 drives $\times$ 2 audiences $\times$ 3 sampling seeds (temperature 0.3, top-$p$ 0.9).
+The deterministic narrators, and the model's first deployment at 300 tokens, have one run per drive and audience (18).
 Runs use the original ledgers; calibrated ledgers changed acceptance by at most one run.
+We report two position measures:
+\begin{itemize}
+\item the \emph{position error}: the share of event claims stating a position that fail, for any reason;
+\item the \emph{wrong-position share}: the share of event claims whose recorded failure reason is position. The verifier records count and hedge failures first.
+\end{itemize}
 
 \begin{table}[t]
 \caption{Narrators on the nine PVS drives. Accepted: every claim supported (otherwise RoadScribe returns the template narrative). Claims and $P_L$ describe the narrator's own text.}
 \label{tab:bench}
 \centering
 \scriptsize
-\setlength{\tabcolsep}{4pt}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-Narrator & runs & accepted & claims/run & $P_L$ \\
+Narrator & runs & acc. & claims & $P_L$ \\
 \midrule
 T, template & 18 & 18 & 59.2 & 100\% \\
 T+V, template with wording variants & 18 & 18 & 59.1 & 100\% \\
-Model, capsule $\to$ plan and text, 300 tokens & 18 & 5\textsuperscript{a} & 2.4\textsuperscript{a} & 100\%\textsuperscript{a} \\
-Model, capsule $\to$ plan and text, 1{,}024 tokens & 54 & 0 & 46.2 & 48.5\% \\
-Model, plan--ground--realize (P5) & 54 & 0 & 34.0\textsuperscript{b} & 69.4\% \\
+Model: capsule $\to$ plan + text, 300 tokens & 18 & 5\textsuperscript{a} & 2.4\textsuperscript{a} & 100\%\textsuperscript{a} \\
+Model: capsule $\to$ plan + text, 1{,}024 tokens & 54 & 0 & 46.2 & 48.5\% \\
+\quad same, rebuilt capsules (exploratory) & 54 & \PNINEACC & \PNINECL & \PNINEPL \\
+Model: plan--ground--realize (P5) & 54 & 0 & 34.0\textsuperscript{b} & 69.4\% \\
 Model plan, template realizer (exploratory) & 54 & 28 & 52.4\textsuperscript{b} & 100\% \\
 \bottomrule
 \end{tabular}
@@ -31,27 +38,36 @@ Model plan, template realizer (exploratory) & 54 & 28 & 52.4\textsuperscript{b} 
 
 \subsection{The model as first trained}
 \label{sec:bench}
-The first adapter was fine-tuned on 2{,}696 synthetic pairs, a capsule as input and a plan over fact identifiers followed by the narrative as target; the narratives came from the template narrator (2{,}500) and from a frontier model \TBD[: teacher model name and version] writing in the verifier's lexicon (196).
-With 300 new tokens the plan used most of the budget, and the five outputs that passed were fragments such as ``Your 10.7~km drive took'' (Table~\ref{tab:bench}).
-With 1{,}024 tokens every narrative was complete (median 244 words). None of the 54 passed (95\% interval 0--6.6\%), and only 48.5\% of their 2{,}493 claims were supported.
-Event claims failed most (470 at a wrong position, 261 with a wrong count), 163 numbers were out of tolerance, and all 47 place names and 41 map tags were invented.
+The first adapter was fine-tuned on 2{,}696 synthetic pairs.
+\begin{itemize}
+\item \emph{Input:} a capsule.
+\item \emph{Target:} a plan over fact identifiers, followed by the narrative.
+\item \emph{Source of the narratives:} the template narrator (2{,}500), and Claude Opus 5.5 (Anthropic) writing in the verifier's lexicon (196).
+\end{itemize}
+With 300 new tokens, the plan used most of the budget, and the five outputs that passed were fragments such as ``Your 10.7~km drive took''.
+With 1{,}024 tokens every narrative was complete (median 244 words). None of the 54 passed (95\% interval 0--6.6\%), and only 48.5\% of their 2{,}493 claims were supported. The errors were:
+\begin{itemize}
+\item event claims, the most common failure: 470 at a wrong position and 261 with a wrong count;
+\item 163 numbers out of tolerance;
+\item all 47 place names and 41 map tags, which were invented.
+\end{itemize}
 
 The input-level audit (Table~\ref{tab:audit}) explains these errors.
-None of the 7{,}793 event positions and none of the 2{,}621 speeds stated in the training targets appear in the capsule, which lists how many events a stretch has but not where; only 1.7\% of the accelerations do, and the plans' fact identifiers were not in the input at all.
-Distances and durations, which the capsule contains, almost always do.
-On PVS the model's errors follow the audit type by type: 86\%, 98\% and 80\% of its position, speed and acceleration claims are wrong, against 1.2\% of its distances and none of its durations.
-(A lenient match that accepts any number in the input after unit conversion finds 21\% of the positions, mostly by coincidence.)
-The model was trained to state values its input does not determine, and on real trips it guessed them; the synthetic capsules also always carried street names and map tags, which the PVS capsules lack, and the model filled that gap too.
+None of the 7{,}793 event positions and none of the 2{,}621 speeds stated in the training targets appear in the capsule, which lists how many events a stretch has but not where. Only 1.7\% of the accelerations appear, and the plans' fact identifiers were not in the input at all.
+Distances and durations, which the capsule does contain, almost always appear.
+On PVS, the model's errors follow the audit type by type. Its position, speed and acceleration claims are 86\%, 98\% and 80\% wrong; its distance claims are 1.2\% wrong, and none of its durations are.
+A lenient match, which accepts any number in the input after unit conversion, finds 21\% of the positions, mostly by coincidence.
+The synthetic capsules also always carried street names and map tags. The PVS capsules lack them but still listed a map channel, and the model filled that gap. \PNINETEXT
 
 \begin{table}[t]
-\caption{Input-level audit: share of the values stated in the training targets that the input contains as a field of the same type (rounded to the stated precision). Original: the first adapter's 2{,}696 records (mentions counted there); error: share of that model's claims of the type on PVS (1{,}024 tokens) that the verifier rejects. A--C: the arms of the controlled experiment (same 1{,}200 targets).}
+\caption{Input-level audit: share of the values stated in the training targets that the input contains as a field of the same type (rounded to the stated precision). Orig.: the first adapter's 2{,}696 records (mentions counted there). Err.: that model's error rate for claims of the type on PVS. A--C: arms of the controlled test (same 1{,}200 targets).}
 \label{tab:audit}
 \centering
 \scriptsize
-\setlength{\tabcolsep}{3.5pt}
+\setlength{\tabcolsep}{2.6pt}
 \begin{tabular}{@{}lrccccc@{}}
 \toprule
-Value type & mentions & original & error & A: capsule & B: + frames & C: B, no positions \\
+Type & mentions & orig. & err. & A & B & C \\
 \midrule
 Event position & 7{,}793 & 0\% & 86\% & 0\% & 100\% & 0\% \\
 Speed & 2{,}621 & 0\% & 98\% & 0\% & 100\% & 100\% \\
@@ -64,45 +80,93 @@ Duration & 1{,}956 & 100\% & 0\% & 100\% & 100\% & 100\% \\
 
 \subsection{A controlled test}
 \label{sec:p6}
-To test the input-level claim with the targets held fixed, we fine-tuned the same model three times on the same 1{,}200 synthetic records with the same targets, system prompt and hyperparameters (QLoRA rank 16, one epoch), changing only what the input contains (Table~\ref{tab:audit}, A--C): the capsule (A); the capsule and the target's grounded frames, which hold every value the target states (B); and B without event positions (C).
+To test the input-level claim with the targets held fixed, we fine-tuned the same model three times. All three runs used the same 1{,}200 synthetic records, targets, system prompt and hyperparameters (QLoRA rank 16, one epoch); only the input differed (Table~\ref{tab:audit}, A--C):
+\begin{itemize}
+\item A: the capsule;
+\item B: the capsule and the target's grounded frames, which hold every value the target states;
+\item C: B without event positions.
+\end{itemize}
 On PVS, B and C received the frames of the rule planner's plan, so they do not choose content.
-The pre-registered hypotheses (P6) were that $P_L$ rises by at least 0.15 from A to B (H1); that event claims fail on position at least twice as often in A and in C as in B (H2); that C makes fewer than half of A's other errors (H3); and that B is more precise than C (H4).
 
-Three held (Table~\ref{tab:p6}; intervals: cluster bootstrap over the nine drives).
-Adding the values raised $P_L$ from 51.3\% to 76.2\% (difference 0.25 [0.19, 0.31]); removing only the positions lowered it to 60.8\% (B$-$C 0.15 [0.12, 0.19]); and C made a fifth of A's non-position errors (ratio 0.19 [0.11, 0.29]).
-H2 failed as operationalized: in arm A most failing event claims were classified as wrong in count or hedge before their position was examined, so the share of failures on position was lower in A (19\%) than in B (31\%), while C's was 2.5 times B's [1.7, 4.4].
-The per-type error rates (exploratory) read the effect directly.
-Claims of a type fail far more often in arms whose input lacks it: positions 94\% (A) and 82\% (C) against 42\% (B), speeds 87\% (A) against 3\% (B, C), accelerations 77\% against 41\%.
-Types present in two arms fail equally often in both (B and C: speeds 0.00 [$-$0.01, 0.01], accelerations $-$0.01 [$-$0.09, 0.09]).
-Arm A also invented 70 place names; B and C, whose frames show that no name exists, invented none.
+The hypotheses specified in advance (P6) were:
+\begin{itemize}
+\item H1: $P_L$ rises by at least 0.15 from A to B;
+\item H2: the wrong-position share is at least twice as high in A, and in C, as in B;
+\item H3: C makes fewer than half of A's other errors;
+\item H4: B is more precise than C.
+\end{itemize}
+Three held (Table~\ref{tab:p6}; intervals are cluster bootstraps over the nine drives):
+\begin{itemize}
+\item adding the values raised $P_L$ from 51.3\% to 76.4\% (difference 0.25 [0.19, 0.31]);
+\item removing only the positions lowered it to 60.8\% (B$-$C 0.16 [0.12, 0.20]);
+\item C made a fifth of A's non-position errors (ratio 0.19 [0.11, 0.29]).
+\end{itemize}
+H2 failed as operationalized. In arm A, most failing event claims were recorded as wrong in count or hedge, so A's wrong-position share (19\%) was below B's (33\%). C's share was 2.3 times B's [1.7, 3.8].
 
-Presence is necessary, not sufficient.
-Arm B, with every value in its input, had no narrative accepted: it mis-copied 42\% of the positions and 41\% of the accelerations (its distance errors are mostly second positions, as in ``the 0.0 and 0.05~km marks'', read by the verifier as lengths). The copying errors are not a matter of sampling: with greedy decoding $P_L$ was 76.3\% (exploratory).\PEIGHT{}
-Dropping failing sentences keeps 33\%, 41\% and 52\% of the sentences of A, C and B, in the order of what their inputs contain.
-\PSIXZS
+The position error reads the effect directly (exploratory). Claims of a type fail far more often when the input lacks that type:
+\begin{itemize}
+\item positions: 94\% wrong in A and 82\% in C, against 43\% in B;
+\item speeds: 87\% of A's 15 claims, against 1 of 35 in B and 1 of 34 in C;
+\item accelerations: 77\% in A, against 41\% in both B and C.
+\end{itemize}
+Arm A also invented 70 place names. B and C, whose frames show that no name exists, invented none.
 
-\begin{table}[t]
-\caption{Controlled test, 54 runs per arm with the same training targets. Acc.: accepted; wr.\ pos.: share of event claims that fail on position; other: other unsupported claims per run; last four columns: share of the arm's claims of that type that are unsupported (number of claims). Prompted models received input B without fine-tuning.}
+\emph{Presence is necessary, not sufficient.}
+Arm B, with every value in its input, had no narrative accepted: 43\% of its positions and 41\% of its accelerations were mis-copied.
+These copying errors are not a matter of decoding or training length (exploratory):
+\begin{itemize}
+\item with greedy decoding, $P_L$ was 76.4\%;
+\item after a second epoch (training loss 0.09), $P_L$ was 75.3\%, and 44\% of the positions were still wrong.
+\end{itemize}
+Dropping failing sentences keeps 33\%, 41\% and 52\% of the sentences of A, C and B respectively, the same order as how much of the stated values each input contains.
+
+Prompted Qwen2.5-3B and 7B, given input B without fine-tuning, wrote fluent narratives that the verifier could barely check:
+\begin{itemize}
+\item most of their claims name no stretch or use words outside its vocabulary, so they count as unsupported ($P_L$ 0.0\% and 4.5\%);
+\item each narrative held 7--10 road or ride descriptors such as ``smooth'' that no extracted claim covers, against none for the fine-tuned arms (exploratory).
+\end{itemize}
+A closed-vocabulary verifier binds the model to its language. Fine-tuning on that language is what made the arms' text checkable at all.
+
+\begin{table*}[t]
+\caption{Controlled test: 54 runs per arm, same training targets. Acc.: accepted narratives. Wr.\ pos.: wrong-position share. Other: other unsupported claims per run. Last four columns: share of the arm's claims of that type that are unsupported (number of claims). The prompted models received input B without fine-tuning.}
 \label{tab:p6}
 \centering
-\scriptsize
-\setlength{\tabcolsep}{2.2pt}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
 \begin{tabular}{@{}lccccccccc@{}}
 \toprule
-Arm (input) & $P_L$ & acc. & claims & wr.\ pos. & other & position & speed & accel. & dist. \\
+Arm (input) & $P_L$ & acc. & claims/run & wr.\ pos. & other & position & speed & acceleration & distance \\
 \midrule
 A (capsule) & 51.3\% & 0 & 40.3 & 19\% & 16.3 & 94\% (710) & 87\% (15) & 77\% (124) & 0\% (390) \\
-B (+ frames) & 76.2\% & 0 & 40.9 & 31\% & 4.7 & 42\% (744) & 3\% (35) & 41\% (151) & 13\% (422) \\
-C (B, no positions) & 60.8\% & 0 & 37.4 & 77\% & 3.1 & 82\% (798) & 3\% (34) & 41\% (138) & 2\% (370) \\
-\PSIXZSROWS
+B (capsule + frames) & 76.4\% & 0 & 40.3 & 33\% & 4.2 & 43\% (775) & 3\% (35) & 41\% (151) & 8\% (398) \\
+C (B without positions) & 60.8\% & 0 & 37.4 & 77\% & 3.1 & 82\% (798) & 3\% (34) & 41\% (138) & 2\% (370) \\
+\midrule
+Prompted Qwen2.5-3B (B) & 0.0\% & 0 & 20.2 & -- & 20.2 & -- & 100\% (2) & -- & -- \\
+Prompted Qwen2.5-7B (B) & 4.5\% & 0 & 45.2 & -- & 43.2 & 100\% (1) & 100\% (7) & -- & 57\% (91) \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \subsection{Giving the model only identifiable tasks}
 \label{sec:pgr}
-RoadScribe's design gives the model only tasks whose outputs its input determines: the planner sees the capsule with the index of ledger facts and returns fact identifiers, code grounds them into frames, and the realizer writes from frames that contain every value it states.
-Retrained in this form (QLoRA, one epoch on 1{,}849 planning and realization examples; pre-registered as P5), with PVS capsules rebuilt without the spurious map channel, 52\% of the plans passed validation (1 of 54 before), the share of event claims at a wrong position fell from 40\% to 18\%, statements of missing values from 27 to 1, and $P_L$ rose from 48.5\% to 69.4\%.
-The model still copied values imperfectly (boundaries off by 100~m, an event at the ``75.6~km mark'' of a 13.8~km trip), and none of its narratives passed; 104 of its unsupported claims concern a stretch the verifier could not identify, mostly one with mis-copied boundaries, and count as unsupported, a conservative choice.
-When the template realizer verbalized the model's valid plans (exploratory), every one of them, 28 of the 54 runs, gave a verified narrative; the plans shared 77\% of their facts with the rule planner's and never coincided with it, so the model's verified contribution is content selection (whether readers prefer it was not measured).
-\emph{Sentence-level fallback} (exploratory) is a middle ground. Dropping every sentence with an unsupported claim and re-verifying keeps 36\% of the first adapter's sentences and 63\% of the plan--ground--realize model's, and every remainder passes. This is safe only for text in the verifier's language: remainders of the prompted models' text still hold 2.5--6 unchecked descriptors per narrative. The coherence of the shortened text was not judged.
+RoadScribe's design gives the model only tasks whose outputs its input determines:
+\begin{itemize}
+\item the planner sees the capsule with the index of ledger facts and returns fact identifiers;
+\item code grounds the plan into frames;
+\item the realizer writes from frames that contain every value it states.
+\end{itemize}
+We retrained the model in this form (QLoRA, one epoch on 1{,}849 planning and realization examples; P5), with PVS capsules rebuilt without the spurious map channel. Compared with the first adapter:
+\begin{itemize}
+\item 52\% of the plans passed validation, against 1 of 54 before;
+\item the position error fell from 86\% to 41\%;
+\item statements of missing values fell from 27 to 1;
+\item $P_L$ rose from 48.5\% to 69.4\%.
+\end{itemize}
+The model still copied values imperfectly: boundaries were off by 100~m, and one event sat at the ``75.6~km mark'' of a 13.8~km trip. None of its narratives passed. Claims about a stretch the verifier could not identify (104, mostly ones with mis-copied boundaries) count as unsupported, a conservative choice.
+
+When the template realizer rendered the model's valid plans instead (exploratory), every one of them, 28 of the 54 runs, gave a verified narrative.
+The plans shared 77\% of their facts with the rule planner's and never coincided with it, so in this configuration the model's verified contribution is content selection. Whether readers prefer its selection was not measured.
+
+\emph{Sentence-level fallback} (exploratory) is a middle ground: dropping every sentence with an unsupported claim and verifying the rest again.
+It keeps 36\% of the first adapter's sentences and 63\% of the plan--ground--realize model's, and every remainder passes.
+This is safe only for text in the verifier's language: remainders of the prompted models' text still hold 2.5--6 unchecked descriptors per narrative.

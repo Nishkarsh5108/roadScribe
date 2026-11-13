@@ -15,9 +15,10 @@ This is an invariance test across environments in the sense of~\cite{peters2016i
 Why vibration claims can fail it is standard.
 For a linear vehicle with transfer function $H_c$ at speed $v$ over a place with elevation spectrum $\Phi_p(n)$ ($n$ in cycles/m), the vertical acceleration spectrum satisfies~\cite{dodds1973roughness,gonzalez2008roughness}
 \begin{equation}
-\log S(f)=A_c(f)+B_p(f/v)-\log v,\qquad A_c=\log|H_c|^2,\ B_p=\log\Phi_p .
+\log S(f)=A_c(f)+B_p(f/v)-\log v,
 \label{eq:scr}
 \end{equation}
+with $A_c=\log|H_c|^2$ and $B_p=\log\Phi_p$.
 One vehicle at one speed fixes only $A_c+B_p$, so ``this road is rough'' and ``this vehicle transmits a lot'' are indistinguishable; vehicles that share places identify the differences $A_c-A_{c'}$, and the common part only if the same places are also driven at different speeds.
 (In simulation, a penalized Whittle fit~\cite{pawitan1994whittle} recovered the common channel only with speed diversity: error 0.010--0.023 against 0.67--1.09 log units.)
 For a band-integrated value this gives a two-way fixed-effects model, as used to separate worker and firm effects in matched data~\cite{abowd1999akm},

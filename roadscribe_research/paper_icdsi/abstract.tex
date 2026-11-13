@@ -1,10 +1,14 @@
 \begin{abstract}
-Sensor-to-text systems can verify every generated claim against the facts they computed.
-This establishes faithfulness, not truth, when a claim is not \emph{identifiable}. At the world level, the computed value may depend on nuisances that one recording cannot separate, such as the vehicle and its speed. At the input level, a fine-tuned model's training targets may state values its input does not contain.
-We give a cheap test for each level: cross-condition agreement against a same-condition noise floor, and a typed audit of target values against the input.
-We apply both to RoadScribe, a verified narrator of vehicle vibration.
-On the PVS dataset, where three vehicles drove the same routes, the road class of a stretch differed between two vehicles in 76\% of comparisons, while two sensors in one vehicle agreed at $\kappa=0.98$. The vehicle explained 18\% of the variance (placebo: 0.06\%), and a speed elasticity estimated across places had the wrong sign.
-A per-vehicle gain estimated on about 1~km of shared road raised agreement from $\kappa=0.72$ to $0.96$, and held-out accuracy on road-quality labels from 90.5\% to 98.3\%.
-\PSIXABS
-\keywords{Data-to-text \and Faithfulness \and Identifiability \and Hallucination \and Vehicle vibration \and Language models}
+Three cars drive the same 100~m of well-kept asphalt. A trip narrator that checks every sentence against its measurements describes the stretch as in \emph{excellent}, \emph{good} and \emph{fair} condition, and all three narratives pass verification.
+The fault lies in what the narrator is allowed to claim, not in its checking.
+Verification against computed facts establishes faithfulness, not truth, whenever a claim is not \emph{identifiable}. This happens at two levels. At the world level, a computed value may depend on nuisances that one recording cannot separate, such as the vehicle and its speed. At the input level, a fine-tuned model's training targets may state values its input does not contain.
+We give a cheap test for each level and apply both to RoadScribe, a verified narrator of vehicle vibration.
+On the PVS dataset, where three vehicles drove the same routes, a stretch's road class differed between two vehicles in 76\% of comparisons, while two sensors in one vehicle agreed at $\kappa=0.98$.
+One gain per vehicle, estimated on about 1~km of shared road, raised cross-vehicle agreement from $\kappa=0.72$ to $0.96$, and raised the balanced accuracy of road-quality labels on held-out routes from 0.69 to 0.87.
+With the training targets of a 3B-parameter language model held fixed, adding the stated values to its input raised claim precision from 51\% to 76\%, and errors fell type by type where values were added.
+Even so, no complete narrative written by the model passed verification, whereas every valid model plan rendered by code did.
 \end{abstract}
+
+\begin{IEEEkeywords}
+data-to-text, faithfulness, identifiability, hallucination, vehicle vibration, language models
+\end{IEEEkeywords}

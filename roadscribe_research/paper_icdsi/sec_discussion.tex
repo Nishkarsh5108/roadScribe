@@ -1,49 +1,55 @@
 \section{Discussion and Limitations}
 \label{sec:discussion}
 
-\paragraph{What verification guarantees.}
+\paragraph*{What verification guarantees}
 On PVS, RoadScribe's verifier and fallback guarantee that every narrative agrees with its ledger.
-Uncalibrated, however, a perfectly faithful narrator contradicts another vehicle's narrator about the same street at most places. Conversely, the verifier made the model's failures safe without making the model useful.
-Both problems were visible before deployment: one in paired recordings, the other in the training set.
+Without calibration, however, a perfectly faithful narrator contradicts another vehicle's narrator about the same street at most places.
+Conversely, the verifier made the model's failures safe without making the model useful.
+Both problems were visible before deployment, the first in paired recordings and the second in the training set.
 
-\paragraph{What a narrator may state.}
-On PVS the two tests give a simple policy:
+\paragraph*{What a narrator may state}
+On PVS, the two tests give a simple policy:
 \begin{itemize}
 \item ride classes, which are worded as vehicle-specific, may be stated for any vehicle;
-\item road classes only for vehicles calibrated on shared roads;
-\item ``rough because of speed'' only with a within-place elasticity;
-\item event positions only hedged, as single-pass observations;
-\item values in model-written sentences only if code, not the model, wrote them.
+\item road classes, only for vehicles calibrated on shared roads;
+\item ``rough because of speed'', only with an elasticity estimated within places;
+\item event positions, only hedged, as single-pass observations;
+\item for the 3B model we studied, values in model-written sentences, only if code wrote them.
 \end{itemize}
+Larger models or decoding constrained to copy from the frames may relax the last point; we did not test them.
 
-\paragraph{What the calibration needs.}
-For agreement between vehicles, one gain per vehicle was enough. It could be estimated from about a kilometre of road that the vehicles had all driven, a condition that fleets and repeated commutes meet.
+\paragraph*{What the calibration needs}
+For agreement between vehicles, one gain per vehicle was enough. It could be estimated from about a kilometre of road that all the vehicles had driven, a condition that fleets and repeated commutes meet, provided the mount stays fixed between trips.
 A vehicle without such data should be described only by ride statements, which are honest about depending on the vehicle.
-The within-place elasticity ($\hat\gamma=0.86$ on all routes, interval [0.68, 1.02]) is higher than the 0.5 implied by the nominal road spectrum of ISO~8608.
-Under the same model it corresponds to a waviness of about $w=2.7$.
-The difference may also reflect nonlinear suspension behaviour or a speed-dependent driving style, and three vehicles cannot tell these apart.
-Class agreement is insensitive to this choice (gain with $\gamma=0.5$: $\kappa=0.95$). Claims about the contribution of speed are not.
+The within-place elasticity ($\hat\gamma=0.86$ on all routes, interval [0.68, 1.02]) is higher than the 0.5 implied by the nominal road spectrum of ISO~8608. Under the same model it corresponds to a waviness of about $w=2.7$.
+The difference may also reflect nonlinear suspension behaviour or a speed-dependent driving style, and three vehicles cannot tell these explanations apart.
+Class agreement is insensitive to this choice (gain with $\gamma=0.5$: $\kappa=0.95$); claims about the contribution of speed are not.
 
-\paragraph{What the classes mean.}
+\paragraph*{What the classes mean}
 Road classes are speed-normalized comfort classes of a dashboard sensor, not a pavement condition index, and comfort at the seat differs from vibration at the dashboard.
-Agreement shows that a class is reproducible, not that it is correct. The held-out accuracy on PVS quality labels (98.3\%, balanced 0.82) is evidence that it also tracks the labelled condition, but these labels have three levels and are dominated by ``good'' (76\%).
+Agreement shows that a class is reproducible, not that it is correct.
+The held-out balanced accuracy on PVS quality labels (0.87 over all 361 places) is evidence that the class also tracks the labelled condition. These labels, however, have only three levels.
+We did not compare against the classifiers trained on the full IMU spectrum~\cite{menegazzo2021pvs}. Our question is whether the narrator's scalar can be trusted, not which classifier is best.
 
-\paragraph{Limitations.}
-PVS has three vehicle--driver pairs and one pass per vehicle and route. Vehicle and driver are therefore confounded, and our intervals do not cover the sampling of vehicles.
-The sensors are fixed modules, not phones, and the size of the vehicle signature depends on the mount (2.9--18.2\%).
-The language models were fine-tuned for one epoch on synthetic, template-style narratives.
-We did not evaluate question answering, unseen audiences, reader preferences, or on-device cost.
+\paragraph*{Limitations}
+\begin{itemize}
+\item PVS has three vehicle--driver pairs and one pass per vehicle and route. Vehicle and driver are therefore confounded, and our intervals do not cover the sampling of vehicles.
+\item The sensors are fixed modules, not phones in holders, and the size of the vehicle signature depends on the mount (2.9--18.2\%).
+\item The language models were fine-tuned for one or two epochs on synthetic, template-style narratives.
+\item The verifier's extraction recall was not measured by hand.
+\item We did not evaluate question answering, unseen audiences, reader preferences, or on-device cost.
+\end{itemize}
 
 \section{Conclusion}
 \label{sec:conclusion}
 A narrator that checks every sentence against its facts is only as trustworthy as those facts are identifiable, from the world and from the narrator's input.
-For vehicle vibration, both levels can be tested before deployment.
-On PVS, both tests flagged claims that a verifier had passed or would pass.
-A gain per vehicle estimated on shared roads made road claims agree across vehicles nearly as well as two sensors in one car, and the language model's errors followed, type by type, the values its training input lacked.
+For vehicle vibration, both levels can be tested before deployment, and on PVS both tests flagged claims that a verifier had passed or would pass.
+A gain per vehicle estimated on shared roads made road claims agree across vehicles nearly as well as two sensors in one car.
+The language model's errors followed, type by type, the values its training input lacked.
 
-\paragraph{Data and code availability.}
+\paragraph*{Data and code availability}
 PVS is public~\cite{menegazzo2021pvs}.
-The code, pre-registrations, analysis scripts and result files are available at \url{https://github.com/Nishkarsh5108/roadScribe}, including the decision log, the scripts behind every number in this paper and the inputs of the fine-tuning runs.
+The code, pre-specifications, analysis scripts, result files and fine-tuning inputs are available at \url{https://github.com/Nishkarsh5108/roadScribe}, together with a decision log and a map from every number in this paper to its source.
 
-\paragraph{Disclosure of Interests.}
+\paragraph*{Disclosure of interests}
 The authors have no competing interests to declare that are relevant to the content of this article.
