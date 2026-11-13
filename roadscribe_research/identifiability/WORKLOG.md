@@ -655,3 +655,26 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - "A second epoch gains more than 0.05": **did not hold** (−0.01).
     - "Acceptance at most 10%; position errors above 20%": held.
   - Conclusion: for a 3B model, mis-copying of positions survives both greedy decoding and more training. This strengthens the paper's design consequence that code, not the model, should write values. Added to §6.2 as exploratory.
+- 05:36: **Final checks.**
+  - Test suite: 222 passed, 11 skipped (PVS path not set for the tests).
+  - Fixed a lost space after the P8 sentence in §6.2.
+  - Visually checked Tables 4–6.
+  - Built `annotation/recall_sheet.md` (`x15_recall_sheet.py`): 150 sentences from 8 model narratives, each with the verifier's extracted claims. **For the user:** mark the claims the verifier misses, to report extraction recall (the one review point not closed overnight).
+
+### End of night (2026-11-13, about 05:40)
+
+**Done:**
+- **D26:** verifier REST bug fixed, everything rerun.
+- **P6:** controlled input-level test; 3 of 4 hypotheses held.
+- **Prompted 3B and 7B baselines.**
+- **P7:** noise floor, replication, data efficiency, held-out accuracy, speed floor; 6 of 6 held.
+- **P8 (exploratory):** greedy decoding and a second epoch.
+- **Exploratory X8–X15:** audit, sentence filter, event precision and reproducibility, worked example, per-type errors, vocabulary coverage, recall sheet.
+- **Paper:** reframed and rewritten, 15 pages, every number mapped in `paper_icdsi/README.md`. Review responses are in `paper_icdsi/REVISION_NOTES_2026-11-13.md`.
+
+**Open, for the user:**
+1. The teacher model name (red TBD in §6.1).
+2. Repository visibility, or an anonymized link if review is blind.
+3. The ICDSI page limit and blind-review rule.
+4. No parallel IMWUT submission.
+5. The recall annotation.

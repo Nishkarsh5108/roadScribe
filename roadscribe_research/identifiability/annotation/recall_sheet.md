@@ -1,0 +1,626 @@
+# Verifier recall: hand-annotation sheet
+
+For each sentence, the verifier's extracted claims are listed. In the `missed` line, write every factual
+statement about the trip (a value, place, event, severity, comparison or cause) that no listed claim covers.
+Recall = extracted / (extracted + missed). Do not judge truth here, only coverage.
+
+## S-PGR (1,024 tokens): orig|pvs6|sports_car
+
+- **S:** Your 10.7 km run took 16 minutes.
+  - extracted: NUM/trip_length_m = `10.7 km run` (supported)
+  - extracted: NUM/trip_duration_s = `16 minutes` (supported)
+  - missed: 
+- **S:** The stretch from 0.0 to 3.0 km is in fair condition and felt fairly bumpy at about 41 km/h.
+  - extracted: RANGE/extent = `from 0.0 to 3.0 km` (supported)
+  - extracted: SEV/road_class = `in fair condition` (severity_mismatch)
+  - extracted: SEV/felt_class = `fairly bumpy` (supported)
+  - extracted: NUM/v_mean_mps = `41 km/h` (number_mismatch)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 2.2 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `2.2 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were likely 12 bumps around the 0.0, 0.5, 0.7, 1.0, 1.2, 1.4, 1.5, 1.6, 1.7, 2.3 and 2.5 km marks.
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - missed: 
+- **S:** There may also have been a jolt around the 2.4 km mark.
+  - extracted: EVT/jolt = `a jolt` (wrong_position)
+  - missed: 
+- **S:** The map has no street name for it.
+  - missed: 
+- **S:** The stretch from 3.0 to 6.3 km is in poor condition and felt uncomfortable (1.1 m/s² weighted).
+  - extracted: RANGE/extent = `from 3.0 to 6.3 km` (supported)
+  - extracted: SEV/road_class = `in poor condition` (supported)
+  - extracted: SEV/felt_class = `uncomfortable` (supported)
+  - extracted: NUM/a_v = `1.1 m/s²` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 2.7 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `2.7 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There may have been two bumps around the 3.6 and 4.4 km marks.
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - missed: 
+- **S:** There was also probably a bump around the 4.6 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** There may also have been a bump around the 5.3 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** On the stretch from 6.3 to 10.7 km the surface is in good condition, and overall it felt slightly uncomfortable.
+  - extracted: RANGE/extent = `from 6.3 to 10.7 km` (supported)
+  - extracted: SEV/road_class = `in good condition` (severity_mismatch)
+  - extracted: SEV/felt_class = `slightly uncomfortable` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 1.4 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `1.4 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were possibly two jolts around the 7.1 and 9.3 km marks.
+  - extracted: EVT/jolt = `two jolts` (wrong_position)
+  - extracted: EVT/jolt = `two jolts` (wrong_position)
+  - missed: 
+- **S:** There were also three sharp bumps around the 7.2, 7.6 and 8.6 km marks.
+  - extracted: EVT/bump = `three sharp bumps` (event_count)
+  - extracted: EVT/bump = `three sharp bumps` (event_count)
+  - extracted: EVT/bump = `three sharp bumps` (event_count)
+  - missed: 
+- **S:** There were also likely two bumps around the 8.9 and 9.3 km marks.
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - missed: 
+- **S:** The map has no street name for it.
+  - missed: 
+- **S:** The stretch from 0.0 to 3.0 km is the place to back off; elsewhere the surface supports a brisk pace.
+  - extracted: RANGE/extent = `from 0.0 to 3.0 km` (supported)
+  - missed: 
+
+## S-PGR (1,024 tokens): orig|pvs1|sports_car
+
+- **S:** Your 13.8 km run took 24 minutes.
+  - extracted: NUM/trip_length_m = `13.8 km run` (supported)
+  - extracted: NUM/trip_duration_s = `24 minutes` (supported)
+  - missed: 
+- **S:** The roughest stretch was the stretch from 0.0 to 4.3 km, which felt fairly uncomfortable (0.78 m/s² weighted).
+  - extracted: CMP/superlative = `roughest stretch` (comparison_mismatch)
+  - extracted: RANGE/extent = `from 0.0 to 4.3 km` (supported)
+  - extracted: SEV/felt_class = `fairly uncomfortable` (supported)
+  - extracted: NUM/a_v = `0.78 m/s²` (number_mismatch)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 2.6 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `2.6 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were likely three bumps around the 0.1, 1.3 and 1.6 km marks.
+  - extracted: EVT/bump = `three bumps` (supported)
+  - extracted: EVT/bump = `three bumps` (wrong_position)
+  - extracted: EVT/bump = `three bumps` (wrong_position)
+  - missed: 
+- **S:** There may also have been two jolts around the 1.4 and 1.6 km marks.
+  - extracted: EVT/jolt = `two jolts` (wrong_position)
+  - extracted: EVT/jolt = `two jolts` (wrong_position)
+  - missed: 
+- **S:** There were also probably four bumps around the 2.2, 2.6, 3.1 and 3.5 km marks.
+  - extracted: EVT/bump = `four bumps` (wrong_position)
+  - extracted: EVT/bump = `four bumps` (wrong_position)
+  - extracted: EVT/bump = `four bumps` (supported)
+  - extracted: EVT/bump = `four bumps` (wrong_position)
+  - missed: 
+- **S:** On the stretch from 4.3 to 9.4 km the surface is in very poor condition, and overall it felt very rough.
+  - extracted: RANGE/extent = `from 4.3 to 9.4 km` (supported)
+  - extracted: SEV/road_class = `in very poor condition` (supported)
+  - extracted: SEV/felt_class = `very rough` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 4.0 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `4.0 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were probably seven bumps.
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - extracted: EVT/bump = `seven bumps` (supported)
+  - missed: 
+- **S:** There was also probably a jolt.
+  - extracted: EVT/jolt = `a jolt` (overclaimed_hedge)
+  - missed: 
+- **S:** The stretch from 9.4 to 13.8 km was smoother than the stretch from 4.3 to 9.4 km and felt noticeably bumpy (0.67 m/s² weighted).
+  - extracted: RANGE/extent = `from 9.4 to 13.8 km` (supported)
+  - extracted: CMP/a_v_vs_unit = `smoother than ` (supported)
+  - extracted: RANGE/extent = `from 4.3 to 9.4 km` (supported)
+  - extracted: SEV/felt_class = `noticeably bumpy` (supported)
+  - extracted: NUM/a_v = `0.67 m/s²` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 2.4 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `2.4 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were likely eight bumps.
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - extracted: EVT/bump = `eight bumps` (supported)
+  - missed: 
+- **S:** The stretch from 4.3 to 9.4 km is the place to back off; elsewhere the surface supports a brisk pace.
+  - extracted: RANGE/extent = `from 4.3 to 9.4 km` (supported)
+  - missed: 
+
+## P5 realizer: orig|pvs8|commuter
+
+- **S:** Here is your 21-minute, 11.5 km drive.
+  - extracted: NUM/trip_duration_s = `21-minute` (supported)
+  - extracted: NUM/trip_length_m = `11.5 km drive` (supported)
+  - missed: 
+- **S:** The stretch from 0.0 to 0.4 km was the smoothest stretch and felt slightly uncomfortable.
+  - extracted: RANGE/extent = `from 0.0 to 0.4 km` (supported)
+  - extracted: CMP/superlative = `smoothest stretch` (supported)
+  - extracted: SEV/felt_class = `slightly uncomfortable` (supported)
+  - missed: 
+- **S:** There were likely several bumps around the 0.0 km mark.
+  - extracted: EVT/bump = `several bumps` (supported)
+  - extracted: EVT/bump = `several bumps` (supported)
+  - extracted: EVT/bump = `several bumps` (supported)
+  - missed: 
+- **S:** The map data could not find a surface type for it.
+  - missed: 
+- **S:** The map data also disagreed with the map match on this stretch.
+  - missed: 
+- **S:** The stretch from 0.4 to 2.5 km felt very bumpy.
+  - extracted: RANGE/extent = `from 0.4 to 2.5 km` (supported)
+  - extracted: SEV/felt_class = `very bumpy` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 0.40 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `0.40 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were probably several bumps around the 0.5, 1.1, 1.2, 1.7, 1.8 and 2.1 km marks.
+  - extracted: EVT/bump = `several bumps` (supported)
+  - extracted: EVT/bump = `several bumps` (supported)
+  - extracted: EVT/bump = `several bumps` (supported)
+  - missed: 
+- **S:** The map data could not find a surface type for it.
+  - missed: 
+- **S:** The map data also disagreed with the map match on this stretch.
+  - missed: 
+- **S:** The stretch from 2.5 to 5.8 km felt noticeably bumpy mostly because of speed; the surface itself is in fair condition.
+  - extracted: RANGE/extent = `from 2.5 to 5.8 km` (supported)
+  - extracted: SEV/felt_class = `noticeably bumpy` (supported)
+  - extracted: CMP/speed_cause = `because of speed` (unsupported_cause)
+  - extracted: SEV/road_class = `in fair condition` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 0.40 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `0.40 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were probably two bumps around the 2.6 and 3.6 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - missed: 
+- **S:** The map data could not find a surface type for it.
+  - missed: 
+- **S:** The map data also disagreed with the map match on this stretch.
+  - missed: 
+- **S:** The stretch from 5.8 to 7.2 km felt very bumpy mostly because of speed; the surface itself is in poor condition.
+  - extracted: RANGE/extent = `from 5.8 to 7.2 km` (supported)
+  - extracted: SEV/felt_class = `very bumpy` (supported)
+  - extracted: CMP/speed_cause = `because of speed` (unsupported_cause)
+  - extracted: SEV/road_class = `in poor condition` (severity_mismatch)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 0.40 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `0.40 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were probably two bumps around the 6.2 and 7.1 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (supported)
+  - missed: 
+- **S:** The map data could not find a surface type for it.
+  - missed: 
+- **S:** The map data also disagreed with the map match on this stretch.
+  - missed: 
+- **S:** On the stretch from 7.2 to 11.5 km the ride was fairly bumpy.
+  - extracted: RANGE/extent = `from 7.2 to 11.5 km` (supported)
+  - extracted: SEV/felt_class = `fairly bumpy` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 0.40 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `0.40 m/s²` (number_mismatch)
+  - missed: 
+- **S:** There were probably two jolts around the 7.3 and 7.3 km marks.
+  - extracted: EVT/jolt = `two jolts` (supported)
+  - extracted: EVT/jolt = `two jolts` (supported)
+  - missed: 
+- **S:** The map data could not find a surface type for it.
+  - missed: 
+- **S:** The map data also disagreed with the map match on this stretch.
+  - missed: 
+- **S:** Easing off on the stretch from 2.5 to 5.8 km next time should make for a gentler ride.
+  - extracted: RANGE/extent = `from 2.5 to 5.8 km` (supported)
+  - missed: 
+
+## P5 realizer: orig|pvs5|commuter
+
+- **S:** Here is your 22-minute, 11.5 km drive.
+  - extracted: NUM/trip_duration_s = `22-minute` (supported)
+  - extracted: NUM/trip_length_m = `11.5 km drive` (supported)
+  - missed: 
+- **S:** The stretch from 0.4 to 2.5 km felt uncomfortable.
+  - extracted: RANGE/extent = `from 0.4 to 2.5 km` (supported)
+  - extracted: SEV/felt_class = `uncomfortable` (supported)
+  - missed: 
+- **S:** It was jarring in places.
+  - extracted: SEV/shock = `jarring` (supported)
+  - missed: 
+- **S:** There were likely two bumps around the 0.4 and 0.4 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (supported)
+  - missed: 
+- **S:** There were also likely two bumps around the 0.9 and 1.7 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (supported)
+  - missed: 
+- **S:** There was also probably a bump around the 1.3 km mark as you braked.
+  - extracted: EVT/bump = `a bump` (misattributed_maneuver)
+  - missed: 
+- **S:** The map match failed there, so I have no street name for it.
+  - missed: 
+- **S:** The map has no surface type tag for it either.
+  - missed: 
+- **S:** The stretch from 2.5 to 5.8 km felt mildly bumpy.
+  - extracted: RANGE/extent = `from 2.5 to 5.8 km` (supported)
+  - extracted: SEV/felt_class = `mildly bumpy` (supported)
+  - missed: 
+- **S:** It was jarring in places.
+  - extracted: SEV/shock = `jarring` (supported)
+  - missed: 
+- **S:** There were likely two bumps around the 2.5 and 2.8 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 2.9 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There may also have been a jolt around the 3.4 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 3.6 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** There was also possibly a jolt around the 5.1 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 5.1 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There was also possibly a jolt around the 5.3 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also possibly a jolt around the 5.4 km mark.
+  - extracted: EVT/jolt = `a jolt` (wrong_position)
+  - missed: 
+- **S:** There was also likely a bump around the 5.7 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** The stretch from 5.8 to 11.5 km was rougher than the stretch from 2.5 to 5.8 km and felt slightly uncomfortable.
+  - extracted: RANGE/extent = `from 5.8 to 11.5 km` (unknown_range)
+  - extracted: CMP/a_v_vs_unit = `rougher than ` (unresolved)
+  - extracted: RANGE/extent = `from 2.5 to 5.8 km` (supported)
+  - extracted: SEV/felt_class = `slightly uncomfortable` (unresolved)
+  - missed: 
+- **S:** It was jarring in places.
+  - extracted: SEV/shock = `jarring` (unresolved)
+  - missed: 
+- **S:** There was probably a bump around the 6.3 km mark.
+  - extracted: EVT/bump = `a bump` (unresolved)
+  - missed: 
+- **S:** The other stretch was mildly bumpy, with seven lower-priority events.
+  - extracted: REST/felt_range = `The other stretch was mildly bumpy, with seven lower-priority events.` (severity_mismatch)
+  - extracted: REST/n_units = `other stretch` (rest_count)
+  - extracted: REST/n_events = `seven lower-priority events` (event_count)
+  - missed: 
+- **S:** Easing off on the stretch from 0.4 to 2.5 km next time should make for a gentler ride.
+  - extracted: RANGE/extent = `from 0.4 to 2.5 km` (supported)
+  - missed: 
+
+## P6 arm B: orig|pvs3|sports_car
+
+- **S:** Your 10.7 km run took 18 minutes.
+  - extracted: NUM/trip_length_m = `10.7 km run` (supported)
+  - extracted: NUM/trip_duration_s = `18 minutes` (supported)
+  - missed: 
+- **S:** The stretch from 0.0 to 3.0 km is in good condition and felt fairly bumpy at about 44 km/h (2.1 m/s² weighted).
+  - extracted: RANGE/extent = `from 0.0 to 3.0 km` (supported)
+  - extracted: SEV/road_class = `in good condition` (supported)
+  - extracted: SEV/felt_class = `fairly bumpy` (supported)
+  - extracted: NUM/v_mean_mps = `44 km/h` (supported)
+  - extracted: NUM/a_v = `2.1 m/s²` (number_mismatch)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 2.1 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `2.1 m/s²` (supported)
+  - missed: 
+- **S:** There were likely two bumps around the 0.1 and 1.2 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - missed: 
+- **S:** There was also likely a bump around the 7.4 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** A map-match failure prevented mapping out the exact location.
+  - missed: 
+- **S:** The stretch from 3.0 to 6.3 km was rougher than the stretch from 0.0 to 3.0 km and felt very rough.
+  - extracted: RANGE/extent = `from 3.0 to 6.3 km` (supported)
+  - extracted: CMP/a_v_vs_unit = `rougher than ` (supported)
+  - extracted: RANGE/extent = `from 0.0 to 3.0 km` (supported)
+  - extracted: SEV/felt_class = `very rough` (supported)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 3.5 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `3.5 m/s²` (supported)
+  - missed: 
+- **S:** There was probably a bump around the 3.4 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There may also have been a jolt around the 4.1 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 4.3 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** A map-match failure prevented mapping out the exact location.
+  - missed: 
+- **S:** The stretch from 6.3 to 10.7 km is in good condition and felt noticeably bumpy mostly because of speed: at about 59 km/h you were quick for a surface that is in good condition (1.5 m/s² weighted).
+  - extracted: RANGE/extent = `from 6.3 to 10.7 km` (supported)
+  - extracted: SEV/road_class = `in good condition` (supported)
+  - extracted: SEV/felt_class = `noticeably bumpy` (supported)
+  - extracted: CMP/speed_cause = `because of speed` (supported)
+  - extracted: NUM/v_mean_mps = `59 km/h` (supported)
+  - extracted: SEV/road_class = `in good condition` (supported)
+  - extracted: NUM/a_v = `1.5 m/s²` (number_mismatch)
+  - missed: 
+- **S:** It was shock-dominated, with a peak 1-s exposure of 1.5 m/s².
+  - extracted: SEV/shock = `shock-dominated` (supported)
+  - extracted: NUM/mtvv_z = `1.5 m/s²` (supported)
+  - missed: 
+- **S:** There were possibly two jolts around the 6.4 and 6.4 km marks.
+  - extracted: EVT/jolt = `two jolts` (supported)
+  - extracted: EVT/jolt = `two jolts` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 8.0 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 9.2 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 10.7 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 10.7 km mark as you braked.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** The stretch from 3.0 to 6.3 km is the place to back off; elsewhere the surface supports a brisk pace.
+  - extracted: RANGE/extent = `from 3.0 to 6.3 km` (supported)
+  - missed: 
+
+## P6 arm B: orig|pvs3|commuter
+
+- **S:** Here is your 18-minute, 10.7 km drive.
+  - extracted: NUM/trip_duration_s = `18-minute` (supported)
+  - extracted: NUM/trip_length_m = `10.7 km drive` (supported)
+  - missed: 
+- **S:** The ride on the stretch from 0.0 to 3.0 km was fairly bumpy mostly because of speed; the surface itself is in good condition.
+  - extracted: RANGE/extent = `from 0.0 to 3.0 km` (supported)
+  - extracted: SEV/felt_class = `fairly bumpy` (supported)
+  - extracted: CMP/speed_cause = `because of speed` (supported)
+  - extracted: SEV/road_class = `in good condition` (supported)
+  - missed: 
+- **S:** It was jarring in places.
+  - extracted: SEV/shock = `jarring` (supported)
+  - missed: 
+- **S:** There were likely two bumps around the 0.1 and 1.2 km marks.
+  - extracted: EVT/bump = `two bumps` (supported)
+  - extracted: EVT/bump = `two bumps` (wrong_position)
+  - missed: 
+- **S:** There was also likely a bump around the 7.4 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** There was also likely a bump around the 14.7 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** There was also likely a bump around the 30.1 km mark.
+  - extracted: EVT/bump = `a bump` (wrong_position)
+  - missed: 
+- **S:** A map-match failure prevented mapping out the exact location.
+  - missed: 
+- **S:** The stretch from 3.0 to 6.3 km was rougher than the stretch from 0.0 to 3.0 km and felt very uncomfortable.
+  - extracted: RANGE/extent = `from 3.0 to 6.3 km` (supported)
+  - extracted: CMP/a_v_vs_unit = `rougher than ` (supported)
+  - extracted: RANGE/extent = `from 0.0 to 3.0 km` (supported)
+  - extracted: SEV/felt_class = `very uncomfortable` (supported)
+  - missed: 
+- **S:** It was jarring in places.
+  - extracted: SEV/shock = `jarring` (supported)
+  - missed: 
+- **S:** There was probably a bump around the 3.4 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There may have been a jolt around the 4.1 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 4.3 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** A map-match failure prevented mapping out the exact location.
+  - missed: 
+- **S:** On the stretch from 6.3 to 10.7 km the ride was fairly uncomfortable mostly because of speed; the surface itself is in good condition.
+  - extracted: RANGE/extent = `from 6.3 to 10.7 km` (supported)
+  - extracted: SEV/felt_class = `fairly uncomfortable` (supported)
+  - extracted: CMP/speed_cause = `because of speed` (supported)
+  - extracted: SEV/road_class = `in good condition` (supported)
+  - missed: 
+- **S:** It was jarring in places.
+  - extracted: SEV/shock = `jarring` (supported)
+  - missed: 
+- **S:** There was possibly a jolt around the 6.4 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also possibly a jolt around the 6.4 km mark.
+  - extracted: EVT/jolt = `a jolt` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 8.0 km mark.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 9.2 km mark as you braked.
+  - extracted: EVT/bump = `a bump` (misattributed_maneuver)
+  - missed: 
+- **S:** There was also likely a bump around the 10.6 km mark as you braked.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** There was also likely a bump around the 10.7 km mark as you braked.
+  - extracted: EVT/bump = `a bump` (supported)
+  - missed: 
+- **S:** You were moving too quickly there to separate the road from your speed.
+  - missed: 
+- **S:** Easing off on the stretch from 3.0 to 6.3 km next time should make for a gentler ride.
+  - extracted: RANGE/extent = `from 3.0 to 6.3 km` (supported)
+  - missed: 
+
+## prompted Qwen2.5-7B-Instruct: orig|pvs1|commuter
+
+- **S:** Your morning commute today was mostly smooth, with a few bumps along the way.
+  - extracted: EVT/bump = `a few bumps` (unresolved)
+  - extracted: EVT/bump = `a few bumps` (unresolved)
+  - missed: 
+- **S:** The first stretch (0.0-4.3 km) had a couple of noticeable shocks, likely due to 12 bumps and 2 jolts.
+  - extracted: RANGE/extent = `(0.0-4.3 km)` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/bump = `12 bumps` (supported)
+  - extracted: EVT/jolt = `2 jolts` (overclaimed_hedge)
+  - extracted: EVT/jolt = `2 jolts` (overclaimed_hedge)
+  - missed: 
+- **S:** This section felt slightly bumpy but not too bad.
+  - extracted: SEV/felt_class = `bumpy` (severity_mismatch)
+  - missed: 
+- **S:** The second stretch (4.3-9.4 km) was significantly worse, with four shocks.
+  - extracted: RANGE/extent = `(4.3-9.4 km)` (supported)
+  - missed: 
+- **S:** You encountered 7 bumps and 1 jolt, making this part of your route quite rough compared to the first section.
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `7 bumps` (overclaimed_hedge)
+  - extracted: EVT/jolt = `1 jolt` (overclaimed_hedge)
+  - extracted: SEV/felt_class = `rough` (severity_mismatch)
+  - missed: 
+- **S:** The final stretch (9.4-13.8 km) was smoother again, with just 2 shocks.
+  - extracted: RANGE/extent = `(9.4-13.8 km)` (supported)
+  - extracted: UNPARSED/number = `2` (unparsed_number)
+  - missed: 
+- **S:** However, there were still 8 bumps and 3 artifacts, indicating some minor issues but overall a better ride than the middle section.
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: EVT/bump = `8 bumps` (overclaimed_hedge)
+  - extracted: UNPARSED/number = `3` (unparsed_number)
+  - missed: 
+- **S:** To improve your commute, consider adjusting your driving style on the second section to avoid those bumps and jolts.
+  - missed: 
+- **S:** On the rougher parts, you might want to slow down slightly to reduce the impact of the road conditions.
+  - missed: 
+
+## prompted Qwen2.5-7B-Instruct: orig|pvs6|sports_car
+
+- **S:** The trip began with a bumpy start as the car felt two shocks over the first 3.0 kilometers.
+  - extracted: SEV/felt_class = `bumpy` (unresolved)
+  - extracted: UNPARSED/number = `3.0` (unparsed_number)
+  - missed: 
+- **S:** The road was full of bumps, with the car encountering 12 of them.
+  - extracted: UNPARSED/number = `12` (unparsed_number)
+  - missed: 
+- **S:** The surface was rough, making the ride uncomfortable.
+  - extracted: SEV/felt_class = `rough` (unresolved)
+  - extracted: SEV/felt_class = `uncomfortable` (unresolved)
+  - missed: 
+- **S:** The speed of the car likely contributed to the harshness of the ride, but the surface conditions were the primary cause.
+  - missed: 
+- **S:** As the journey continued from 3.0 to 6.3 kilometers, the car experienced three more shocks.
+  - extracted: UNPARSED/number = `3.0` (unparsed_number)
+  - extracted: UNPARSED/number = `6.3` (unparsed_number)
+  - missed: 
+- **S:** This stretch was even rougher than the previous one, with the car hitting four bumps.
+  - extracted: CMP/a_v_vs_unit = `rougher than ` (unresolved)
+  - extracted: EVT/bump = `four bumps` (unresolved)
+  - extracted: EVT/bump = `four bumps` (unresolved)
+  - extracted: EVT/bump = `four bumps` (unresolved)
+  - extracted: EVT/bump = `four bumps` (unresolved)
+  - missed: 
+- **S:** The road quality here was notably worse, making the ride even less enjoyable.
+  - missed: 
+- **S:** From 6.3 to 10.7 kilometers, the car felt smoother, experiencing just one shock.
+  - extracted: UNPARSED/number = `6.3` (unparsed_number)
+  - extracted: UNPARSED/number = `10.7` (unparsed_number)
+  - missed: 
+- **S:** There were 10 bumps and one artifact on this section of the road.
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - extracted: EVT/bump = `10 bumps` (unresolved)
+  - missed: 
+- **S:** The surface was much better here, providing a more comfortable ride despite the occasional bump and artifact.
+  - extracted: SEV/felt_class = `comfortable` (unresolved)
+  - missed: 
+- **S:** Overall, the trip felt like a mix of rough and smooth sections.
+  - extracted: SEV/felt_class = `rough` (unresolved)
+  - missed: 
+- **S:** The first part of the trip was the roughest, with the car feeling bumpy and uncomfortable.
+  - extracted: SEV/felt_class = `bumpy` (unresolved)
+  - extracted: SEV/felt_class = `uncomfortable` (unresolved)
+  - missed: 
+- **S:** The middle section was slightly better but still had its fair share of bumps.
+  - missed: 
+- **S:** The final part of the trip was the smoothest, with fewer and less harsh bumps compared to the earlier parts of the journey.
+  - missed: 
+- **S:** The car's low, stiffly sprung nature amplified the effects of the road conditions, making the ride feel more pronounced.
+  - missed: 
