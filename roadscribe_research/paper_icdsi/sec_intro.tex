@@ -6,8 +6,8 @@ Our trip narrator, RoadScribe, told the first driver that the surface was ``in g
 Every one of these sentences passed a verifier that checks each claim against the trip's measurements.
 The measurements were correct too; they describe the car as much as the road.
 
-Language models are increasingly asked to describe sensor data: activity from wearables, driving from phones, machines from their vibration~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
-The established answer to the question of trust is to compile the measurements into facts, generate text from them, and verify every claim, falling back to a deterministic narrator when verification fails~\cite{wiseman2017challenges,moryossef2019step,jhamtani2021truce}.
+Language models are increasingly asked to describe sensor data, such as activity and physiological signals from wearables and phones~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
+A common recipe for trust is to compile the measurements into facts, plan the text over those facts, and check what is generated against them~\cite{wiseman2017challenges,moryossef2019step,jhamtani2021truce}. When a check fails, the system can fall back to a deterministic narrator, the run-time assurance pattern of the Simplex architecture~\cite{sha2001simplex}.
 Such a system is \emph{faithful}: it never says what its facts do not say~\cite{maynez2020faithfulness}.
 Faithfulness still leaves a question open. A verifier compares a sentence with a value, but it cannot tell whether the value determines what the sentence asserts. We call a claim \emph{identifiable} when it does, and identifiability can fail in two ways.
 At the \emph{world level}, the value is not a property of the thing the sentence describes, as in the opening example, where the road value depends on the car.

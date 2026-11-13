@@ -2,13 +2,23 @@
 % Entries marked "% VERIFY" were checked only through secondary sources (search
 % engine summaries or citing papers); confirm them against the publisher page
 % before submission.
+% The cited entries were checked against Crossref, the NeurIPS proceedings and arXiv on 2026-11-13.
+
+% IEEE reference style: more than six authors are shown as the first author et al.
+@IEEEtranBSTCTL{IEEEexample:BSTcontrol,
+  CTLuse_forced_etal       = "yes",
+  CTLmax_names_forced_etal = "6",
+  CTLnames_show_etal       = "1",
+}
 
 % ------------------------------------------------------------------ standards
 @techreport{iso2631,
   author      = {{International Organization for Standardization}},
-  title       = {{ISO} 2631-1:1997 Mechanical vibration and shock --- Evaluation of human exposure to whole-body vibration --- Part 1: General requirements},
+  title       = {{Mechanical vibration and shock --- Evaluation of human exposure to whole-body vibration --- Part 1: General requirements}},
   institution = {ISO},
-  address     = {Geneva},
+  address     = {Geneva, Switzerland},
+  type        = {International Standard},
+  number      = {{ISO} 2631-1:1997},
   year        = {1997},
 }
 @techreport{iso8855,
@@ -20,9 +30,11 @@
 }
 @techreport{iso8608,
   author      = {{International Organization for Standardization}},
-  title       = {{ISO} 8608:2016 Mechanical vibration --- Road surface profiles --- Reporting of measured data},
+  title       = {{Mechanical vibration --- Road surface profiles --- Reporting of measured data}},
   institution = {ISO},
-  address     = {Geneva},
+  address     = {Geneva, Switzerland},
+  type        = {International Standard},
+  number      = {{ISO} 8608:2016},
   year        = {2016},
 }
 @techreport{iso13473,
@@ -56,22 +68,22 @@
   author    = {Eriksson, Jakob and Girod, Lewis and Hull, Bret and Newton, Ryan and Madden, Samuel and Balakrishnan, Hari},
   title     = {The Pothole Patrol: Using a Mobile Sensor Network for Road Surface Monitoring},
   booktitle = {Proceedings of the 6th International Conference on Mobile Systems, Applications, and Services (MobiSys)},
+  address   = {Breckenridge, CO, USA},
   pages     = {29--39},
   year      = {2008},
   doi       = {10.1145/1378600.1378605},
-  publisher = {ACM},
-  address   = {Breckenridge, CO, USA},
+  note      = {{\refdoi{10.1145/1378600.1378605}}},
 }
-% VERIFY volume/issue against the Springer page
 @article{menegazzo2021pvs,
   author  = {Menegazzo, Jeferson and von Wangenheim, Aldo},
   title   = {Road Surface Type Classification Based on Inertial Sensors and Machine Learning: A Comparison between Classical and Deep Machine Learning Approaches for Multi-Contextual Real-World Scenarios},
   journal = {Computing},
   volume  = {103},
-  number  = {9},
+  number  = {10},
   pages   = {2143--2170},
   year    = {2021},
   doi     = {10.1007/s00607-021-00914-0},
+  note    = {{\refdoi{10.1007/s00607-021-00914-0}}},
 }
 @inproceedings{newson2009hmm,
   author    = {Newson, Paul and Krumm, John},
@@ -99,11 +111,11 @@
   author    = {Kaiser, James F.},
   title     = {On a Simple Algorithm to Calculate the `Energy' of a Signal},
   booktitle = {Proceedings of the IEEE International Conference on Acoustics, Speech, and Signal Processing (ICASSP)},
+  address   = {Albuquerque, NM, USA},
   pages     = {381--384},
   year      = {1990},
   doi       = {10.1109/ICASSP.1990.115702},
-  publisher = {IEEE},
-  address   = {Albuquerque, NM, USA},
+  note      = {{\refdoi{10.1109/ICASSP.1990.115702}}},
 }
 @article{killick2012pelt,
   author  = {Killick, Rebecca and Fearnhead, Paul and Eckley, Idris A.},
@@ -114,6 +126,7 @@
   pages   = {1590--1598},
   year    = {2012},
   doi     = {10.1080/01621459.2012.737745},
+  note    = {{\refdoi{10.1080/01621459.2012.737745}}},
 }
 @article{haynes2017crops,
   author  = {Haynes, Kaylea and Eckley, Idris A. and Fearnhead, Paul},
@@ -127,13 +140,14 @@
 }
 @article{vardi2000l1median,
   author  = {Vardi, Yehuda and Zhang, Cun-Hui},
-  title   = {The Multivariate {L1}-Median and Associated Data Depth},
+  title   = {The Multivariate {$L_1$}-Median and Associated Data Depth},
   journal = {Proceedings of the National Academy of Sciences},
   volume  = {97},
   number  = {4},
   pages   = {1423--1426},
   year    = {2000},
   doi     = {10.1073/pnas.97.4.1423},
+  note    = {{\refdoi{10.1073/pnas.97.4.1423}}},
 }
 @article{schonemann1966procrustes,
   author  = {Sch{\"o}nemann, Peter H.},
@@ -144,6 +158,7 @@
   pages   = {1--10},
   year    = {1966},
   doi     = {10.1007/BF02289451},
+  note    = {{\refdoi{10.1007/BF02289451}}},
 }
 @article{hotelling1931t2,
   author  = {Hotelling, Harold},
@@ -157,23 +172,25 @@
 }
 
 % ------------------------------------------------------------------ sensor-language models (Stream A)
-% VERIFY venue: CACM coverage places it at HotMobile 2024; the ACL Anthology also lists Findings of ACL 2024.
 @inproceedings{xu2024penetrative,
   author    = {Xu, Huatao and Han, Liying and Yang, Qirui and Li, Mo and Srivastava, Mani},
   title     = {Penetrative {AI}: Making {LLMs} Comprehend the Physical World},
   booktitle = {Proceedings of the 25th International Workshop on Mobile Computing Systems and Applications (HotMobile)},
-  year      = {2024},
-  publisher = {ACM},
   address   = {San Diego, CA, USA},
+  pages     = {1--7},
+  year      = {2024},
+  doi       = {10.1145/3638550.3641130},
+  note      = {{\refdoi{10.1145/3638550.3641130}}},
 }
 @inproceedings{li2025sensorllm,
   author    = {Li, Zechen and Deldari, Shohreh and Chen, Linyao and Xue, Hao and Salim, Flora D.},
   title     = {{SensorLLM}: Aligning Large Language Models with Motion Sensors for Human Activity Recognition},
   booktitle = {Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
-  year      = {2025},
-  note      = {arXiv:2410.10624},
-  publisher = {Association for Computational Linguistics},
   address   = {Suzhou, China},
+  pages     = {354--379},
+  year      = {2025},
+  doi       = {10.18653/v1/2025.emnlp-main.19},
+  note      = {{\refdoi{10.18653/v1/2025.emnlp-main.19}}},
 }
 @misc{imran2024llasa,
   author = {Imran, Sheikh Asif and Khan, Mohammad Nur Hossain and Biswas, Subrata and Islam, Bashima},
@@ -282,6 +299,7 @@
   pages   = {65--170},
   year    = {2018},
   doi     = {10.1613/jair.5477},
+  note    = {{\refdoi{10.1613/jair.5477}}},
 }
 
 % ------------------------------------------------------------------ faithfulness, decoding, training
@@ -289,21 +307,21 @@
   author    = {Wiseman, Sam and Shieber, Stuart and Rush, Alexander},
   title     = {Challenges in Data-to-Document Generation},
   booktitle = {Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  address   = {Copenhagen, Denmark},
   pages     = {2253--2263},
   year      = {2017},
   doi       = {10.18653/v1/D17-1239},
-  publisher = {Association for Computational Linguistics},
-  address   = {Copenhagen, Denmark},
+  note      = {{\refdoi{10.18653/v1/D17-1239}}},
 }
 @inproceedings{min2023factscore,
   author    = {Min, Sewon and Krishna, Kalpesh and Lyu, Xinxi and Lewis, Mike and Yih, Wen-tau and Koh, Pang Wei and Iyyer, Mohit and Zettlemoyer, Luke and Hajishirzi, Hannaneh},
   title     = {{FActScore}: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation},
   booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  address   = {Singapore},
   pages     = {12076--12100},
   year      = {2023},
   doi       = {10.18653/v1/2023.emnlp-main.741},
-  publisher = {Association for Computational Linguistics},
-  address   = {Singapore},
+  note      = {{\refdoi{10.18653/v1/2023.emnlp-main.741}}},
 }
 @article{ji2023hallucination,
   author  = {Ji, Ziwei and Lee, Nayeon and Frieske, Rita and Yu, Tiezheng and Su, Dan and Xu, Yan and Ishii, Etsuko and Bang, Ye Jin and Madotto, Andrea and Fung, Pascale},
@@ -314,6 +332,7 @@
   pages   = {248:1--248:38},
   year    = {2023},
   doi     = {10.1145/3571730},
+  note    = {{\refdoi{10.1145/3571730}}},
 }
 @article{mielke2022linguistic,
   author  = {Mielke, Sabrina J. and Szlam, Arthur and Dinan, Emily and Boureau, Y-Lan},
@@ -377,9 +396,11 @@
   title     = {{QLoRA}: Efficient Finetuning of Quantized {LLMs}},
   booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
   volume    = {36},
-  year      = {2023},
-  publisher = {Curran Associates, Inc.},
   address   = {New Orleans, LA, USA},
+  pages     = {10088--10115},
+  year      = {2023},
+  doi       = {10.52202/075280-0441},
+  note      = {{\refdoi{10.52202/075280-0441}}},
 }
 
 % ------------------------------------------------------------------ user study
@@ -499,7 +520,9 @@
   volume  = {18},
   number  = {4},
   pages   = {20--28},
-  year    = {2001}
+  year    = {2001},
+  doi     = {10.1109/MS.2001.936213},
+  note    = {{\refdoi{10.1109/MS.2001.936213}}},
 }
 @article{dodds1973roughness,
   author  = {Dodds, C. J. and Robson, J. D.},
@@ -508,7 +531,9 @@
   volume  = {31},
   number  = {2},
   pages   = {175--183},
-  year    = {1973}
+  year    = {1973},
+  doi     = {10.1016/S0022-460X(73)80373-6},
+  note    = {{\refdoi{10.1016/S0022-460X(73)80373-6}}},
 }
 @article{gonzalez2008roughness,
   author  = {Gonz{\'a}lez, A. and O'Brien, E. J. and Li, Y.-Y. and Cashell, K.},
@@ -517,7 +542,9 @@
   volume  = {46},
   number  = {6},
   pages   = {483--499},
-  year    = {2008}
+  year    = {2008},
+  doi     = {10.1080/00423110701485050},
+  note    = {{\refdoi{10.1080/00423110701485050}}},
 }
 @article{bedell2019wobble,
   author  = {Bedell, Megan and Hogg, David W. and Foreman-Mackey, Daniel and Montet, Benjamin T. and Luger, Rodrigo},
@@ -543,28 +570,40 @@
   volume  = {89},
   number  = {426},
   pages   = {600--610},
-  year    = {1994}
+  year    = {1994},
+  doi     = {10.1080/01621459.1994.10476785},
+  note    = {{\refdoi{10.1080/01621459.1994.10476785}}},
 }
 @article{botshekan2020roughness,
-  author  = {Botshekan, Meshkat and others},
+  author  = {Botshekan, Meshkat and Roxon, Jacob and Wanichkul, Athikom and Chirananthavat, Theemathas and Chamoun, Joy and Ziq, Malik and Anini, Bader and Daher, Naseem and Awad, Abdalkarim and Ghanem, Wasel and Tootkaboni, Mazdak and Louhghalam, Arghavan and Ulm, Franz-Josef},
   title   = {Roughness-Induced Vehicle Energy Dissipation from Crowdsourced Smartphone Measurements through Random Vibration Theory},
   journal = {Data-Centric Engineering},
   volume  = {1},
   pages   = {e16},
-  year    = {2020}
+  year    = {2020},
+  doi     = {10.1017/dce.2020.17},
+  note    = {{\refdoi{10.1017/dce.2020.17}}},
 }
 @inproceedings{moryossef2019step,
   author    = {Moryossef, Amit and Goldberg, Yoav and Dagan, Ido},
   title     = {Step-by-Step: Separating Planning from Realization in Neural Data-to-Text Generation},
-  booktitle = {Proceedings of NAACL-HLT},
+  booktitle = {Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (NAACL-HLT)},
+  address   = {Minneapolis, MN, USA},
   pages     = {2267--2277},
-  year      = {2019}
+  year      = {2019},
+  doi       = {10.18653/v1/N19-1236},
+  note      = {{\refdoi{10.18653/v1/N19-1236}}},
 }
 @inproceedings{zhang2025sensorlm,
-  author    = {Zhang, Yuwei and others},
+  author    = {Zhang, Yuwei and Ayush, Kumar and Qiao, Siyuan and Heydari, A. Ali and Narayanswamy, Girish and Xu, Max and Metwally, Ahmed and Xu, Jinhua and Garrison, Jake and Xu, Xuhai and Althoff, Tim and Liu, Yun and Kohli, Pushmeet and Zhan, Jiening and Malhotra, Mark and Patel, Shwetak and Mascolo, Cecilia and Liu, Xin and McDuff, Daniel and Yang, Yuzhe},
   title     = {{SensorLM}: Learning the Language of Wearable Sensors},
   booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
-  year      = {2025}
+  volume    = {38},
+  address   = {San Diego, CA, USA},
+  pages     = {46813--46849},
+  year      = {2025},
+  doi       = {10.52202/085713-1559},
+  note      = {{\refdoi{10.52202/085713-1559}}},
 }
 @article{xie2025chatts,
   author  = {Xie, Zhe and others},
@@ -575,51 +614,78 @@
 @inproceedings{jhamtani2021truce,
   author    = {Jhamtani, Harsh and Berg-Kirkpatrick, Taylor},
   title     = {Truth-Conditional Captions for Time Series Data},
-  booktitle = {Proceedings of EMNLP},
-  year      = {2021}
+  booktitle = {Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  address   = {Online and Punta Cana, Dominican Republic},
+  pages     = {719--733},
+  year      = {2021},
+  doi       = {10.18653/v1/2021.emnlp-main.55},
+  note      = {{\refdoi{10.18653/v1/2021.emnlp-main.55}}},
 }
 
 @inproceedings{maynez2020faithfulness,
   author    = {Maynez, Joshua and Narayan, Shashi and Bohnet, Bernd and McDonald, Ryan},
   title     = {On Faithfulness and Factuality in Abstractive Summarization},
-  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+  booktitle = {Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  address   = {Online},
   pages     = {1906--1919},
   year      = {2020},
+  doi       = {10.18653/v1/2020.acl-main.173},
+  note      = {{\refdoi{10.18653/v1/2020.acl-main.173}}},
 }
 
 @inproceedings{dhingra2019parent,
   author    = {Dhingra, Bhuwan and Faruqui, Manaal and Parikh, Ankur and Chang, Ming-Wei and Das, Dipanjan and Cohen, William},
   title     = {Handling Divergent Reference Texts when Evaluating Table-to-Text Generation},
-  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics},
+  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  address   = {Florence, Italy},
+  pages     = {4884--4895},
   year      = {2019},
+  doi       = {10.18653/v1/P19-1483},
+  note      = {{\refdoi{10.18653/v1/P19-1483}}},
 }
 
 @inproceedings{dusek2019semantic,
   author    = {Du{\v{s}}ek, Ond{\v{r}}ej and Howcroft, David M. and Rieser, Verena},
   title     = {Semantic Noise Matters for Neural Natural Language Generation},
-  booktitle = {Proceedings of the 12th International Conference on Natural Language Generation},
+  booktitle = {Proceedings of the 12th International Conference on Natural Language Generation (INLG)},
+  address   = {Tokyo, Japan},
+  pages     = {421--426},
   year      = {2019},
+  doi       = {10.18653/v1/W19-8652},
+  note      = {{\refdoi{10.18653/v1/W19-8652}}},
 }
 
 @inproceedings{nie2019simple,
   author    = {Nie, Feng and Yao, Jin-Ge and Wang, Jinpeng and Pan, Rong and Lin, Chin-Yew},
   title     = {A Simple Recipe towards Reducing Hallucination in Neural Surface Realisation},
-  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics},
+  booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (ACL)},
+  address   = {Florence, Italy},
+  pages     = {2673--2679},
   year      = {2019},
+  doi       = {10.18653/v1/P19-1256},
+  note      = {{\refdoi{10.18653/v1/P19-1256}}},
 }
 
 @inproceedings{filippova2020controlled,
   author    = {Filippova, Katja},
   title     = {Controlled Hallucinations: Learning to Generate Faithfully from Noisy Data},
   booktitle = {Findings of the Association for Computational Linguistics: EMNLP 2020},
+  address   = {Online},
+  pages     = {864--870},
   year      = {2020},
+  doi       = {10.18653/v1/2020.findings-emnlp.76},
+  note      = {{\refdoi{10.18653/v1/2020.findings-emnlp.76}}},
 }
 
 @inproceedings{gekhman2024newknowledge,
   author    = {Gekhman, Zorik and Yona, Gal and Aharoni, Roee and Eyal, Matan and Feder, Amir and Reichart, Roi and Herzig, Jonathan},
   title     = {Does Fine-Tuning {LLMs} on New Knowledge Encourage Hallucinations?},
-  booktitle = {Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing},
+  booktitle = {Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  address   = {Miami, FL, USA},
+  pages     = {7765--7784},
   year      = {2024},
+  doi       = {10.18653/v1/2024.emnlp-main.444},
+  note      = {{\refdoi{10.18653/v1/2024.emnlp-main.444}}},
 }
 
 @article{abowd1999akm,
@@ -630,6 +696,8 @@
   number  = {2},
   pages   = {251--333},
   year    = {1999},
+  doi     = {10.1111/1468-0262.00020},
+  note    = {{\refdoi{10.1111/1468-0262.00020}}},
 }
 
 @article{peters2016icp,
@@ -640,4 +708,6 @@
   number  = {5},
   pages   = {947--1012},
   year    = {2016},
+  doi     = {10.1111/rssb.12167},
+  note    = {{\refdoi{10.1111/rssb.12167}}},
 }

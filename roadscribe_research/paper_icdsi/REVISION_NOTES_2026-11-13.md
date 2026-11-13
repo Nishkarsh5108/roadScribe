@@ -80,7 +80,26 @@ The paper is now two-column IEEE (`IEEEtran` conference), 9 pages, as the profes
 | Why the spectral model failed | One pass per vehicle and place leaves little within-place speed variation, so the common channel of Eq. 1 is not identified (§V-D) |
 | No comparison with PVS's classifiers | Stated as out of scope (§VII) |
 | Mount rigidity | §VII |
-| "et al." in references | IEEE style abbreviates long author lists |
+| "et al." in references | Applied as one rule in the citation review below |
+
+## Citation review
+
+The reviewer checked all 33 references and found none fabricated or uncited.
+Every page range, DOI and author list added here was checked against Crossref, the NeurIPS proceedings BibTeX or arXiv; the reviewer's own values were not copied unchecked.
+Two of them were wrong in the review and corrected from the sources: SensorLM's eighth author (the proceedings list "Jinhua Xu"; arXiv lists "Shawn Xu") and the issue of the PVS paper (*Computing* 103(10), not 103(9) as our file had).
+
+| Point | Change |
+|---|---|
+| Intro: sensor-LM examples "driving from phones, machines from their vibration" not covered by the cited works | Narrowed to "activity and physiological signals from wearables and phones" |
+| Intro: fallback to a deterministic narrator attributed to data-to-text papers | Fallback now cited to the Simplex architecture (Sha 2001); the data-to-text papers are cited for facts, planning and checking |
+| Related work: TRUCE "checks captions with executable programs" | "grounds captions of time series in executable programs" |
+| ISO 2631-1 cut-points presented as the standard's | The Annex's bands overlap; we cut at 0.315 and at the geometric mean of each overlap (matches `roadscribe/layer1/iso2631.py`) |
+| L1-median and Procrustes citations unexplained | The sentence now names both steps (matches `roadscribe/layer1/orientation.py`) |
+| PVS "used to classify surfaces and quality" | "released with benchmarks for classifying the road surface type"; §VII says the same |
+| Two "et al." truncations, other long lists in full | Full author lists in the .bib; one IEEE rule in print (more than six authors: first author et al.) |
+| Missing pages and DOIs | Pages and DOIs for every cited entry that has them; DOIs now print (29 entries) |
+| ISO titles lower-cased by BibTeX | Titles braced; standards print as "International Standard ISO …" instead of "Tech. Rep." |
+| Inconsistent proceedings entries | Full proceedings name with acronym, location, no publisher, for every conference entry |
 
 **Still open for you:**
 - Make the repository public.
