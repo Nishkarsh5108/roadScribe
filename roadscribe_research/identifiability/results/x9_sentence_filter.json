@@ -13,9 +13,9 @@
  "P5 realizer": {
   "narratives": 28,
   "passed_whole": 0,
-  "sentences_kept_share": 0.633276740237691,
-  "supported_claims_kept_per_narrative": 20.178571428571427,
-  "supported_claims_before_per_narrative": 23.571428571428573,
+  "sentences_kept_share": 0.6451612903225806,
+  "supported_claims_kept_per_narrative": 20.535714285714285,
+  "supported_claims_before_per_narrative": 23.25,
   "remainder_all_claims_supported": 28,
   "remainder_passes_strict": 28,
   "remainder_misses_must_mention": 0
@@ -33,9 +33,9 @@
  "P6 arm B": {
   "narratives": 54,
   "passed_whole": 0,
-  "sentences_kept_share": 0.5180433039294307,
-  "supported_claims_kept_per_narrative": 18.166666666666668,
-  "supported_claims_before_per_narrative": 31.12962962962963,
+  "sentences_kept_share": 0.5212510024057738,
+  "supported_claims_kept_per_narrative": 18.314814814814813,
+  "supported_claims_before_per_narrative": 30.77777777777778,
   "remainder_all_claims_supported": 54,
   "remainder_passes_strict": 54,
   "remainder_misses_must_mention": 0

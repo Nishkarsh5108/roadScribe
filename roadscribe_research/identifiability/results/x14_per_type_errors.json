@@ -69,9 +69,9 @@
    "error_rate": 0.3114754098360656
   },
   "distance": {
-   "claims": 198,
-   "unsupported": 43,
-   "error_rate": 0.21717171717171718
+   "claims": 181,
+   "unsupported": 26,
+   "error_rate": 0.143646408839779
   },
   "duration": {
    "claims": 28,
@@ -79,14 +79,14 @@
    "error_rate": 0.0
   },
   "event_other": {
-   "claims": 69,
-   "unsupported": 17,
-   "error_rate": 0.2463768115942029
+   "claims": 46,
+   "unsupported": 15,
+   "error_rate": 0.32608695652173914
   },
   "position": {
-   "claims": 361,
-   "unsupported": 147,
-   "error_rate": 0.407202216066482
+   "claims": 384,
+   "unsupported": 158,
+   "error_rate": 0.4114583333333333
   },
   "rest": {
    "claims": 15,
@@ -97,11 +97,6 @@
    "claims": 194,
    "unsupported": 34,
    "error_rate": 0.17525773195876287
-  },
-  "unparsed": {
-   "claims": 12,
-   "unsupported": 12,
-   "error_rate": 1.0
   }
  }
 }

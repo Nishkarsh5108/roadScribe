@@ -73,8 +73,8 @@
   "narratives": 28,
   "uncovered_per_narrative": 0.17857142857142858,
   "narratives_with_uncovered": 4,
-  "after_sentence_filter_per_narrative": 0.14285714285714285,
-  "after_sentence_filter_narratives_with_uncovered": 3,
+  "after_sentence_filter_per_narrative": 0.17857142857142858,
+  "after_sentence_filter_narratives_with_uncovered": 4,
   "top": [
    [
     "bumps",

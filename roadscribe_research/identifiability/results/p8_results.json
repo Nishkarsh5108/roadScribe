@@ -3,24 +3,23 @@
  "arms": {
   "B (P6)": {
    "n": 54,
-   "claims": 2206,
-   "supported": 1681,
-   "precision": 0.7620126926563917,
+   "claims": 2175,
+   "supported": 1662,
+   "precision": 0.7641379310344828,
    "evt_claims": 876,
-   "wrong_position": 269,
-   "wrong_position_share": 0.3070776255707763,
-   "non_position_errors": 256,
-   "non_position_per_narrative": 4.7407407407407405,
+   "wrong_position": 288,
+   "wrong_position_share": 0.3287671232876712,
+   "non_position_errors": 225,
+   "non_position_per_narrative": 4.166666666666667,
    "hallucinated_missing": 6,
    "accepted": 0,
-   "claims_per_narrative": 40.851851851851855,
+   "claims_per_narrative": 40.27777777777778,
    "words_per_narrative": 297.25925925925924,
    "must_mention_missed": 0,
    "hit_token_limit": 1,
    "reasons": {
-    "unparsed_number": 48,
-    "number_mismatch": 115,
-    "wrong_position": 269,
+    "wrong_position": 288,
+    "number_mismatch": 91,
     "severity_mismatch": 22,
     "hallucinated_missing": 6,
     "comparison_mismatch": 7,
@@ -29,6 +28,7 @@
     "overclaimed_hedge": 11,
     "misattributed_maneuver": 23,
     "rest_count": 6,
+    "unparsed_number": 41,
     "unknown_range": 2
    },
    "by_value_type": {
@@ -43,9 +43,9 @@
      "error_rate": 0.05921052631578947
     },
     "distance": {
-     "claims": 422,
-     "unsupported": 54,
-     "error_rate": 0.12796208530805686
+     "claims": 398,
+     "unsupported": 30,
+     "error_rate": 0.07537688442211055
     },
     "duration": {
      "claims": 54,
@@ -53,14 +53,14 @@
      "error_rate": 0.0
     },
     "event_other": {
-     "claims": 132,
+     "claims": 101,
      "unsupported": 3,
-     "error_rate": 0.022727272727272728
+     "error_rate": 0.0297029702970297
     },
     "position": {
-     "claims": 744,
-     "unsupported": 311,
-     "error_rate": 0.41801075268817206
+     "claims": 775,
+     "unsupported": 330,
+     "error_rate": 0.4258064516129032
     },
     "rest": {
      "claims": 29,
@@ -78,39 +78,39 @@
      "error_rate": 0.02857142857142857
     },
     "unparsed": {
-     "claims": 48,
-     "unsupported": 48,
+     "claims": 41,
+     "unsupported": 41,
      "error_rate": 1.0
     }
    }
   },
   "B greedy": {
    "n": 18,
-   "claims": 739,
-   "supported": 564,
-   "precision": 0.7631935047361299,
+   "claims": 725,
+   "supported": 554,
+   "precision": 0.7641379310344828,
    "evt_claims": 298,
-   "wrong_position": 82,
-   "wrong_position_share": 0.2751677852348993,
-   "non_position_errors": 93,
-   "non_position_per_narrative": 5.166666666666667,
+   "wrong_position": 92,
+   "wrong_position_share": 0.3087248322147651,
+   "non_position_errors": 79,
+   "non_position_per_narrative": 4.388888888888889,
    "hallucinated_missing": 2,
    "accepted": 0,
-   "claims_per_narrative": 41.05555555555556,
+   "claims_per_narrative": 40.27777777777778,
    "words_per_narrative": 301.1111111111111,
    "must_mention_missed": 0,
    "hit_token_limit": 0,
    "reasons": {
-    "unparsed_number": 14,
-    "number_mismatch": 41,
-    "wrong_position": 82,
+    "wrong_position": 92,
     "overclaimed_hedge": 7,
+    "number_mismatch": 30,
     "misattributed_maneuver": 7,
     "severity_mismatch": 9,
     "unknown_range": 1,
     "event_count": 8,
     "hallucinated_missing": 2,
     "rest_count": 2,
+    "unparsed_number": 11,
     "comparison_mismatch": 2
    },
    "by_value_type": {
@@ -125,9 +125,9 @@
      "error_rate": 0.04
     },
     "distance": {
-     "claims": 142,
-     "unsupported": 20,
-     "error_rate": 0.14084507042253522
+     "claims": 131,
+     "unsupported": 9,
+     "error_rate": 0.06870229007633588
     },
     "duration": {
      "claims": 18,
@@ -135,14 +135,14 @@
      "error_rate": 0.0
     },
     "event_other": {
-     "claims": 42,
+     "claims": 28,
      "unsupported": 1,
-     "error_rate": 0.023809523809523808
+     "error_rate": 0.03571428571428571
     },
     "position": {
-     "claims": 256,
-     "unsupported": 100,
-     "error_rate": 0.390625
+     "claims": 270,
+     "unsupported": 110,
+     "error_rate": 0.4074074074074074
     },
     "rest": {
      "claims": 12,
@@ -160,33 +160,33 @@
      "error_rate": 0.0
     },
     "unparsed": {
-     "claims": 14,
-     "unsupported": 14,
+     "claims": 11,
+     "unsupported": 11,
      "error_rate": 1.0
     }
    }
   },
   "B epoch2": {
    "n": 54,
-   "claims": 2086,
-   "supported": 1568,
-   "precision": 0.7516778523489933,
+   "claims": 2049,
+   "supported": 1543,
+   "precision": 0.7530502684236213,
    "evt_claims": 841,
-   "wrong_position": 299,
-   "wrong_position_share": 0.3555291319857313,
-   "non_position_errors": 219,
-   "non_position_per_narrative": 4.055555555555555,
+   "wrong_position": 324,
+   "wrong_position_share": 0.38525564803804996,
+   "non_position_errors": 182,
+   "non_position_per_narrative": 3.3703703703703702,
    "hallucinated_missing": 5,
    "accepted": 0,
-   "claims_per_narrative": 38.629629629629626,
+   "claims_per_narrative": 37.94444444444444,
    "words_per_narrative": 272.6296296296296,
    "must_mention_missed": 0,
    "hit_token_limit": 0,
    "reasons": {
-    "unparsed_number": 55,
-    "number_mismatch": 55,
+    "wrong_position": 324,
     "misattributed_maneuver": 20,
-    "wrong_position": 299,
+    "unparsed_number": 37,
+    "number_mismatch": 36,
     "comparison_mismatch": 25,
     "severity_mismatch": 30,
     "rest_count": 4,
@@ -207,9 +207,9 @@
      "error_rate": 0.17687074829931973
     },
     "distance": {
-     "claims": 373,
-     "unsupported": 35,
-     "error_rate": 0.0938337801608579
+     "claims": 354,
+     "unsupported": 16,
+     "error_rate": 0.04519774011299435
     },
     "duration": {
      "claims": 54,
@@ -217,14 +217,14 @@
      "error_rate": 0.0
     },
     "event_other": {
-     "claims": 69,
+     "claims": 32,
      "unsupported": 1,
-     "error_rate": 0.014492753623188406
+     "error_rate": 0.03125
     },
     "position": {
-     "claims": 772,
-     "unsupported": 335,
-     "error_rate": 0.4339378238341969
+     "claims": 809,
+     "unsupported": 360,
+     "error_rate": 0.44499381953028433
     },
     "rest": {
      "claims": 36,
@@ -242,27 +242,27 @@
      "error_rate": 0.046511627906976744
     },
     "unparsed": {
-     "claims": 55,
-     "unsupported": 55,
+     "claims": 37,
+     "unsupported": 37,
      "error_rate": 1.0
     }
    }
   }
  },
  "precision B greedy - B (P6)": {
-  "diff": 0.0011808120797381916,
+  "diff": 0.0,
   "ci95": [
-   -0.038122486054975965,
-   0.034758915130796694
+   -0.04019861963677524,
+   0.03397854921622134
   ],
-  "p_le_0": 0.4593
+  "p_le_0": 0.487
  },
  "precision B epoch2 - B (P6)": {
-  "diff": -0.010334840307398396,
+  "diff": -0.01108766261086147,
   "ci95": [
-   -0.07056448556624631,
-   0.035551050789477845
+   -0.07291797283716933,
+   0.03457592828387618
   ],
-  "p_le_0": 0.6339
+  "p_le_0": 0.6417
  }
 }

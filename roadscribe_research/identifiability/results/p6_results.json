@@ -93,24 +93,23 @@
   },
   "B": {
    "n": 54,
-   "claims": 2206,
-   "supported": 1681,
-   "precision": 0.7620126926563917,
+   "claims": 2175,
+   "supported": 1662,
+   "precision": 0.7641379310344828,
    "evt_claims": 876,
-   "wrong_position": 269,
-   "wrong_position_share": 0.3070776255707763,
-   "non_position_errors": 256,
-   "non_position_per_narrative": 4.7407407407407405,
+   "wrong_position": 288,
+   "wrong_position_share": 0.3287671232876712,
+   "non_position_errors": 225,
+   "non_position_per_narrative": 4.166666666666667,
    "hallucinated_missing": 6,
    "accepted": 0,
-   "claims_per_narrative": 40.851851851851855,
+   "claims_per_narrative": 40.27777777777778,
    "words_per_narrative": 297.25925925925924,
    "must_mention_missed": 0,
    "hit_token_limit": 1,
    "reasons": {
-    "unparsed_number": 48,
-    "number_mismatch": 115,
-    "wrong_position": 269,
+    "wrong_position": 288,
+    "number_mismatch": 91,
     "severity_mismatch": 22,
     "hallucinated_missing": 6,
     "comparison_mismatch": 7,
@@ -119,6 +118,7 @@
     "overclaimed_hedge": 11,
     "misattributed_maneuver": 23,
     "rest_count": 6,
+    "unparsed_number": 41,
     "unknown_range": 2
    },
    "by_value_type": {
@@ -133,9 +133,9 @@
      "error_rate": 0.05921052631578947
     },
     "distance": {
-     "claims": 422,
-     "unsupported": 54,
-     "error_rate": 0.12796208530805686
+     "claims": 398,
+     "unsupported": 30,
+     "error_rate": 0.07537688442211055
     },
     "duration": {
      "claims": 54,
@@ -143,14 +143,14 @@
      "error_rate": 0.0
     },
     "event_other": {
-     "claims": 132,
+     "claims": 101,
      "unsupported": 3,
-     "error_rate": 0.022727272727272728
+     "error_rate": 0.0297029702970297
     },
     "position": {
-     "claims": 744,
-     "unsupported": 311,
-     "error_rate": 0.41801075268817206
+     "claims": 775,
+     "unsupported": 330,
+     "error_rate": 0.4258064516129032
     },
     "rest": {
      "claims": 29,
@@ -168,8 +168,8 @@
      "error_rate": 0.02857142857142857
     },
     "unparsed": {
-     "claims": 48,
-     "unsupported": 48,
+     "claims": 41,
+     "unsupported": 41,
      "error_rate": 1.0
     }
    }
@@ -308,22 +308,22 @@
   },
   "zs-7B": {
    "n": 54,
-   "claims": 2443,
+   "claims": 2442,
    "supported": 110,
-   "precision": 0.04502660663119116,
+   "precision": 0.04504504504504504,
    "evt_claims": 1618,
    "wrong_position": 0,
    "wrong_position_share": 0.0,
-   "non_position_errors": 2333,
-   "non_position_per_narrative": 43.2037037037037,
+   "non_position_errors": 2332,
+   "non_position_per_narrative": 43.18518518518518,
    "hallucinated_missing": 0,
    "accepted": 0,
-   "claims_per_narrative": 45.24074074074074,
+   "claims_per_narrative": 45.22222222222222,
    "words_per_narrative": 213.2037037037037,
    "must_mention_missed": 0,
    "hit_token_limit": 0,
    "reasons": {
-    "unresolved": 1469,
+    "unresolved": 1468,
     "overclaimed_hedge": 328,
     "severity_mismatch": 35,
     "unparsed_number": 477,
@@ -338,9 +338,9 @@
      "error_rate": 1.0
     },
     "distance": {
-     "claims": 92,
-     "unsupported": 53,
-     "error_rate": 0.5760869565217391
+     "claims": 91,
+     "unsupported": 52,
+     "error_rate": 0.5714285714285714
     },
     "duration": {
      "claims": 11,
@@ -378,10 +378,10 @@
  "hypotheses": {
   "P6-H1": {
    "prediction": "precision B - A >= 0.15",
-   "diff": 0.24867322623504862,
+   "diff": 0.2507984646131397,
    "ci95": [
-    0.1886924235450814,
-    0.30773850805823744
+    0.1890459545646683,
+    0.31228368230079573
    ],
    "p_le_0": 0.0,
    "holds": true
@@ -389,20 +389,20 @@
   "P6-H2": {
    "prediction": "wrong-position share C >= 2 B and A >= 2 B",
    "A": 0.19052744886975242,
-   "B": 0.3070776255707763,
+   "B": 0.3287671232876712,
    "C": 0.7707558859975217,
    "C_over_B": {
-    "ratio": 2.5099708406462042,
+    "ratio": 2.344382486575795,
     "ci95": [
-     1.7191295611871242,
-     4.409501645709824
+     1.6762260221137935,
+     3.7738043790206404
     ]
    },
    "A_over_B": {
-    "ratio": 0.6204536996650674,
+    "ratio": 0.5795209903121636,
     "ci95": [
-     0.3854940808163691,
-     1.2277802404895668
+     0.3690521445063713,
+     1.0663868914734316
     ]
    },
    "holds": false
@@ -422,10 +422,10 @@
   },
   "P6-H4": {
    "prediction": "precision B > C",
-   "diff": 0.15428609533098314,
+   "diff": 0.15641133370907423,
    "ci95": [
-    0.11720729647090045,
-    0.1931020342719913
+    0.11823870309939655,
+    0.19788729943266858
    ],
    "p_le_0": 0.0,
    "holds": true
@@ -433,18 +433,18 @@
  },
  "per_type_contrasts_exploratory": {
   "position: A - B": {
-   "diff": 0.5172005149174617,
+   "diff": 0.5094048159927306,
    "ci95": [
-    0.39134701851927933,
-    0.6608557578836377
+    0.3881981948770882,
+    0.6421865426274334
    ],
    "p_le_0": 0.0
   },
   "position: C - B": {
-   "diff": 0.40279125232435925,
+   "diff": 0.3949955533996281,
    "ci95": [
-    0.26318775308543874,
-    0.5616413198174686
+    0.25984228024838785,
+    0.5431352204010075
    ],
    "p_le_0": 0.0
   },
@@ -505,20 +505,20 @@
    "p_le_0": 0.0
   },
   "distance: A - B": {
-   "diff": -0.1253979827439543,
+   "diff": -0.07281278185800798,
    "ci95": [
-    -0.20908461922396113,
-    -0.04400536224281634
-   ],
-   "p_le_0": 1.0
-  },
-  "distance: C - B": {
-   "diff": -0.10904316638913794,
-   "ci95": [
-    -0.19585864985777512,
-    -0.023942513480585303
+    -0.15337087504665342,
+    -0.009230538466202923
    ],
    "p_le_0": 0.9976
+  },
+  "distance: C - B": {
+   "diff": -0.056457965503191626,
+   "ci95": [
+    -0.13695056736663622,
+    0.008271551528208144
+   ],
+   "p_le_0": 0.9337
   },
   "distance: A - C": {
    "diff": -0.016354816354816355,
@@ -2574,31 +2574,25 @@
     "trip": "pvs1",
     "persona": "commuter",
     "seed": 0,
-    "n_claims": 37,
+    "n_claims": 35,
     "n_sup": 28,
     "n_evt": 17,
     "wrong_pos": 7,
-    "non_pos": 2,
+    "non_pos": 0,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "unparsed_number": 1,
-     "number_mismatch": 1,
      "wrong_position": 7
     },
     "types_n": {
-     "distance": 7,
+     "distance": 6,
      "duration": 1,
      "sev": 8,
      "cmp": 3,
-     "event_other": 2,
-     "unparsed": 1,
-     "position": 15
+     "position": 17
     },
     "types_bad": {
-     "unparsed": 1,
-     "distance": 1,
      "position": 7
     },
     "words": 265,
@@ -2608,35 +2602,30 @@
     "trip": "pvs1",
     "persona": "sports_car",
     "seed": 0,
-    "n_claims": 41,
-    "n_sup": 33,
+    "n_claims": 36,
+    "n_sup": 30,
     "n_evt": 13,
-    "wrong_pos": 1,
-    "non_pos": 7,
+    "wrong_pos": 4,
+    "non_pos": 2,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 6,
-     "unparsed_number": 1,
-     "wrong_position": 1
+     "number_mismatch": 2,
+     "wrong_position": 4
     },
     "types_n": {
-     "distance": 10,
+     "distance": 6,
      "duration": 1,
      "cmp": 3,
      "sev": 7,
      "acceleration": 5,
-     "event_other": 5,
-     "unparsed": 1,
-     "position": 8,
+     "position": 13,
      "speed": 1
     },
     "types_bad": {
      "acceleration": 2,
-     "unparsed": 1,
-     "distance": 4,
-     "position": 1
+     "position": 4
     },
     "words": 264,
     "n_new_tokens": 418
@@ -2805,34 +2794,32 @@
     "trip": "pvs4",
     "persona": "sports_car",
     "seed": 0,
-    "n_claims": 38,
-    "n_sup": 29,
+    "n_claims": 37,
+    "n_sup": 28,
     "n_evt": 12,
-    "wrong_pos": 4,
-    "non_pos": 5,
+    "wrong_pos": 5,
+    "non_pos": 4,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 3,
-     "wrong_position": 4,
+     "number_mismatch": 2,
+     "wrong_position": 5,
      "misattributed_maneuver": 1,
      "event_count": 1
     },
     "types_n": {
-     "distance": 7,
+     "distance": 6,
      "duration": 1,
      "sev": 9,
      "speed": 2,
      "acceleration": 5,
-     "position": 11,
-     "event_other": 1,
+     "position": 12,
      "cmp": 2
     },
     "types_bad": {
      "acceleration": 2,
-     "position": 6,
-     "distance": 1
+     "position": 7
     },
     "words": 276,
     "n_new_tokens": 428
@@ -3186,31 +3173,25 @@
     "trip": "pvs1",
     "persona": "commuter",
     "seed": 1,
-    "n_claims": 34,
+    "n_claims": 32,
     "n_sup": 27,
     "n_evt": 14,
     "wrong_pos": 5,
-    "non_pos": 2,
+    "non_pos": 0,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "unparsed_number": 1,
-     "number_mismatch": 1,
      "wrong_position": 5
     },
     "types_n": {
      "duration": 1,
-     "distance": 7,
+     "distance": 6,
      "sev": 8,
      "cmp": 3,
-     "event_other": 2,
-     "unparsed": 1,
-     "position": 12
+     "position": 14
     },
     "types_bad": {
-     "unparsed": 1,
-     "distance": 1,
      "position": 5
     },
     "words": 261,
@@ -3220,35 +3201,30 @@
     "trip": "pvs1",
     "persona": "sports_car",
     "seed": 1,
-    "n_claims": 45,
-    "n_sup": 36,
+    "n_claims": 40,
+    "n_sup": 33,
     "n_evt": 16,
-    "wrong_pos": 1,
-    "non_pos": 8,
+    "wrong_pos": 4,
+    "non_pos": 3,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 7,
-     "unparsed_number": 1,
-     "wrong_position": 1
+     "number_mismatch": 3,
+     "wrong_position": 4
     },
     "types_n": {
-     "distance": 10,
+     "distance": 6,
      "duration": 1,
      "cmp": 3,
      "sev": 7,
      "acceleration": 6,
-     "event_other": 5,
-     "unparsed": 1,
-     "position": 11,
+     "position": 16,
      "speed": 1
     },
     "types_bad": {
      "acceleration": 3,
-     "unparsed": 1,
-     "distance": 4,
-     "position": 1
+     "position": 4
     },
     "words": 306,
     "n_new_tokens": 482
@@ -3322,29 +3298,26 @@
     "trip": "pvs3",
     "persona": "commuter",
     "seed": 1,
-    "n_claims": 33,
-    "n_sup": 31,
+    "n_claims": 32,
+    "n_sup": 30,
     "n_evt": 14,
-    "wrong_pos": 1,
-    "non_pos": 1,
+    "wrong_pos": 2,
+    "non_pos": 0,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 1,
-     "wrong_position": 1
+     "wrong_position": 2
     },
     "types_n": {
      "duration": 1,
-     "distance": 7,
+     "distance": 6,
      "sev": 8,
      "cmp": 3,
-     "position": 13,
-     "event_other": 1
+     "position": 14
     },
     "types_bad": {
-     "distance": 1,
-     "position": 1
+     "position": 2
     },
     "words": 246,
     "n_new_tokens": 364
@@ -3414,39 +3387,34 @@
     "trip": "pvs4",
     "persona": "sports_car",
     "seed": 1,
-    "n_claims": 38,
-    "n_sup": 30,
+    "n_claims": 36,
+    "n_sup": 28,
     "n_evt": 12,
-    "wrong_pos": 2,
-    "non_pos": 6,
+    "wrong_pos": 4,
+    "non_pos": 4,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 2,
-     "unparsed_number": 1,
-     "wrong_position": 2,
+     "number_mismatch": 1,
+     "wrong_position": 4,
      "misattributed_maneuver": 1,
      "event_count": 1,
      "rest_count": 1
     },
     "types_n": {
-     "distance": 6,
+     "distance": 5,
      "duration": 1,
      "sev": 9,
      "speed": 2,
      "acceleration": 4,
-     "event_other": 2,
-     "unparsed": 1,
-     "position": 10,
+     "position": 12,
      "cmp": 2,
      "rest": 1
     },
     "types_bad": {
      "acceleration": 1,
-     "unparsed": 1,
-     "distance": 1,
-     "position": 4,
+     "position": 6,
      "rest": 1
     },
     "words": 269,
@@ -3776,34 +3744,32 @@
     "trip": "pvs9",
     "persona": "sports_car",
     "seed": 1,
-    "n_claims": 38,
-    "n_sup": 31,
+    "n_claims": 37,
+    "n_sup": 30,
     "n_evt": 14,
-    "wrong_pos": 1,
-    "non_pos": 6,
+    "wrong_pos": 2,
+    "non_pos": 5,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
      "unparsed_number": 4,
-     "number_mismatch": 1,
-     "wrong_position": 1,
+     "wrong_position": 2,
      "misattributed_maneuver": 1
     },
     "types_n": {
-     "distance": 7,
+     "distance": 6,
      "duration": 1,
      "cmp": 3,
      "sev": 6,
      "acceleration": 3,
-     "event_other": 5,
+     "event_other": 4,
      "unparsed": 4,
-     "position": 9
+     "position": 10
     },
     "types_bad": {
      "unparsed": 4,
-     "distance": 1,
-     "position": 2
+     "position": 3
     },
     "words": 235,
     "n_new_tokens": 377
@@ -3812,32 +3778,26 @@
     "trip": "pvs1",
     "persona": "commuter",
     "seed": 2,
-    "n_claims": 38,
-    "n_sup": 31,
+    "n_claims": 32,
+    "n_sup": 27,
     "n_evt": 15,
-    "wrong_pos": 1,
-    "non_pos": 6,
+    "wrong_pos": 5,
+    "non_pos": 0,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "unparsed_number": 1,
-     "number_mismatch": 5,
-     "wrong_position": 1
+     "wrong_position": 5
     },
     "types_n": {
-     "distance": 11,
+     "distance": 6,
      "duration": 1,
      "cmp": 3,
      "sev": 7,
-     "event_other": 6,
-     "unparsed": 1,
-     "position": 9
+     "position": 15
     },
     "types_bad": {
-     "unparsed": 1,
-     "distance": 5,
-     "position": 1
+     "position": 5
     },
     "words": 267,
     "n_new_tokens": 397
@@ -3846,37 +3806,37 @@
     "trip": "pvs1",
     "persona": "sports_car",
     "seed": 2,
-    "n_claims": 43,
-    "n_sup": 33,
+    "n_claims": 42,
+    "n_sup": 32,
     "n_evt": 14,
-    "wrong_pos": 0,
-    "non_pos": 10,
+    "wrong_pos": 1,
+    "non_pos": 9,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 4,
+     "number_mismatch": 3,
      "unparsed_number": 4,
+     "wrong_position": 1,
      "misattributed_maneuver": 1,
      "rest_count": 1
     },
     "types_n": {
-     "distance": 6,
+     "distance": 5,
      "duration": 1,
      "cmp": 3,
      "sev": 7,
      "acceleration": 6,
-     "event_other": 5,
+     "event_other": 4,
      "unparsed": 4,
-     "position": 9,
+     "position": 10,
      "speed": 1,
      "rest": 1
     },
     "types_bad": {
      "acceleration": 3,
      "unparsed": 4,
-     "distance": 1,
-     "position": 1,
+     "position": 2,
      "rest": 1
     },
     "words": 276,
@@ -4046,33 +4006,31 @@
     "trip": "pvs4",
     "persona": "sports_car",
     "seed": 2,
-    "n_claims": 40,
-    "n_sup": 31,
+    "n_claims": 39,
+    "n_sup": 30,
     "n_evt": 13,
-    "wrong_pos": 4,
-    "non_pos": 5,
+    "wrong_pos": 5,
+    "non_pos": 4,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 4,
-     "wrong_position": 4,
+     "number_mismatch": 3,
+     "wrong_position": 5,
      "event_count": 1
     },
     "types_n": {
-     "distance": 7,
+     "distance": 6,
      "duration": 1,
      "sev": 9,
      "speed": 2,
      "acceleration": 6,
-     "position": 12,
-     "event_other": 1,
+     "position": 13,
      "cmp": 2
     },
     "types_bad": {
      "acceleration": 3,
-     "position": 5,
-     "distance": 1
+     "position": 6
     },
     "words": 271,
     "n_new_tokens": 426
@@ -4359,32 +4317,30 @@
     "trip": "pvs9",
     "persona": "commuter",
     "seed": 2,
-    "n_claims": 36,
-    "n_sup": 30,
+    "n_claims": 32,
+    "n_sup": 28,
     "n_evt": 14,
-    "wrong_pos": 0,
-    "non_pos": 6,
+    "wrong_pos": 2,
+    "non_pos": 2,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "number_mismatch": 4,
-     "unparsed_number": 1,
+     "number_mismatch": 1,
+     "wrong_position": 2,
      "misattributed_maneuver": 1
     },
     "types_n": {
-     "distance": 11,
+     "distance": 8,
      "duration": 1,
      "sev": 7,
-     "event_other": 9,
-     "unparsed": 1,
-     "cmp": 2,
-     "position": 5
+     "event_other": 5,
+     "position": 9,
+     "cmp": 2
     },
     "types_bad": {
-     "distance": 4,
-     "unparsed": 1,
-     "position": 1
+     "distance": 1,
+     "position": 3
     },
     "words": 253,
     "n_new_tokens": 372
@@ -8972,30 +8928,30 @@
     "trip": "pvs4",
     "persona": "commuter",
     "seed": 2,
-    "n_claims": 22,
+    "n_claims": 21,
     "n_sup": 0,
     "n_evt": 6,
     "wrong_pos": 0,
-    "non_pos": 22,
+    "non_pos": 21,
     "missing": 0,
     "accepted": false,
     "must_missed": 0,
     "reasons": {
-     "unresolved": 11,
+     "unresolved": 10,
      "unparsed_number": 11
     },
     "types_n": {
      "sev": 1,
      "unparsed": 11,
      "event_other": 5,
-     "distance": 4,
+     "distance": 3,
      "position": 1
     },
     "types_bad": {
      "sev": 1,
      "unparsed": 11,
      "event_other": 5,
-     "distance": 4,
+     "distance": 3,
      "position": 1
     },
     "words": 157,
