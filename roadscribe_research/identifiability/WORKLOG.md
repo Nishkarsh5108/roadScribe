@@ -699,7 +699,7 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - Invented place names and map tags fall sharply.
     - Precision rises by less than half of the 48.5% → 69.4% gap.
     - No narrative is accepted.
-- 11:12: **D29 reruns.**
+- 11:06: **D29 reruns.**
   - Arm B: precision 0.762 → 0.764; distance errors 13% → 8%; positions 42% → 43% (775 claims); accepted still 0.
   - Arms A and C, the template, regen, P5 and X6 are unchanged; P5 distance errors 22% → 14%.
   - P6 verdicts unchanged:
@@ -708,7 +708,7 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
     - H3: held.
     - H4: B − C = 0.156 [0.118, 0.198], held.
   - P8: greedy 0.764; second epoch 0.753.
-- 11:15: **X16, accuracy without the speed floor** (`x16_accuracy_speed_floor.py`, exploratory; same held-out scheme as P7-H5). Accuracy, then balanced accuracy:
+- 11:07: **X16, accuracy without the speed floor** (`x16_accuracy_speed_floor.py`, exploratory; same held-out scheme as P7-H5). Accuracy, then balanced accuracy:
 
   | Floor | Places | Bad rows | Calibrated | Uncalibrated | Ride | Majority |
   |---|---|---|---|---|---|---|
@@ -717,4 +717,4 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   | 5 m/s | 310 | 14 | 98.3%, 0.82 | 90.5%, 0.66 | | |
 
   - With the "bad" places included, calibration's advantage in balanced accuracy is larger. The headline in the paper becomes the no-floor number.
-- 11:20: **P9 pushed** (the capsules are embedded in the kernel because the Kaggle dataset upload kept failing).
+- 11:08: **P9 pushed** (the capsules are embedded in the kernel because the Kaggle dataset upload kept failing).
