@@ -8,15 +8,10 @@ Conversely, the verifier made the model's failures safe without making the model
 Both problems were visible before deployment, the first in paired recordings and the second in the training set.
 
 \paragraph*{What a narrator may state}
-On PVS, the two tests give a simple policy:
-\begin{itemize}
-\item ride classes, which are worded as vehicle-specific, may be stated for any vehicle;
-\item road classes, only for vehicles calibrated on shared roads;
-\item ``rough because of speed'', only with an elasticity estimated within places;
-\item event positions, only hedged, as single-pass observations;
-\item for the 3B model we studied, values in model-written sentences, only if code wrote them.
-\end{itemize}
-Larger models or decoding constrained to copy from the frames may relax the last point; we did not test them.
+On PVS, the two tests lead to a simple policy.
+Ride classes are worded as vehicle-specific and may be stated for any vehicle. Road classes should be stated only for vehicles calibrated on shared roads, and ``rough because of speed'' only with an elasticity estimated within places.
+Event positions are single-pass observations and should always be hedged.
+For the 3B model we studied, a value in a model-written sentence should appear only if code wrote it. Larger models, or decoding constrained to copy from the frames, may relax this last rule; we did not test them.
 
 \paragraph*{What the calibration needs}
 For agreement between vehicles, one gain per vehicle was enough. It could be estimated from about a kilometre of road that all the vehicles had driven, a condition that fleets and repeated commutes meet, provided the mount stays fixed between trips.
@@ -32,13 +27,10 @@ The held-out balanced accuracy on PVS quality labels (0.87 over all 361 places) 
 We did not compare against the classifiers trained on the full IMU spectrum~\cite{menegazzo2021pvs}. Our question is whether the narrator's scalar can be trusted, not which classifier is best.
 
 \paragraph*{Limitations}
-\begin{itemize}
-\item PVS has three vehicle--driver pairs and one pass per vehicle and route. Vehicle and driver are therefore confounded, and our intervals do not cover the sampling of vehicles.
-\item The sensors are fixed modules, not phones in holders, and the size of the vehicle signature depends on the mount (2.9--18.2\%).
-\item The language models were fine-tuned for one or two epochs on synthetic, template-style narratives.
-\item The verifier's extraction recall was not measured by hand.
-\item We did not evaluate question answering, unseen audiences, reader preferences, or on-device cost.
-\end{itemize}
+PVS has three vehicle--driver pairs and one pass per vehicle and route, so vehicle and driver are confounded and our intervals do not cover the sampling of vehicles.
+Its sensors are fixed modules rather than phones in holders, and the size of the vehicle signature depends on the mount (2.9--18.2\%).
+The language models were fine-tuned for one or two epochs on synthetic, template-style narratives, and we did not measure the verifier's extraction recall by hand.
+Nor did we evaluate question answering, unseen audiences, reader preferences or on-device cost.
 
 \section{Conclusion}
 \label{sec:conclusion}

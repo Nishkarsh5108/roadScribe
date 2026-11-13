@@ -47,12 +47,9 @@ P7 & 11-13 00:43 & \texttt{5891276} & Noise floor, data efficiency, held-out acc
 \subsection{Agreement across vehicles}
 \label{sec:invariance}
 Ride classes \emph{should} differ between vehicles. Road classes are worded as properties of the road (``the surface is in fair condition''), so they should agree.
-They do not (Table~\ref{tab:invariance}):
-\begin{itemize}
-\item the road class differs between two vehicles at the same place in 76\% of pairs;
-\item all three vehicles agree at only 4.5\% of places;
-\item the vehicle accounts for 18.2\% of the variance of the log road value, net of place and log speed.
-\end{itemize}
+They do not (Table~\ref{tab:invariance}).
+The road class differs between two vehicles at the same place in 76\% of pairs, and all three vehicles agree at only 4.5\% of places.
+Net of place and log speed, the vehicle accounts for 18.2\% of the variance of the log road value.
 Shuffling vehicle labels within places 1{,}000 times gives a vehicle share of 0.06\% (99th percentile 0.27\%).
 The residual, which contains any place-by-vehicle interaction, is only 2.1\% of the variance, so the vehicles differ mainly by a constant factor.
 
@@ -100,11 +97,9 @@ An elasticity for decoupling has to come from repeated passes over the same plac
 \subsection{Calibration on shared roads}
 \label{sec:calibration}
 We calibrate leave one route out: $\hat\gamma$ and $\hat g_c$ come from Eq.~\eqref{eq:fe} on the other two routes, and the held-out route gets Eq.~\eqref{eq:cal}.
-\begin{itemize}
-\item \emph{Estimates.} They are stable across held-out routes: $\hat\gamma=0.87$--$0.88$, and gains of about $+0.04$, $-0.36$ and $+0.32$ log units. At the same place and speed, the third vehicle reads almost twice as high as the second.
-\item \emph{Agreement.} Cross-vehicle $\kappa$ rises from 0.72 to 0.96 (difference [0.20, 0.33]; Table~\ref{tab:invariance}), which closes 92\% of the gap to the same-vehicle floor. On the right logger, $\kappa$ rises from 0.72 to 0.95.
-\item \emph{Speed.} The road value no longer rises with speed at a fixed place (slope $-0.04$).
-\end{itemize}
+The estimates hardly change with the held-out route: $\hat\gamma=0.87$--$0.88$, and the gains are about $+0.04$, $-0.36$ and $+0.32$ log units. At the same place and speed, the third vehicle reads almost twice as high as the second.
+After calibration, cross-vehicle $\kappa$ rises from 0.72 to 0.96 (difference [0.20, 0.33]; Table~\ref{tab:invariance}), closing 92\% of the gap to the same-vehicle floor, and on the right logger it rises from 0.72 to 0.95.
+The road value also stops rising with speed at a fixed place (slope $-0.04$).
 Because the gains hardly change between routes, a near-zero residual vehicle share is almost automatic. The gain in agreement is not: it requires a small place-by-vehicle interaction, which the floor comparison confirms.
 
 \emph{Which part works.}
@@ -116,12 +111,10 @@ Agreement therefore comes from the per-vehicle gain. The within-place elasticity
 We fitted the calibration on $K$~km of randomly chosen 1~km blocks of the other routes (200 draws). The median $\kappa$ is 0.95 [0.83, 0.98] for $K=0.5$ and 0.96 [0.91, 0.99] for $K=1$, as with all shared road.
 
 \emph{Agreement or correctness.}
-Agreement does not show that a class describes the road. We therefore predicted the quality label of each route and vehicle from the 1-D road value:
-\begin{itemize}
-\item calibration and class cut-points were fitted without the test route, and the cut-points also without the test vehicle;
-\item the test vehicle's gain came from its own drives on the other routes. A vehicle that has never shared a road with others cannot be calibrated, and the claim is not that it can.
-\end{itemize}
-Results over all 361 places (exploratory extension of P7):
+Agreement does not show that a class describes the road, so we also predicted the quality label of each route and vehicle from the 1-D road value.
+Calibration and class cut-points were fitted without the test route, and the cut-points also without the test vehicle.
+The test vehicle's gain came from its own drives on the other routes; a vehicle that has never shared a road with others cannot be calibrated, and we do not claim otherwise.
+Over all 361 places (an exploratory extension of P7), the results were as follows.
 
 \begin{center}
 \scriptsize

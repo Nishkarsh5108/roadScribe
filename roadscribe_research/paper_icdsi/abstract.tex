@@ -1,7 +1,7 @@
 \begin{abstract}
 Three cars drive the same 100~m of well-kept asphalt. A trip narrator that checks every sentence against its measurements describes the stretch as in \emph{excellent}, \emph{good} and \emph{fair} condition, and all three narratives pass verification.
-The fault lies in what the narrator is allowed to claim, not in its checking.
-Verification against computed facts establishes faithfulness, not truth, whenever a claim is not \emph{identifiable}. This happens at two levels. At the world level, a computed value may depend on nuisances that one recording cannot separate, such as the vehicle and its speed. At the input level, a fine-tuned model's training targets may state values its input does not contain.
+The checking works; the trouble is what the narrator was allowed to claim.
+Verification against computed facts shows that a narrative is faithful to them, which does not make it true when a claim is not \emph{identifiable}. This happens at two levels. At the world level, a computed value may depend on nuisances that one recording cannot separate, such as the vehicle and its speed. At the input level, a fine-tuned model's training targets may state values its input does not contain.
 We give a cheap test for each level and apply both to RoadScribe, a verified narrator of vehicle vibration.
 On the PVS dataset, where three vehicles drove the same routes, a stretch's road class differed between two vehicles in 76\% of comparisons, while two sensors in one vehicle agreed at $\kappa=0.98$.
 One gain per vehicle, estimated on about 1~km of shared road, raised cross-vehicle agreement from $\kappa=0.72$ to $0.96$, and raised the balanced accuracy of road-quality labels on held-out routes from 0.69 to 0.87.

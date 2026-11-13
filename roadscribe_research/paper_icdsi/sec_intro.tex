@@ -9,35 +9,19 @@ The measurements were correct too; they describe the car as much as the road.
 Language models are increasingly asked to describe sensor data: activity from wearables, driving from phones, machines from their vibration~\cite{xu2024penetrative,li2025sensorllm,zhang2025sensorlm}.
 The established answer to the question of trust is to compile the measurements into facts, generate text from them, and verify every claim, falling back to a deterministic narrator when verification fails~\cite{wiseman2017challenges,moryossef2019step,jhamtani2021truce}.
 Such a system is \emph{faithful}: it never says what its facts do not say~\cite{maynez2020faithfulness}.
-This paper is about what faithfulness leaves open.
-A verifier compares a sentence with a value. It cannot tell whether the value determines what the sentence asserts, and we call a claim \emph{identifiable} when it does. Identifiability can fail at two levels.
-At the \emph{world level}, the value is not a property of the thing the sentence describes, as in the opening example.
-At the \emph{input level}, a fine-tuned narrator is trained on targets that state values its input does not contain. It learns to produce such values without evidence, and the verifier then rejects its output: safely, but uselessly.
+Faithfulness still leaves a question open. A verifier compares a sentence with a value, but it cannot tell whether the value determines what the sentence asserts. We call a claim \emph{identifiable} when it does, and identifiability can fail in two ways.
+At the \emph{world level}, the value is not a property of the thing the sentence describes, as in the opening example, where the road value depends on the car.
+At the \emph{input level}, a fine-tuned narrator is trained on targets that state values its input does not contain. It learns to produce such values without evidence, and the verifier then rejects its output, which keeps the reader safe but leaves the model of little use.
 
 \paragraph*{Contributions}
 \begin{enumerate}
-\item \emph{Two-level claim identifiability, with an operational test for each level} (Section~\ref{sec:ident}).
-  \begin{itemize}
-  \item The world-level test compares cross-condition agreement with a same-condition noise floor and a placebo.
-  \item The input-level test is a typed audit of whether each value the training targets state is present in the input.
-  \item Both tests are cheap, independent of the model, and applicable to other sensor-to-text systems.
-  \end{itemize}
-\item \emph{World-level evidence} (Section~\ref{sec:world}), from analyses specified in advance.
-  \begin{itemize}
-  \item RoadScribe's road class differs between two vehicles at the same place in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value. Two sensors in one vehicle agree at $\kappa=0.98$.
-  \item A speed elasticity estimated across places has the wrong sign.
-  \item One gain per vehicle, estimated on about a kilometre of shared road, raises cross-vehicle agreement from $\kappa=0.72$ to $0.96$. On routes held out from calibration and classification, it raises the balanced accuracy of road-quality labels from 0.69 to 0.87.
-  \end{itemize}
-\item \emph{Input-level evidence from a controlled experiment} (Section~\ref{sec:input}). We fine-tuned the same model three times on the same 1{,}200 targets, changing only whether the input contains the values the targets state.
-  \begin{itemize}
-  \item Adding the values raised claim precision from 51\% to 76\% (difference 0.25 [0.19, 0.31]).
-  \item Errors moved type by type with what the input lacked. Positions were 94\% wrong without them and 43\% with them; speeds 87\% wrong (of 15 claims) without them and 3\% (of 35) with them.
-  \item Even with every value present, no narrative passed verification.
-  \end{itemize}
+\item \emph{Two-level claim identifiability} (Section~\ref{sec:ident}). We give a cheap, model-independent test for each level. At the world level it compares cross-condition agreement with a same-condition noise floor and a placebo; at the input level it is a typed audit of whether each value the training targets state is present in the input. Both tests carry over to other sensor-to-text systems.
+\item \emph{World-level evidence} (Section~\ref{sec:world}) from analyses specified in advance. RoadScribe's road class differs between two vehicles at the same place in 76\% of comparisons, and the vehicle explains 18\% of the variance of the road value, while two sensors in one vehicle agree at $\kappa=0.98$. A speed elasticity estimated across places even has the wrong sign. One gain per vehicle, estimated on about a kilometre of shared road, raises cross-vehicle agreement from $\kappa=0.72$ to $0.96$, and on routes held out from calibration and classification it raises the balanced accuracy of road-quality labels from 0.69 to 0.87.
+\item \emph{A controlled input-level experiment} (Section~\ref{sec:input}). We fine-tuned the same model three times on the same 1{,}200 targets and changed only whether the input contained the values the targets state. Adding the values raised claim precision from 51\% to 76\% (difference 0.25 [0.19, 0.31]), and errors moved type by type with what the input lacked: positions were 94\% wrong without them and 43\% with them, and speeds 87\% wrong (of 15 claims) without them against 3\% (of 35) with them. Even with every value present, no narrative passed verification.
 \item \emph{A design consequence.} When the model only selects content and code writes the values, every valid model plan yields a verified narrative.
 \end{enumerate}
 
 \paragraph*{Scope}
-We propose no new roughness estimator, language model or verifier. Per-vehicle calibration is established practice~\cite{sayers1986iri}.
+We propose no new roughness estimator, language model or verifier, and per-vehicle calibration is established practice~\cite{sayers1986iri}.
 Our claims concern which statements a sensor-to-text system may make, and how to test this before deployment.
 They rest on one public dataset (three vehicle--driver pairs, one pass per route, fixed sensor modules rather than phones) and on a synthetic training corpus.
