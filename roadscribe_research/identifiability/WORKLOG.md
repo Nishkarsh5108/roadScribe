@@ -718,3 +718,32 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
 
   - With the "bad" places included, calibration's advantage in balanced accuracy is larger. The headline in the paper becomes the no-floor number.
 - 11:08: **P9 pushed** (the capsules are embedded in the kernel because the Kaggle dataset upload kept failing).
+- 11:34: **P9 finished** (`p9_eval.py` → `results/p9_results.json`). The first adapter on the rebuilt capsules, compared with the old capsules:
+
+  | | Old capsules | Rebuilt capsules |
+  |---|---|---|
+  | Precision | 0.485 | 0.461 |
+  | Accepted | 0 | 0 |
+  | Invented place names | 47 | 35 |
+  | Invented map tags | 41 | 43 |
+  | Missing-value claims | 27 | 19 |
+  | Position error | 86% | 89% |
+
+  - Predictions:
+    - "Names and tags fall sharply": **not held**. The model invents map tags even without the map channel; it was trained to always state them.
+    - "Precision rises by less than half the gap": held trivially, since precision fell.
+    - "None accepted": held.
+  - **Conclusion:** P5's 48.5% → 69.4% comes from the plan–ground–realize retraining, not from the capsule fix. Added to §VI-A.
+- 11:10–11:36: **Two-column IEEE version** (`IEEEtran`, conference), 9 pages. The LNCS version is kept at tag `icdsi-llncs-15pp`.
+  - **Title:** "Same Road, Three Stories: Why Verified Sensor Narratives Can Still Be Wrong". The abstract and introduction open with the three-cars example.
+  - **Second-review fixes:**
+    - Teacher named: Claude Opus 5.5.
+    - "Pre-registered" becomes "specified in advance", with the self-hosted-timestamp caveat and P7 noted as added after the first review.
+    - The held-out scheme is described exactly; headline accuracy is now balanced accuracy over all 361 places (0.69 → 0.87).
+    - Table II footnote: the near-zero share holds by construction.
+    - Position error vs wrong-position share are defined; 86% → 41% is used for P5.
+    - Speed claim counts are given, and the degenerate CI is removed.
+    - The spectral failure is explained.
+    - The policy is limited to "the 3B model we studied"; constrained decoding is noted as untested.
+    - Mount rigidity and no comparison with PVS's full-spectrum classifiers are noted.
+    - The verifier's recall is listed as not measured.

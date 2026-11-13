@@ -26,7 +26,7 @@ T, template & 18 & 18 & 59.2 & 100\% \\
 T+V, template with wording variants & 18 & 18 & 59.1 & 100\% \\
 Model: capsule $\to$ plan + text, 300 tokens & 18 & 5\textsuperscript{a} & 2.4\textsuperscript{a} & 100\%\textsuperscript{a} \\
 Model: capsule $\to$ plan + text, 1{,}024 tokens & 54 & 0 & 46.2 & 48.5\% \\
-\quad same, rebuilt capsules (exploratory) & 54 & \PNINEACC & \PNINECL & \PNINEPL \\
+\quad same, rebuilt capsules (exploratory) & 54 & 0 & 46.1 & 46.1\% \\
 Model: plan--ground--realize (P5) & 54 & 0 & 34.0\textsuperscript{b} & 69.4\% \\
 Model plan, template realizer (exploratory) & 54 & 28 & 52.4\textsuperscript{b} & 100\% \\
 \bottomrule
@@ -57,7 +57,13 @@ None of the 7{,}793 event positions and none of the 2{,}621 speeds stated in the
 Distances and durations, which the capsule does contain, almost always appear.
 On PVS, the model's errors follow the audit type by type. Its position, speed and acceleration claims are 86\%, 98\% and 80\% wrong; its distance claims are 1.2\% wrong, and none of its durations are.
 A lenient match, which accepts any number in the input after unit conversion, finds 21\% of the positions, mostly by coincidence.
-The synthetic capsules also always carried street names and map tags. The PVS capsules lack them but still listed a map channel, and the model filled that gap. \PNINETEXT
+The synthetic capsules also always carried street names and map tags. The PVS capsules lack them but still listed a map channel, and the model filled that gap.
+Rebuilding the capsules without that channel did not help this model (exploratory):
+\begin{itemize}
+\item $P_L$ was 46.1\%, and no narrative passed;
+\item it still invented 35 place names and 43 map tags.
+\end{itemize}
+The improvement reported in Section~\ref{sec:pgr} therefore comes from the retraining, not from the capsule fix.
 
 \begin{table}[t]
 \caption{Input-level audit: share of the values stated in the training targets that the input contains as a field of the same type (rounded to the stated precision). Orig.: the first adapter's 2{,}696 records (mentions counted there). Err.: that model's error rate for claims of the type on PVS. A--C: arms of the controlled test (same 1{,}200 targets).}

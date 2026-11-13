@@ -59,3 +59,30 @@ This note maps each point of the simulated ICDSI review (scores 3 / 4 / 3) to wh
 3. **ICDSI page limit.** The paper is 15 pages including references; check the CFP.
 4. **Dual submission.** Make sure no IMWUT version is under review at the same time.
 5. **Hand-annotation of verifier recall.** About ten narratives annotated by a person would close the remaining reviewer point.
+
+# Second review (Gemini, 2026-11-13 morning) and the two-column version
+
+The paper is now two-column IEEE (`IEEEtran` conference), 9 pages, as the professor asked (8–10). The title is *Same Road, Three Stories: Why Verified Sensor Narratives Can Still Be Wrong*, and the abstract and introduction open with the three-cars example (Table III).
+
+| Review point | What changed |
+|---|---|
+| Red `[TBD]` for the teacher model | Claude Opus 5.5 (Anthropic), §VI-A |
+| Verifier bug: "the 0.0 and 0.05 km marks" read as a length | Fixed (D29: positions may have two decimals; new test). Everything rescored. Arm B: P_L 76.2% → 76.4%, distance errors 13% → 8%, still 0 accepted. P6 verdicts unchanged |
+| P5 comparison confounded by rebuilt capsules | P9 (exploratory, declared first): the first adapter on the rebuilt capsules gets P_L 46.1%, 0 accepted, 35 names and 43 map tags invented. The gain comes from the retraining |
+| 86% vs 40% position error | Two measures defined (position error; wrong-position share). §VI-C now uses position error, 86% → 41% |
+| Tiny speed counts; degenerate CI | Counts stated (15 vs 35 vs 34; 1 error each in B and C); the CI is removed |
+| Overgeneralization from one 3B model | The policy is limited to "the 3B model we studied"; larger models and constrained decoding are named as untested |
+| 300-token row has 18 runs | The protocol says so |
+| 5 m/s floor removes 71% of "bad" places | Accuracy without the floor (361 places, exploratory): 94.6% vs 87.3%, balanced 0.87 vs 0.69; bad passes 50 vs 24 of 69. The abstract and introduction now use balanced accuracy |
+| "Held-out routes and vehicles" overstated | The scheme is stated exactly: the test vehicle's gain comes from its own drives on the other routes; an unseen vehicle cannot be calibrated |
+| "Pre-registered" over a 24 h window, self-hosted | Now "specified in advance", with the caveat that commits are in an author-controlled repository; P7 is marked as added after a review round |
+| < 0.1% vehicle share is near-automatic | Table II footnote |
+| Why the spectral model failed | One pass per vehicle and place leaves little within-place speed variation, so the common channel of Eq. 1 is not identified (§V-D) |
+| No comparison with PVS's classifiers | Stated as out of scope (§VII) |
+| Mount rigidity | §VII |
+| "et al." in references | IEEE style abbreviates long author lists |
+
+**Still open for you:**
+- Make the repository public.
+- Confirm the template with the organisers. The professor said two-column; IEEEtran is the usual choice, but check whether ICDSI supplies its own.
+- The recall annotation.

@@ -1,0 +1,168 @@
+{
+ "label": "EXPLORATORY (declared in WORKLOG before running)",
+ "first adapter, old capsules (regen)": {
+  "n": 54,
+  "accepted": 0,
+  "precision": 0.48455675892498995,
+  "claims_per_narrative": 46.166666666666664,
+  "wrong_anchor": 47,
+  "wrong_map_tag": 41,
+  "hallucinated_missing": 27,
+  "by_value_type": {
+   "acceleration": {
+    "claims": 146,
+    "unsupported": 116,
+    "error_rate": 0.7945205479452054
+   },
+   "anchor": {
+    "claims": 88,
+    "unsupported": 88,
+    "error_rate": 1.0
+   },
+   "cmp": {
+    "claims": 102,
+    "unsupported": 41,
+    "error_rate": 0.4019607843137255
+   },
+   "distance": {
+    "claims": 347,
+    "unsupported": 4,
+    "error_rate": 0.011527377521613832
+   },
+   "duration": {
+    "claims": 54,
+    "unsupported": 0,
+    "error_rate": 0.0
+   },
+   "event_other": {
+    "claims": 269,
+    "unsupported": 97,
+    "error_rate": 0.36059479553903345
+   },
+   "position": {
+    "claims": 892,
+    "unsupported": 770,
+    "error_rate": 0.8632286995515696
+   },
+   "rest": {
+    "claims": 18,
+    "unsupported": 5,
+    "error_rate": 0.2777777777777778
+   },
+   "sev": {
+    "claims": 493,
+    "unsupported": 81,
+    "error_rate": 0.1643002028397566
+   },
+   "speed": {
+    "claims": 44,
+    "unsupported": 43,
+    "error_rate": 0.9772727272727273
+   },
+   "unparsed": {
+    "claims": 40,
+    "unsupported": 40,
+    "error_rate": 1.0
+   }
+  },
+  "reasons": {
+   "wrong_position": 470,
+   "event_count": 261,
+   "number_mismatch": 163,
+   "overclaimed_hedge": 132,
+   "wrong_anchor": 47,
+   "wrong_surface": 42,
+   "wrong_map_tag": 41,
+   "unparsed_number": 40,
+   "hallucinated_missing": 27,
+   "severity_mismatch": 22,
+   "comparison_mismatch": 17,
+   "unsupported_cause": 13,
+   "misattributed_maneuver": 9,
+   "no_history": 1
+  }
+ },
+ "first adapter, rebuilt capsules (P9)": {
+  "n": 54,
+  "accepted": 0,
+  "precision": 0.46079613992762364,
+  "claims_per_narrative": 46.05555555555556,
+  "wrong_anchor": 35,
+  "wrong_map_tag": 43,
+  "hallucinated_missing": 19,
+  "by_value_type": {
+   "acceleration": {
+    "claims": 143,
+    "unsupported": 117,
+    "error_rate": 0.8181818181818182
+   },
+   "anchor": {
+    "claims": 79,
+    "unsupported": 79,
+    "error_rate": 1.0
+   },
+   "cmp": {
+    "claims": 99,
+    "unsupported": 40,
+    "error_rate": 0.40404040404040403
+   },
+   "distance": {
+    "claims": 333,
+    "unsupported": 2,
+    "error_rate": 0.006006006006006006
+   },
+   "duration": {
+    "claims": 54,
+    "unsupported": 0,
+    "error_rate": 0.0
+   },
+   "event_other": {
+    "claims": 247,
+    "unsupported": 109,
+    "error_rate": 0.44129554655870445
+   },
+   "position": {
+    "claims": 933,
+    "unsupported": 834,
+    "error_rate": 0.8938906752411575
+   },
+   "rest": {
+    "claims": 18,
+    "unsupported": 5,
+    "error_rate": 0.2777777777777778
+   },
+   "sev": {
+    "claims": 507,
+    "unsupported": 87,
+    "error_rate": 0.17159763313609466
+   },
+   "speed": {
+    "claims": 52,
+    "unsupported": 46,
+    "error_rate": 0.8846153846153846
+   },
+   "unparsed": {
+    "claims": 22,
+    "unsupported": 22,
+    "error_rate": 1.0
+   }
+  },
+  "reasons": {
+   "wrong_position": 503,
+   "event_count": 270,
+   "number_mismatch": 165,
+   "overclaimed_hedge": 158,
+   "wrong_surface": 44,
+   "wrong_map_tag": 43,
+   "wrong_anchor": 35,
+   "severity_mismatch": 28,
+   "unparsed_number": 22,
+   "hallucinated_missing": 19,
+   "comparison_mismatch": 17,
+   "unsupported_cause": 15,
+   "unresolved": 14,
+   "misattributed_maneuver": 7,
+   "no_history": 1
+  }
+ }
+}
