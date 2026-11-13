@@ -646,3 +646,12 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
   - Arm B with greedy decoding (18 runs): precision 0.763 vs 0.762 sampled; difference +0.001 [−0.038, 0.035]. Accepted 0. Position errors 39%, acceleration errors 43%.
   - The prediction held: decoding does not explain the copying errors.
 - 04:21: Paper: added 'What a narrator may state' (the policy implied by both tests) to §7; still 15 pages.
+- 05:33: **P8 epoch2 finished.** One more epoch on `train_B` from arm B's adapter.
+  - Training: 77 min; mean loss 0.090, against 0.389 in the first epoch.
+  - Precision 0.752 vs 0.762; difference −0.010 [−0.071, 0.036]. Accepted 0.
+  - Errors: positions 43% (unchanged), accelerations 23% (from 41%), distances 9%, speeds 5%.
+  - **Predictions:**
+    - "Greedy gains less than 0.05, no acceptance": held.
+    - "A second epoch gains more than 0.05": **did not hold** (−0.01).
+    - "Acceptance at most 10%; position errors above 20%": held.
+  - Conclusion: for a 3B model, mis-copying of positions survives both greedy decoding and more training. This strengthens the paper's design consequence that code, not the model, should write values. Added to §6.2 as exploratory.

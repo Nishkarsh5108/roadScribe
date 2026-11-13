@@ -165,6 +165,88 @@
      "error_rate": 1.0
     }
    }
+  },
+  "B epoch2": {
+   "n": 54,
+   "claims": 2086,
+   "supported": 1568,
+   "precision": 0.7516778523489933,
+   "evt_claims": 841,
+   "wrong_position": 299,
+   "wrong_position_share": 0.3555291319857313,
+   "non_position_errors": 219,
+   "non_position_per_narrative": 4.055555555555555,
+   "hallucinated_missing": 5,
+   "accepted": 0,
+   "claims_per_narrative": 38.629629629629626,
+   "words_per_narrative": 272.6296296296296,
+   "must_mention_missed": 0,
+   "hit_token_limit": 0,
+   "reasons": {
+    "unparsed_number": 55,
+    "number_mismatch": 55,
+    "misattributed_maneuver": 20,
+    "wrong_position": 299,
+    "comparison_mismatch": 25,
+    "severity_mismatch": 30,
+    "rest_count": 4,
+    "event_count": 20,
+    "overclaimed_hedge": 1,
+    "hallucinated_missing": 5,
+    "unknown_range": 4
+   },
+   "by_value_type": {
+    "acceleration": {
+     "claims": 95,
+     "unsupported": 22,
+     "error_rate": 0.23157894736842105
+    },
+    "cmp": {
+     "claims": 147,
+     "unsupported": 26,
+     "error_rate": 0.17687074829931973
+    },
+    "distance": {
+     "claims": 373,
+     "unsupported": 35,
+     "error_rate": 0.0938337801608579
+    },
+    "duration": {
+     "claims": 54,
+     "unsupported": 0,
+     "error_rate": 0.0
+    },
+    "event_other": {
+     "claims": 69,
+     "unsupported": 1,
+     "error_rate": 0.014492753623188406
+    },
+    "position": {
+     "claims": 772,
+     "unsupported": 335,
+     "error_rate": 0.4339378238341969
+    },
+    "rest": {
+     "claims": 36,
+     "unsupported": 8,
+     "error_rate": 0.2222222222222222
+    },
+    "sev": {
+     "claims": 442,
+     "unsupported": 34,
+     "error_rate": 0.07692307692307693
+    },
+    "speed": {
+     "claims": 43,
+     "unsupported": 2,
+     "error_rate": 0.046511627906976744
+    },
+    "unparsed": {
+     "claims": 55,
+     "unsupported": 55,
+     "error_rate": 1.0
+    }
+   }
   }
  },
  "precision B greedy - B (P6)": {
@@ -174,5 +256,13 @@
    0.034758915130796694
   ],
   "p_le_0": 0.4593
+ },
+ "precision B epoch2 - B (P6)": {
+  "diff": -0.010334840307398396,
+  "ci95": [
+   -0.07056448556624631,
+   0.035551050789477845
+  ],
+  "p_le_0": 0.6339
  }
 }

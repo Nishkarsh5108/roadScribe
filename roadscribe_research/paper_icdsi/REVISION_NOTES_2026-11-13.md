@@ -50,7 +50,7 @@ This note maps each point of the simulated ICDSI review (scores 3 / 4 / 3) to wh
 | Dashboard ≠ seat; comfort ≠ condition; agreement ≠ correctness | §7 |
 | Three vehicles only | Stated in §5.1 (intervals) and §7 |
 | Confounded P5 retraining (Reviewer A #2) | Replaced by P6, a controlled test with the same targets and only the input changed. 3 of 4 hypotheses held. H2 failed because of how the verifier orders failure reasons; this is explained and the per-type rates are given |
-| Is mis-copying a sampling artefact? | P8 (exploratory): greedy decoding gives the same precision (76.3% vs 76.2%) |
+| Is mis-copying a sampling artefact or under-training? | P8 (exploratory): greedy decoding gives 76.3% vs 76.2%; a second epoch (loss 0.09) gives 75.2%, with 43% of positions still wrong |
 
 ## Still open, for you
 

@@ -16,7 +16,7 @@
 \newcommand{\PSIXOUTCOME}{3 of 4 held}
 \newcommand{\PSIXCONTRIB}{We fine-tuned the same model three times on the same 1{,}200 targets, changing only whether the input contains the values the targets state. Adding the values raised claim precision from 51\% to 76\% (difference 0.25 [0.19, 0.31]), and the errors moved type by type with what the input lacked: positions 94\% wrong without them and 42\% with them, speeds 87\% and 3\%. Even with every value present, no narrative passed verification.}
 \newcommand{\PSIXABS}{With the fine-tuning targets held fixed, adding the stated values to the input raised claim precision from 51\% to 76\%, and errors fell type by type where values were added. Still, no complete narrative written by the fine-tuned model passed verification; verified narratives came only when code wrote the values.}
-\newcommand{\PEIGHT}{}
+\newcommand{\PEIGHT}{ Nor are they a matter of training length: after a second epoch (training loss 0.09) $P_L$ was 75.2\% and 43\% of the positions were still wrong.}
 \newcommand{\PSIXZS}{Prompted Qwen2.5-3B and 7B, given input B without fine-tuning, wrote fluent narratives that the verifier could barely check (Table~\ref{tab:p6}). Most of their claims name no stretch or use words outside its vocabulary, so they count as unsupported ($P_L$ 0.0\% and 4.5\%), and each narrative held 7--10 road or ride descriptors such as ``smooth'' that no extracted claim covers, against none for the fine-tuned arms (exploratory). A closed-vocabulary verifier binds the model to its language: fine-tuning on that language is what made the arms' text checkable at all.}
 \newcommand{\PSIXZSROWS}{\midrule
 Prompted 3B (B) & 0.0\% & 0 & 20.2 & -- & 20.2 & -- & 100\% (2) & -- & -- \\

@@ -41,6 +41,7 @@ Result files are in `../identifiability/results/` unless the path says otherwise
 | Table 5, §6.1 audit | 0 of 7,793; 0 of 2,621; 1.7%; 21% lenient | `x8_target_identifiability.json` |
 | §6.2, Table 6 | arms A–C and prompted rows; H1–H4 with CIs; per-type contrasts | `p6_results.json` (`scripts/eval_p6.py`; rows printed by `../identifiability/p6_table.py`) |
 | §6.2 sentence filter 33/41/52%; §6.3 prompted remainders 2.5–6; descriptors 7–10 | | `x9_sentence_filter.json`, `x13_vocabulary_coverage.json` (exploratory) |
+| §6.2 greedy 76.3%; second epoch 75.2%, 43%, loss 0.09 | | `p8_results.json` (`p8_eval.py`, exploratory); loss from `data/models/p8/epoch2/*.log` |
 | Table 5 error column | 86 / 98 / 80 / 1.2 / 0% | `x14_per_type_errors.json` |
 | §6.3 P5 | 52%, 40% → 18%, 27 → 1, 69.4% | `p5_summary.json`, `spgr_regen_summary.json`, `x5_slm_failures.json` |
 | §6.3 model plan + template | 28 of 54, 100%, 77% | `x6_slm_plan_template_realize.json` |
