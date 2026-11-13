@@ -105,6 +105,13 @@ def test_rest_units_inferred_without_plan(ledger):
     assert n_units_ok("Road A felt comfortable. The other two stretches were calm.") == [False]
 
 
+def test_positions_with_two_decimals_are_positions_not_lengths(ledger):
+    # "the 2.1 and 2.40 km marks" are two event positions; the second must not become a length claim (D29)
+    rep = check("On Road B there were likely two bumps around the 2.1 and 2.40 km marks.", ledger)
+    assert not [c for c in rep.claims if c.key == "length_m"]
+    assert sorted(c.value["pos"] for c in rep.claims if c.kind == "EVT") == [2100.0, 2400.0]
+
+
 @pytest.mark.parametrize("words", ["seven", "long", "the"])
 def test_rest_count_slot_never_crashes(ledger, words):
     # a count above six or a word outside the lexicon fails the REST claim; it must not raise

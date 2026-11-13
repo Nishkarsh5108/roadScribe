@@ -59,7 +59,9 @@ _RANGE_FROM = re.compile(r"\bfrom (\d+\.\d) to (\d+\.\d) km\b")
 _ROADNAME = re.compile(
     r"\b((?:[A-Z][a-z']+ )+(?:Road|Street|Lane|Avenue|Way|Drive|Track|Ring|Boulevard|Row|Close|Parade))\b"
 )
-_POS = re.compile(r"\baround the ((?:\d+\.\d)(?:(?:, | and )\d+\.\d)*) km marks?\b")
+# Positions may carry any number of decimals ("the 0.05 km mark"); before 2026-11-13 only one decimal was
+# accepted, and "the 0.0 and 0.05 km marks" fell through to the length pattern (WORKLOG D29).
+_POS = re.compile(r"\baround the ((?:\d+(?:\.\d+)?)(?:(?:, | and )\d+(?:\.\d+)?)*) km marks?\b")
 _SPEED = re.compile(r"\b(\d+) km/h")
 _ACC = re.compile(r"\b(\d+(?:\.\d+)?) m/s²")
 _LEN = re.compile(r"\b(\d+(?:\.\d+)?) (km|m)\b")
@@ -474,7 +476,7 @@ def verify_text(
             hedge = _clause_hedge(c)
             positions: list[float] = []
             for m in _POS.finditer(c):
-                positions += [float(x) * 1000 for x in re.findall(r"\d+\.\d", m.group(1))]
+                positions += [float(x) * 1000 for x in re.findall(r"\d+(?:\.\d+)?", m.group(1))]
                 used.append((ca + m.start(), ca + m.end()))
             man = next((k for k, rx in _MAN.items() if rx.search(c)), None)
             mentions = list(_EVENT_RE.finditer(c))

@@ -678,3 +678,24 @@ Each level gets an operational test, a remedy, and a controlled experiment. Road
 3. The ICDSI page limit and blind-review rule.
 4. No parallel IMWUT submission.
 5. The recall annotation.
+
+## Morning of 2026-11-13: second review (Gemini) and a two-column version
+
+- **User input:**
+  - The teacher model was **Claude Opus 5.5**.
+  - The repository will be made public.
+  - The professor asks for **8–10 pages, two-column**.
+  - The title should sound less technical.
+  - A second simulated review (Gemini) is to be addressed.
+- **D29, verifier fix (position pattern).**
+  - `_POS` accepted only one decimal, so "the 0.0 and 0.05 km marks" and "the 0.34 km mark" fell through to the length pattern and failed as `number_mismatch`.
+  - Positions now accept any number of decimals; the position tolerance stays 50 m.
+  - New test: `test_positions_with_two_decimals_are_positions_not_lengths`.
+  - Every evaluation is being rerun. **P6's pre-registered verdicts are re-checked under the corrected verifier, and both versions are reported** if they differ.
+- **P9, exploratory, declared before running.**
+  - The first adapter (2026-11-10) on the rebuilt PVS capsules (no spurious map channel), with the same prompt, sampling and 1,024-token budget.
+  - This separates the capsule fix from the plan–ground–realize retraining in the P5 comparison (Gemini Reviewer A #3).
+  - Prediction:
+    - Invented place names and map tags fall sharply.
+    - Precision rises by less than half of the 48.5% → 69.4% gap.
+    - No narrative is accepted.
